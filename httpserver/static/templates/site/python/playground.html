@@ -61,7 +61,7 @@
                     </p>
                     <p>
                         More information on
-                        <a href="https://jupyter.org/">Jupyter Lab</a>.
+                        <a href="https://jupyter.org/" target="_blank">Jupyter Lab</a>.
                     </p>
                     <p>
                         <i class="bi bi-arrow-right-circle-fill me-2 text-primary"></i>
@@ -69,12 +69,14 @@
                     </p>
                     <p>
                     <ol>
-                        <li><a href="{{.JupyterLabURL}}/lab/tree/python/senzing_hello_world.ipynb">Senzing
-                                Hello World</a> - A simple test of connectivity to Senzing engine.</li>
-                        <li><a href="{{.JupyterLabURL}}/lab/tree/python/senzing_load_truthsets.ipynb">Load
-                                Senzing truth-sets</a> - Load and query the Senzing truth-set-data.</li>
-                        <li><a href="{{.JupyterLabURL}}/lab/tree/python/senzing_load_user_data.ipynb">Load
-                                user data</a> - Load custom data.
+                        <li><a href="{{.JupyterLabURL}}/lab/tree/python/senzing_hello_world.ipynb"
+                                target="_blank">Senzing Hello World</a> - A simple test of connectivity to Senzing
+                            engine.</li>
+                        <li><a href="{{.JupyterLabURL}}/lab/tree/python/senzing_load_truthsets.ipynb"
+                                target="_blank">Load Senzing truth-sets</a> - Load and query the Senzing truth-set-data.
+                        </li>
+                        <li><a href="{{.JupyterLabURL}}/lab/tree/python/senzing_load_user_data.ipynb"
+                                target="_blank">Load user data</a> - Load custom data.
                         </li>
                     </ol>
                     </p>
@@ -102,7 +104,7 @@
                     </p>
                     <p>
                         To run the example programs in the Docker container, open a <a href="/xterm/xterm.html"
-                            target="senzing-xterm">Docker terminal</a> and run any of the following:
+                            target="_blank">Docker terminal</a> and run any of the following:
                     <div class="mb-6 bg-light">
                         <pre><code>
     senzing_hello_world.py
@@ -112,10 +114,17 @@
                     </div>
                     </p>
                     <p>
+                        Alternatively, you can use a <b>docker</b> command to open a terminal. Example:
+                    <div class="mb-6 bg-light">
+                        <pre><code>
+    docker exec -it senzing-playground /bin/bash
+                    </code></pre>
+                        </p>
+                    </div>
+                    <p>
                         By using <b>docker</b> commands, you can upload and download files to/from the running Docker
                         container. <br /> Example download from Docker container:
                     <div class="mb-6 bg-light">
-
                         <pre><code>
     docker container cp senzing-playground:/examples/python/senzing_hello_world.py /tmp/senzing_hello_world.py
                     </code></pre>
