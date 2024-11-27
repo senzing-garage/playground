@@ -6,7 +6,7 @@ jupyter==1.1.1
 jupyterlab-code-formatter==3.0.2
 nbconvert==7.16.4
 notebook==7.2.2
-protobuf==5.28.3
+protobuf==5.29.0
 senzing-abstract==0.1.12
 senzing-grpc==0.3.5
 setuptools==75.6.0
