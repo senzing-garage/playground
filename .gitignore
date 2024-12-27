@@ -50,3 +50,7 @@ coverage.out
 /.pytest_cache/
 
 .ipynb_checkpoints
+
+customers.json
+reference.json
+watchlist.json

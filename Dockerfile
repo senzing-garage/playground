@@ -118,11 +118,16 @@ RUN export STAT_TMP=$(stat --format=%a /tmp) \
  && chmod 777 /tmp \
  && apt-get update \
  && apt-get -y install \
-        temurin-11-jdk \
-        python3-venv \
         curl \
+        python3-venv \
+        temurin-11-jdk \
  && chmod ${STAT_TMP} /tmp \
  && rm -rf /var/lib/apt/lists/*
+ 
+# Install go.
+
+RUN wget -O /tmp/go1.linux-amd64.tar.gz https://go.dev/dl/go1.23.3.linux-amd64.tar.gz \
+ && tar -C /usr/local -xzf /tmp/go1.linux-amd64.tar.gz 
 
 # Copy files from repository.
 
@@ -144,11 +149,40 @@ RUN useradd --no-log-init --create-home --shell /bin/bash --uid "${BUILD_UID}" -
 # Run as non-root container
 
 USER ${BUILD_USER}
+ENV HOME=/home/${BUILD_USER}
+WORKDIR ${HOME}
 
 # Activate virtual environment.
 
 ENV VIRTUAL_ENV=/app/venv
 ENV PATH="/app/venv/bin:/examples/python:${PATH}"
+
+# Install Jupyter Go Kernel.
+
+ENV GOROOT=/usr/local/go
+ENV GOPATH=${HOME}/go
+ENV PATH=$PATH:${GOROOT}/bin:${GOPATH}/bin
+RUN <<EOF
+  echo "NB_USER=${BUILD_USER}" >> .profile
+  echo "export PATH=${PATH}" >> .profile
+  echo "export GOPATH=${GOPATH}" >> .profile
+  echo "export GOROOT=${GOROOT}" >> .profile
+EOF
+
+RUN go install github.com/janpfeifer/gonb@latest \
+ && go install golang.org/x/tools/cmd/goimports@latest \
+ && go install golang.org/x/tools/gopls@latest \
+ && gonb --install
+
+# Install go packages for SDK
+ 
+WORKDIR /examples/go
+ 
+RUN go get -u ./... \
+ && go get -t -u ./... \
+ && go mod tidy
+
+WORKDIR ${HOME}
 
 # Runtime environment variables.
 

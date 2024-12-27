@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-icons.css">
+    <script src="/js/jquery-3.7.1.min.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="/js/include-html.js" type="text/javascript"></script>
+    <title>Senzing Playground - Go - Playground</title>
+</head>
+
+<body>
+    <main class="d-flex flex-nowrap">
+        <div id="left-nav" class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px;"
+            w3-include-html="/component/left-nav-go.html">
+        </div>
+        <div class="container px-5">
+            <div class="col-xs-12" style="height:15px;"></div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/site/home.html">Home</a></li>
+                    <li class="breadcrumb-item" aria-current="page"><a href="/site/go/index.html">Go</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Playground</li>
+                </ol>
+            </nav>
+            <h1>Senzing SDK without installing anything else</h1>
+            <p>
+                You can use Jupyter notebooks or the Go SDK to explore Senzing.
+            </p>
+            <div id="sdk-doc-go" w3-include-html="/component/sdk-doc-go.html"> </div>
+            <p class="text-muted fw-light">
+                <b>Hint:</b> If the senzing/playground Docker container has been use in a prior
+                demonstration, restart the Docker container for best results.
+            </p>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="jupyter-tab" data-bs-toggle="tab"
+                        data-bs-target="#jupyter-tab-pane" type="button" role="tab" aria-controls="jupyter-tab-pane"
+                        aria-selected="true">Jupyter notebooks</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="go-sdk-tab" data-bs-toggle="tab" data-bs-target="#go-sdk-tab-pane"
+                        type="button" role="tab" aria-controls="go-sdk-tab-pane" aria-selected="false">Go
+                        SDK</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="jupyter-tab-pane" role="tabpanel"
+                    aria-labelledby="jupyter-tab" tabindex="0">
+                    <div class="col-xs-12" style="height:15px;"></div>
+                    <h4>Jupyter notebooks</h4>
+                    <p>
+                        In this exercise, Jupyter notebooks have been created to demonstrate Senzing. Using these
+                        notebooks in the embedded Jupyter Lab as a starting point, modify a notebook to explore
+                        Senzing.
+                    </p>
+                    <p>
+                        More information on
+                        <a href="https://jupyter.org/" target="_blank">Jupyter Lab</a>.
+                    </p>
+                    <p>
+                        <i class="bi bi-arrow-right-circle-fill me-2 text-primary"></i>
+                        Choose a Jupyter notebook:
+                    </p>
+                    <p>
+                    <ol>
+                        <li><a href="{{.JupyterLabURL}}/lab/tree/go/senzing_hello_world.ipynb" target="_blank">Senzing
+                                Hello World</a> - A simple test of connectivity to Senzing
+                            engine.</li>
+                        <li><a href="{{.JupyterLabURL}}/lab/tree/go/senzing_load_truthsets.ipynb" target="_blank">Load
+                                Senzing truth-sets</a> - Load and query the Senzing truth-set-data.
+                        </li>
+                        <li><a href="{{.JupyterLabURL}}/lab/tree/go/senzing_load_user_data.ipynb" target="_blank">Load
+                                user data</a> - Load custom data.
+                        </li>
+                    </ol>
+                    </p>
+                    <p>
+                        Use a notebook as starting point to create your own Jupyter notebook. Remember that the
+                        notebooks are not permanent and will be deleted when the Docker container is destroyed. You can
+                        save a notebook to your workstation by selecting <b>File</b> > <b>Download</b> in Jupyter Lab.
+                    </p>
+                    <p>
+                        You can also upload a Go Notebook (.ipynb) file using a <b>docker</b> command.
+                        <br \>Example:
+                    <div class="mb-6 bg-light">
+                        <pre><code>
+    docker container cp /tmp/my_local.ipynb senzing-playground:/examples/notebooks/go/my_local.ipynb
+                    </code></pre>
+                    </div>
+                    </p>
+                </div>
+                <div class="tab-pane fade" id="go-sdk-tab-pane" role="tabpanel" aria-labelledby="go-sdk-tab"
+                    tabindex="0">
+                    <div class="col-xs-12" style="height:15px;"></div>
+                    <h4>Go SDK</h4>
+                    <p>
+                        In this exercise, Go programs which access Senzing are run on the command line.
+                    </p>
+                    <p>
+                        To run the example programs in the Docker container, open a <a href="/xterm/xterm.html"
+                            target="_blank">Docker terminal</a> and run any of the following:
+                    <div class="mb-6 bg-light">
+                        <pre><code>
+    senzing_hello_world.py
+    senzing_load_truthsets.py
+    senzing_load_user_data.py
+                        </code></pre>
+                    </div>
+                    </p>
+                    <p>
+                        Alternatively, you can use a <b>docker</b> command to open a terminal. Example:
+                    <div class="mb-6 bg-light">
+                        <pre><code>
+    docker exec -it senzing-playground /bin/bash
+                    </code></pre>
+                        </p>
+                    </div>
+                    <p>
+                        By using <b>docker</b> commands, you can upload and download files to/from the running Docker
+                        container. <br /> Example download from Docker container:
+                    <div class="mb-6 bg-light">
+                        <pre><code>
+    docker container cp senzing-playground:/examples/go/senzing_hello_world.py /tmp/senzing_hello_world.py
+                    </code></pre>
+                    </div>
+                    Example upload to Dockter container:
+                    <div class="mb-6 bg-light">
+                        <pre><code>
+    docker container cp /tmp/my_local.py senzing-playground:/examples/go/my_local.py
+                    </code></pre>
+                    </div>
+                    </p>
+                </div>
+                <div class="col-xs-12" style="height:10px;"></div>
+                <div id="bottom-nav" w3-include-html="/component/bottom-nav.html" />
+            </div>
+    </main>
+
+    <script type="text/javascript">
+        includeHTML();
+    </script>
+</body>
+
+</html>
