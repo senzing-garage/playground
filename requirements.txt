@@ -4,7 +4,7 @@ grpcio==1.68.1
 isort==5.13.2
 jupyter==1.1.1
 jupyterlab-code-formatter==3.0.2
-nbconvert==7.16.4
+nbconvert==7.16.5
 notebook==7.3.2
 protobuf==5.29.2
 senzing==0.2.0
