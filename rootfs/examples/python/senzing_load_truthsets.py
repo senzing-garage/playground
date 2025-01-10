@@ -7,16 +7,10 @@ import shutil
 
 import grpc
 import requests
-from senzing_grpc import (
-    SzAbstractFactory,
-    SzAbstractFactoryParameters,
-    SzEngineFlags,
-    SzError,
-)
+from senzing import SzEngineFlags, SzError
+from senzing_grpc import SzAbstractFactoryGrpc
 
-FACTORY_PARAMETERS: SzAbstractFactoryParameters = {
-    "grpc_channel": grpc.insecure_channel("localhost:8261"),
-}
+grpc_channel = grpc.insecure_channel("localhost:8261")
 
 # Set environment specific variables.
 
@@ -53,7 +47,7 @@ print(f"Found the following DATA_SOURCE values in the data: {datasources}")
 
 # Create an abstract factory for accessing Senzing via gRPC.
 
-sz_abstract_factory = SzAbstractFactory(**FACTORY_PARAMETERS)
+sz_abstract_factory = SzAbstractFactoryGrpc(grpc_channel)
 
 # Create Senzing objects.
 
