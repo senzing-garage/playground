@@ -5,10 +5,9 @@
 import grpc
 from senzing_grpc import SzAbstractFactoryGrpc
 
-grpc_channel = grpc.insecure_channel("localhost:8261")
-
 # Create an abstract factory for accessing Senzing via gRPC.
 
+grpc_channel = grpc.insecure_channel("localhost:8261")
 sz_abstract_factory = SzAbstractFactoryGrpc(grpc_channel)
 
 # Create Senzing object.
