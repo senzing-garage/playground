@@ -196,6 +196,7 @@ Example:
     ```console
     docker run \
       --interactive \
+      --name senzing-playground \
       --publish 8260:8260 \
       --publish 8261:8261 \
       --rm \
