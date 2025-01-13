@@ -35,30 +35,30 @@
                 </p>
                 <div class="mb-6 bg-light">
                     <pre><code>
-from senzing_grpc import SzAbstractFactoryGrpc
+    from senzing_grpc import SzAbstractFactoryGrpc
 
-grpc_channel = grpc.insecure_channel("localhost:8261")
+    grpc_channel = grpc.insecure_channel("localhost:8261")
 
-sz_abstract_factory = SzAbstractFactoryGrpc(grpc_channel)
+    sz_abstract_factory = SzAbstractFactoryGrpc(grpc_channel)
                     </code></pre>
                 </div>
                 with a customized version of this:
                 <div class="col-xs-12" style="height:15px;"></div>
                 <div class="mb-6 bg-light">
                     <pre><code>
-from senzing_core import SzAbstractFactoryCore
+    from senzing_core import SzAbstractFactoryCore
 
-instance_name = "Example"
-settings = {
-    "PIPELINE": {
-        "CONFIGPATH": "/etc/opt/senzing",
-        "RESOURCEPATH": "/opt/senzing/er/resources",
-        "SUPPORTPATH": "/opt/senzing/data",
-    },
-    "SQL": {"CONNECTION": "sqlite3://na:na@/tmp/sqlite/G2C.db"},
-}
+    instance_name = "Example"
+    settings = {
+        "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "RESOURCEPATH": "/opt/senzing/er/resources",
+            "SUPPORTPATH": "/opt/senzing/data",
+        },
+        "SQL": {"CONNECTION": "sqlite3://na:na@/tmp/sqlite/G2C.db"},
+    }
 
-sz_abstract_factory = SzAbstractFactoryCore(instance_name, settings)
+    sz_abstract_factory = SzAbstractFactoryCore(instance_name, settings)
                     </code></pre>
                 </div>
             </div>

@@ -35,14 +35,34 @@
                 </p>
                 <div class="mb-6 bg-light">
                     <pre><code>
-TODO:
+    import "github.com/senzing-garage/sz-sdk-go-grpc/szabstractfactory"
+
+    szAbstractFactory := &szabstractfactory.Szabstractfactory{
+        GrpcConnection: grpcConnection,
+    }
                     </code></pre>
                 </div>
                 with a customized version of this:
                 <div class="col-xs-12" style="height:15px;"></div>
                 <div class="mb-6 bg-light">
                     <pre><code>
-TODO:
+    import "github.com/senzing-garage/sz-sdk-go-core/szabstractfactory"
+
+    settings := `{
+        "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "RESOURCEPATH": "/opt/senzing/er/resources",
+            "SUPPORTPATH": "/opt/senzing/data",
+        },
+        "SQL": {"CONNECTION": "sqlite3://na:na@/tmp/sqlite/G2C.db"}
+    }`
+
+    szAbstractFactory := &szabstractfactory.Szabstractfactory{
+        ConfigID:       senzing.SzInitializeWithDefaultConfiguration,
+        InstanceName:   "My instance",
+        Settings:       settings,
+        VerboseLogging: senzing.SzNoLogging,
+    }
                     </code></pre>
                 </div>
             </div>

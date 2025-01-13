@@ -32,21 +32,33 @@
                 This exercise requires that you already have a Go development environment installed on your
                 computer.
             </p>
-            <div id="install-go-package" w3-include-html="/component/install-go-package.html"> </div>
+
             <p>
-                Download and run any of the following files:
+                Create a new directory and download any of the following files into the new directory:
             <ol>
                 <li><a href="/examples/go/senzing_hello_world/main.go">senzing_hello_world/main.go</a>
                     - A simple test of connectivity to Senzing engine.</li>
                 <li><a href="/examples/go/senzing_load_truthsets/main.go">senzing_load_truthsets/main.go
                     </a> - Load and query the Senzing truth-set-data.</li>
                 <li><a href="/examples/go/senzing_load_user_data/main.go">senzing_load_user_data/main.go</a>
-                    - Load custom data.</li>
-                <li><a href="/examples/go/senzing_method_help/main.go">senzing_method_help/main.go</a>
-                    - Show how to display help.
+                    - Load custom data.
+                    Requires input file (e.g.
+                    <a
+                        href="https://raw.githubusercontent.com/senzing-garage/playground/refs/heads/main/rootfs/examples/python/senzing-example-data.json">senzing-example-data.json</a>)
                 </li>
             </ol>
             </p>
+
+            <p>
+                Run in the new directory, the following commands initialize, download dependencies, and execute code:
+            </p>
+            <div class="mb-6 bg-light">
+                <pre><code>
+    go mod init senzing
+    go mod tidy
+    go run main.go
+                </code></pre>
+            </div>
 
             <p>
                 Using the files as examples, build your own Go application using the Senzing SDK.
