@@ -39,9 +39,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Senzing SDK
-        uses: senzing-factory/github-action-install-senzing-sdk@v1
+        uses: senzing-factory/github-action-install-senzing-sdk@v2
         with:
-          senzingsdk-version: ${{ matrix.senzingsdk-version }}
+          senzingsdk-repository-path: ${{ secrets.SENZING_OSX_BETA_REPOSITORY }}
 
       - name: Copy /etc files
         run: sudo mkdir -p /opt/senzing/er/etc && sudo cp testdata/senzing-license/g2.lic /opt/senzing/er/etc/g2.lic
