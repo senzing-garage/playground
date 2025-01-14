@@ -103,12 +103,23 @@
                     </p>
                     <p>
                         To run the example programs in the Docker container, open a <a href="/xterm/xterm.html"
-                            target="_blank">Docker terminal</a> and run any of the following:
+                            target="_blank">Docker terminal</a> and run any of the following examples:
                     <div class="mb-6 bg-light">
                         <pre><code>
-    senzing_hello_world.py
-    senzing_load_truthsets.py
-    senzing_load_user_data.py
+    cd /examples/go/senzing_hello_world
+    go run main.go
+                        </code></pre>
+                    </div>
+                    <div class="mb-6 bg-light">
+                        <pre><code>
+    cd /examples/go/senzing_load_truthsets
+    go run main.go
+                        </code></pre>
+                    </div>
+                    <div class="mb-6 bg-light">
+                        <pre><code>
+    cd /examples/go/senzing_load_user_data
+    go run main.go
                         </code></pre>
                     </div>
                     </p>
@@ -125,13 +136,13 @@
                         container. <br /> Example download from Docker container:
                     <div class="mb-6 bg-light">
                         <pre><code>
-    docker container cp senzing-playground:/examples/go/senzing_hello_world.py /tmp/senzing_hello_world.py
+    docker container cp senzing-playground:/examples/go/senzing_hello_world/main.go /tmp/senzing_hello_world/main.go
                     </code></pre>
                     </div>
                     Example upload to Dockter container:
                     <div class="mb-6 bg-light">
                         <pre><code>
-    docker container cp /tmp/my_local.py senzing-playground:/examples/go/my_local.py
+    docker container cp /tmp/my_main.go senzing-playground:/examples/go/my_main.go
                     </code></pre>
                     </div>
                     </p>
