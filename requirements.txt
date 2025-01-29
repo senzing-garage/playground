@@ -1,7 +1,7 @@
 autopep8==2.3.2
 black==24.10.0
 grpcio==1.70.0
-isort==5.13.2
+isort==6.0.0
 jupyter==1.1.1
 jupyterlab-code-formatter==3.0.2
 nbconvert==7.16.5
