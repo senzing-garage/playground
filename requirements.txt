@@ -1,5 +1,5 @@
 autopep8==2.3.2
-black==24.10.0
+black==25.1.0
 grpcio==1.70.0
 isort==6.0.0
 jupyter==1.1.1
