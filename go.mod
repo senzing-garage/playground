@@ -14,7 +14,7 @@ require (
 	github.com/senzing-garage/go-observing v0.3.3
 	github.com/senzing-garage/go-rest-api-service v0.10.3
 	github.com/senzing-garage/go-rest-api-service-legacy v0.1.1
-	github.com/senzing-garage/serve-grpc v0.8.11
+	github.com/senzing-garage/serve-grpc v0.8.12
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/viper v1.19.0
 	github.com/stretchr/testify v1.10.0
@@ -75,10 +75,10 @@ require (
 	github.com/senzing-garage/init-database v0.7.4 // indirect
 	github.com/senzing-garage/sz-sdk-go v0.14.5 // indirect
 	github.com/senzing-garage/sz-sdk-go-core v0.8.8 // indirect
-	github.com/senzing-garage/sz-sdk-go-grpc v0.8.7 // indirect
+	github.com/senzing-garage/sz-sdk-go-grpc v0.8.9 // indirect
 	github.com/senzing-garage/sz-sdk-go-mock v0.8.4 // indirect
 	github.com/senzing-garage/sz-sdk-json-type-definition v0.2.7 // indirect
-	github.com/senzing-garage/sz-sdk-proto v0.7.11 // indirect
+	github.com/senzing-garage/sz-sdk-proto v0.8.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
 	github.com/spf13/afero v1.12.0 // indirect
@@ -92,8 +92,8 @@ require (
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/crypto v0.33.0 // indirect
-	golang.org/x/exp v0.0.0-20250207012021-f9890c6ad9f3 // indirect
-	golang.org/x/net v0.34.0 // indirect
+	golang.org/x/exp v0.0.0-20250210185358-939b2ce775ac // indirect
+	golang.org/x/net v0.35.0 // indirect
 	golang.org/x/sync v0.11.0 // indirect
 	golang.org/x/sys v0.30.0 // indirect
 	golang.org/x/text v0.22.0 // indirect
