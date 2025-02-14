@@ -6,7 +6,7 @@ flake8==7.1.1
 fpvs==0.3.0
 isort==6.0.0
 mypy==1.15.0
-psutil==6.1.1
+psutil==7.0.0
 pylint==3.3.4
 pytest-cov==6.0.0
 pytest-schema==0.1.2
