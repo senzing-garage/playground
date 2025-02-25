@@ -9,4 +9,4 @@ notebook==7.3.2
 protobuf==5.29.3
 senzing==0.2.2
 senzing-grpc==0.4.3
-setuptools==75.8.0
+setuptools==75.8.1
