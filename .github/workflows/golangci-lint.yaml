@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install Senzing SDK
-        uses: senzing-factory/github-action-install-senzing-sdk@v2
+        uses: senzing-factory/github-action-install-senzing-sdk@v3
         with:
           senzingsdk-repository-package: ${{ secrets.SENZING_APT_BETA_STAGING_REPOSITORY_PACKAGE }}
           senzingsdk-repository-path: ${{ secrets.SENZING_APT_BETA_STAGING_REPOSITORY_URL }}
