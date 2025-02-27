@@ -3,9 +3,7 @@ name: Go test darwin
 on: [pull_request, workflow_dispatch]
 
 env:
-  CGO_LDFLAGS: "-Wl,-no_warn_duplicate_libraries"
-  DYLD_LIBRARY_PATH: /opt/senzing/er/lib:/opt/senzing/er/lib/macos
-  LD_LIBRARY_PATH: /opt/senzing/er/lib:/opt/senzing/er/lib/macos
+  SENZING_LOG_LEVEL: TRACE
   SENZING_TOOLS_DATABASE_URL: sqlite3://na:na@nowhere/tmp/sqlite/G2C.db
   SENZING_TOOLS_ENABLE_ALL: true
 
@@ -14,12 +12,11 @@ permissions:
 
 jobs:
   go-test-darwin:
-    name: "Go test with Senzing: ${{ matrix.senzingsdk-version }}; OS: ${{ matrix.os }}; Go: ${{ matrix.go }}"
-    runs-on: ${{ matrix.os }}
+    name: "Go test with Senzing: ${{ matrix.senzingsdk-version }}; OS: macos-latest; Go: ${{ matrix.go }}"
+    runs-on: macos-latest
     strategy:
       matrix:
         go: ["1.21"]
-        os: [macos-latest]
         senzingsdk-version: [staging-v4]
 
     steps:
@@ -43,14 +40,26 @@ jobs:
         with:
           senzingsdk-repository-path: ${{ secrets.SENZING_OSX_BETA_REPOSITORY }}
 
+      - name: Set environment variables
+        run: |
+          SENZING_PATH="${HOME}/senzing"
+          {
+            echo "SENZING_PATH=${SENZING_PATH}"
+            echo "LD_LIBRARY_PATH=${SENZING_PATH}/er/lib:${SENZING_PATH}/er/lib/macos"
+            echo "DYLD_LIBRARY_PATH=${SENZING_PATH}/er/lib:${SENZING_PATH}/er/lib/macos"
+            echo "SENZING_DATA_DIR=${SENZING_PATH}/er/data"
+            echo  CGO_CFLAGS="-g -I${SENZING_PATH}/er/sdk/c"
+            echo  CGO_LDFLAGS="-L${SENZING_PATH}/er/lib -lSz -Wl,-no_warn_duplicate_libraries"
+          } >> "$GITHUB_ENV"
+
       - name: Copy /etc files
-        run: sudo mkdir -p /opt/senzing/er/etc && sudo cp testdata/senzing-license/g2.lic /opt/senzing/er/etc/g2.lic
+        run: sudo mkdir -p "${SENZING_PATH}/etc" && sudo cp testdata/senzing-license/g2.lic "${SENZING_PATH}/er/etc/g2.lic"
 
       - name: Copy test database files
         run: mkdir -p /tmp/sqlite && cp testdata/sqlite/G2C.db /tmp/sqlite/
 
       - name: Run go test
-        run: go test -exec /Users/runner/work/playground/playground/bin/macos_exec_dyld.sh -json -v -p 1 -coverprofile=./cover.out -covermode=atomic -coverpkg=./... ./...  2>&1 | tee /tmp/gotest.log | gotestfmt
+        run: go test -exec "${GITHUB_WORKSPACE}/bin/macos_exec_dyld.sh" -json -v -p 1 -coverprofile=./cover.out -covermode=atomic -coverpkg=./... ./...  2>&1 | tee /tmp/gotest.log | gotestfmt
 
       - name: Store coverage file
         uses: actions/upload-artifact@v4
