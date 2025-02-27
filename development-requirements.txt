@@ -4,7 +4,7 @@ build==1.2.2.post1
 coverage==7.6.12
 flake8==7.1.2
 fpvs==0.3.0
-isort==6.0.0
+isort==6.0.1
 mypy==1.15.0
 psutil==7.0.0
 pylint==3.3.4
@@ -16,8 +16,8 @@ sphinx-gallery==0.19.0
 sphinx-jinja2-compat==0.3.0
 sphinx-prompt==1.9.0
 sphinx-rtd-theme==3.0.2
-sphinx-tabs==3.4.5
-sphinx-toolbox==3.8.3
+sphinx-tabs==3.4.7
+sphinx-toolbox==3.9.0
 sphinx==8.2.1
 sphinxcontrib-applehelp==2.0.0
 sphinxcontrib-devhelp==2.0.0
