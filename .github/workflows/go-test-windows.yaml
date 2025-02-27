@@ -11,12 +11,11 @@ permissions:
 
 jobs:
   go-test-windows:
-    name: "Go test with Senzing: ${{ matrix.senzingsdk-version }}; OS: ${{ matrix.os }}; Go: ${{ matrix.go }}"
-    runs-on: ${{ matrix.os }}
+    name: "Go test with Senzing: ${{ matrix.senzingsdk-version }}; OS: windows-latest; Go: ${{ matrix.go }}"
+    runs-on: windows-latest
     strategy:
       matrix:
         go: ["1.21"]
-        os: [windows-latest]
         senzingsdk-version: [staging-v4]
 
     steps:
@@ -36,23 +35,24 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Senzing SDK
-        uses: senzing-factory/github-action-install-senzing-sdk@v2
+        uses: senzing-factory/github-action-install-senzing-sdk@v3
         with:
           senzingsdk-repository-path: ${{ secrets.SENZING_WIN_BETA_REPOSITORY }}
 
       - name: Add to "Path" environment variable
-        run: |
-          # shellcheck disable=SC2028
-          echo "C:\Program Files\Senzing\er\lib" >> "$env:GITHUB_PATH"
+        run: Add-Content "$env:GITHUB_PATH" "$Env:USERPROFILE\Senzing\er\lib"
 
       - name: Copy /etc files
-        run: copy testdata/senzing-license/g2.lic "C:\Program Files\Senzing\er\etc\g2.lic"
+        run: copy testdata/senzing-license/g2.lic "$Env:USERPROFILE\Senzing\er\etc\g2.lic"
 
       - name: Copy test database files
         run: mkdir "C:\Temp\sqlite" && copy testdata/sqlite/G2C.db "C:\Temp\sqlite\G2C.db"
 
       - name: Run go test
         run: |
+          $Env:SENZING_PATH = "$Env:USERPROFILE\Senzing"
+          $Env:CGO_CFLAGS = "-g -I$Env:SENZING_PATH\er\sdk\c"
+          $Env:CGO_LDFLAGS = "-L$Env:SENZING_PATH\er\lib -lSz"
           go test -json -v -p 1 -coverprofile=cover -covermode=atomic -coverpkg=./... ./... 2>&1 | tee "C:\Temp\gotest.log" | gotestfmt
           cp cover cover.out
 
