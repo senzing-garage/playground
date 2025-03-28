@@ -15,7 +15,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        go: ["1.21"]
+        go: ["1.24"]
         senzingsdk-version: [staging-v4]
 
     steps:
@@ -24,7 +24,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup go
+      - name: Setup go ${{ matrix.go }}
         uses: actions/setup-go@v5
         with:
           go-version: ${{ matrix.go }}
@@ -40,13 +40,17 @@ jobs:
           senzingsdk-repository-path: ${{ secrets.SENZING_WIN_BETA_REPOSITORY }}
 
       - name: Add to "Path" environment variable
-        run: Add-Content "$env:GITHUB_PATH" "$Env:USERPROFILE\Senzing\er\lib"
+        run: |
+          Add-Content "$env:GITHUB_PATH" "$Env:USERPROFILE\Senzing\er\lib"
 
       - name: Copy /etc files
-        run: copy testdata/senzing-license/g2.lic "$Env:USERPROFILE\Senzing\er\etc\g2.lic"
+        run: |
+          copy testdata/senzing-license/g2.lic "$Env:USERPROFILE\Senzing\er\etc\g2.lic"
 
       - name: Copy test database files
-        run: mkdir "C:\Temp\sqlite" && copy testdata/sqlite/G2C.db "C:\Temp\sqlite\G2C.db"
+        run: |
+          mkdir "C:\Temp\sqlite"
+          copy testdata/sqlite/G2C.db "C:\Temp\sqlite\G2C.db"
 
       - name: Run go test
         run: |
