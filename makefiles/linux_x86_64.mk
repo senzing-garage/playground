@@ -15,6 +15,7 @@ build-with-libsqlite3-osarch-specific: linux/amd64/libsqlite3
 	@mkdir -p $(TARGET_DIRECTORY)/linux
 	@cp $(TARGET_DIRECTORY)/linux-amd64/$(PROGRAM_NAME) $(TARGET_DIRECTORY)/linux/$(PROGRAM_NAME)
 
+
 .PHONY: docker-build-osarch-specific
 docker-build-osarch-specific:
 	@docker build \

@@ -1,6 +1,6 @@
 name: Go test linux
 
-on: [push]
+on: [push, workflow_dispatch]
 
 env:
   SENZING_LOG_LEVEL: TRACE
@@ -15,7 +15,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        go: ["1.21"]
+        go: ["1.24"]
         os: [ubuntu-latest]
         senzingsdk-version: [staging-v4]
 
@@ -25,7 +25,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup go
+      - name: Setup go ${{ matrix.go }}
         uses: actions/setup-go@v5
         with:
           go-version: ${{ matrix.go }}
@@ -41,16 +41,26 @@ jobs:
           senzingsdk-repository-package: ${{ secrets.SENZING_APT_BETA_STAGING_REPOSITORY_PACKAGE }}
           senzingsdk-repository-path: ${{ secrets.SENZING_APT_BETA_STAGING_REPOSITORY_URL }}
 
+      - name: Set environment variables
+        run: |
+          SENZING_PATH="/opt/senzing"
+          {
+            echo "SENZING_PATH=${SENZING_PATH}"
+            echo "LD_LIBRARY_PATH=${SENZING_PATH}/er/lib"
+          } >> "$GITHUB_ENV"
+
       - name: Copy /etc files
-        run: sudo mkdir -p /etc/opt/senzing && sudo cp testdata/senzing-license/g2.lic /etc/opt/senzing/g2.lic
+        run: |
+          sudo mkdir -p /etc/opt/senzing
+          sudo cp testdata/senzing-license/g2.lic /etc/opt/senzing/g2.lic
 
       - name: Copy test database files
-        run: mkdir -p /tmp/sqlite && cp testdata/sqlite/G2C.db /tmp/sqlite/
+        run: |
+          mkdir -p /tmp/sqlite
+          cp testdata/sqlite/G2C.db /tmp/sqlite/
 
       - name: Run go test
         run: |
-          export SENZING_PATH="/opt/senzing"
-          export LD_LIBRARY_PATH="${SENZING_PATH}/er/lib:${SENZING_PATH}/er/lib/macos"
           go test -json -v -p 1 -coverprofile=./cover.out -covermode=atomic -coverpkg=./... ./...  2>&1 | tee /tmp/gotest.log | gotestfmt
 
       - name: Store coverage file

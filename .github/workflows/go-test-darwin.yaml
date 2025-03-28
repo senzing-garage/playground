@@ -12,11 +12,12 @@ permissions:
 
 jobs:
   go-test-darwin:
-    name: "Go test with Senzing: ${{ matrix.senzingsdk-version }}; OS: macos-latest; Go: ${{ matrix.go }}"
-    runs-on: macos-latest
+    name: "Go test with Senzing: ${{ matrix.senzingsdk-version }}; OS: ${{ matrix.os }}; Go: ${{ matrix.go }}"
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        go: ["1.21"]
+        go: ["1.24"]
+        os: [macos-latest]
         senzingsdk-version: [staging-v4]
 
     steps:
@@ -25,7 +26,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup go
+      - name: Setup go ${{ matrix.go }}
         uses: actions/setup-go@v5
         with:
           go-version: ${{ matrix.go }}
@@ -47,19 +48,23 @@ jobs:
             echo "SENZING_PATH=${SENZING_PATH}"
             echo "LD_LIBRARY_PATH=${SENZING_PATH}/er/lib:${SENZING_PATH}/er/lib/macos"
             echo "DYLD_LIBRARY_PATH=${SENZING_PATH}/er/lib:${SENZING_PATH}/er/lib/macos"
-            echo "SENZING_DATA_DIR=${SENZING_PATH}/er/data"
             echo  CGO_CFLAGS="-g -I${SENZING_PATH}/er/sdk/c"
             echo  CGO_LDFLAGS="-L${SENZING_PATH}/er/lib -lSz -Wl,-no_warn_duplicate_libraries"
           } >> "$GITHUB_ENV"
 
       - name: Copy /etc files
-        run: sudo mkdir -p "${SENZING_PATH}/etc" && sudo cp testdata/senzing-license/g2.lic "${SENZING_PATH}/er/etc/g2.lic"
+        run: |
+          sudo mkdir -p "${SENZING_PATH}/etc"
+          sudo cp testdata/senzing-license/g2.lic "${SENZING_PATH}/er/etc/g2.lic"
 
       - name: Copy test database files
-        run: mkdir -p /tmp/sqlite && cp testdata/sqlite/G2C.db /tmp/sqlite/
+        run: |
+          mkdir -p /tmp/sqlite
+          cp testdata/sqlite/G2C.db /tmp/sqlite/
 
       - name: Run go test
-        run: go test -exec "${GITHUB_WORKSPACE}/bin/macos_exec_dyld.sh" -json -v -p 1 -coverprofile=./cover.out -covermode=atomic -coverpkg=./... ./...  2>&1 | tee /tmp/gotest.log | gotestfmt
+        run: |
+          go test -exec "${GITHUB_WORKSPACE}/bin/macos_exec_dyld.sh" -json -v -p 1 -coverprofile=./cover.out -covermode=atomic -coverpkg=./... ./...  2>&1 | tee /tmp/gotest.log | gotestfmt
 
       - name: Store coverage file
         uses: actions/upload-artifact@v4
