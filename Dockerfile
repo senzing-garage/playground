@@ -95,8 +95,8 @@ USER root
 
 RUN export STAT_TMP=$(stat --format=%a /tmp) \
  && chmod 777 /tmp \
- && apt-get update \
- && apt-get -y install \
+ && apt-get update -qqq \
+ && apt-get -yqqq install \
         gnupg2 \
         jq \
         libodbc1 \
@@ -116,14 +116,14 @@ RUN echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adopti
 
 RUN export STAT_TMP=$(stat --format=%a /tmp) \
  && chmod 777 /tmp \
- && apt-get update \
- && apt-get -y install \
+ && apt-get update -qqq \
+ && apt-get -yqqq install \
         curl \
         python3-venv \
         temurin-11-jdk \
  && chmod ${STAT_TMP} /tmp \
  && rm -rf /var/lib/apt/lists/*
- 
+
 # Install go.
 
 RUN wget -O /tmp/go1.linux-amd64.tar.gz https://go.dev/dl/go1.23.3.linux-amd64.tar.gz \
@@ -175,9 +175,9 @@ RUN go install github.com/janpfeifer/gonb@latest \
  && gonb --install
 
 # Install go packages for SDK
- 
+
 WORKDIR /examples/go
- 
+
 RUN go get -u ./... \
  && go get -t -u ./... \
  && go mod tidy
