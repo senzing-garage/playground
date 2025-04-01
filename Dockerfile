@@ -95,8 +95,8 @@ USER root
 
 RUN export STAT_TMP=$(stat --format=%a /tmp) \
  && chmod 777 /tmp \
- && apt-get update \
- && apt-get -y install \
+ && apt-get update -qqq \
+ && apt-get -yqqq install \
         gnupg2 \
         jq \
         libodbc1 \
