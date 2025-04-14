@@ -7,6 +7,8 @@ permissions:
 
 jobs:
   isort:
+    outputs:
+      status: ${{ job.status }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -35,3 +37,12 @@ jobs:
         with:
           requirements-files: requirements.txt
           sort-paths: "rootfs/examples"
+
+  slack-notification:
+    needs: [isort]
+    if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.isort.outputs.status ) && github.ref_name == github.event.repository.default_branch }}
+    secrets:
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v2
+    with:
+      job-status: ${{ needs.isort.outputs.status }}
