@@ -10,6 +10,8 @@ permissions:
 
 jobs:
   go-proxy-pull:
+    outputs:
+      status: ${{ job.status }}
     runs-on: ubuntu-latest
 
     steps:
@@ -17,3 +19,12 @@ jobs:
         uses: andrewslotin/go-proxy-pull-action@v1.3.0
         with:
           import_path: github.com/${{ github.repository }}
+
+  slack-notification:
+    needs: [go-proxy-pull]
+    if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.go-proxy-pull.outputs.status ) }}
+    secrets:
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v2
+    with:
+      job-status: ${{ needs.go-proxy-pull.outputs.status }}
