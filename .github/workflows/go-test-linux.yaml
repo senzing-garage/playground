@@ -12,6 +12,8 @@ permissions:
 jobs:
   go-test-linux:
     name: "Go test with Senzing: ${{ matrix.senzingsdk-version }}; OS: ${{ matrix.os }}; Go: ${{ matrix.go }}"
+    outputs:
+      status: ${{ job.status }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -83,3 +85,12 @@ jobs:
     uses: senzing-factory/build-resources/.github/workflows/go-coverage.yaml@v2
     with:
       coverage-config: ./.github/coverage/testcoverage.yaml
+
+  slack-notification:
+    needs: [go-test-linux, coverage]
+    if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.go-test-linux.outputs.status ) && contains(fromJSON('["failure", "cancelled"]'), needs.coverage.outputs.job-status ) && github.ref_name == github.event.repository.default_branch }}
+    secrets:
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v2
+    with:
+      job-status: ${{ needs.go-test-linux.outputs.status && needs.coverage.outputs.job-status }}

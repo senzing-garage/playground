@@ -8,6 +8,8 @@ permissions:
 
 jobs:
   docker-push-containers-to-dockerhub-manual:
+    outputs:
+      status: ${{ job.status }}
     runs-on: ubuntu-latest
 
     steps:
@@ -26,3 +28,12 @@ jobs:
           push: true
           sign-image: true
           username: ${{ secrets.DOCKERHUB_USERNAME }}
+
+  slack-notification:
+    needs: [docker-push-containers-to-dockerhub-manual]
+    if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.docker-push-containers-to-dockerhub-manual.outputs.status) }}
+    secrets:
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v2
+    with:
+      job-status: ${{ needs.docker-push-containers-to-dockerhub-manual.outputs.status }}

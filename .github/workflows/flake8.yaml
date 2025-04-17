@@ -8,6 +8,8 @@ permissions:
 jobs:
   flake8:
     name: flake8 Python ${{ matrix.python-version }}
+    outputs:
+      status: ${{ job.status }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -29,3 +31,12 @@ jobs:
           max-line-length: 88
           path: rootfs/examples
           plugins: flake8-black
+
+  slack-notification:
+    needs: [flake8]
+    if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.flake8.outputs.status ) && github.ref_name == github.event.repository.default_branch }}
+    secrets:
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v2
+    with:
+      job-status: ${{ needs.flake8.outputs.status }}

@@ -11,6 +11,8 @@ permissions:
 jobs:
   make-go-tag:
     name: Make a vM.m.P tag
+    outputs:
+      status: ${{ job.status }}
     runs-on: ubuntu-latest
 
     steps:
@@ -19,3 +21,12 @@ jobs:
 
       - name: Make go version tag
         uses: senzing-factory/github-action-make-go-tag@v1
+
+  slack-notification:
+    needs: [make-go-tag]
+    if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.make-go-tag.outputs.status ) }}
+    secrets:
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v2
+    with:
+      job-status: ${{ needs.make-go-tag.outputs.status }}
