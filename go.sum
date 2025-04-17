@@ -93,8 +93,8 @@ github.com/mattn/go-colorable v0.1.14 h1:9A9LHSqF/7dyVVX6g0U9cwm9pG3kP9gSzcuIPHP
 github.com/mattn/go-colorable v0.1.14/go.mod h1:6LmQG8QLFO4G5z1gPvYEzlUgJ2wF+stgPZH1UqBm1s8=
 github.com/mattn/go-isatty v0.0.20 h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWEY=
 github.com/mattn/go-isatty v0.0.20/go.mod h1:W+V8PltTTMOvKvAeJH7IuucS94S2C6jfK/D7dTCTo3Y=
-github.com/mattn/go-sqlite3 v1.14.27 h1:drZCnuvf37yPfs95E5jd9s3XhdVWLal+6BOK6qrv6IU=
-github.com/mattn/go-sqlite3 v1.14.27/go.mod h1:Uh1q+B4BYcTPb+yiD3kU8Ct7aC0hY9fxUwlHK0RXw+Y=
+github.com/mattn/go-sqlite3 v1.14.28 h1:ThEiQrnbtumT+QMknw63Befp/ce/nUPgBPMlRFEum7A=
+github.com/mattn/go-sqlite3 v1.14.28/go.mod h1:Uh1q+B4BYcTPb+yiD3kU8Ct7aC0hY9fxUwlHK0RXw+Y=
 github.com/microsoft/go-mssqldb v1.8.0 h1:7cyZ/AT7ycDsEoWPIXibd+aVKFtteUNhDGf3aobP+tw=
 github.com/microsoft/go-mssqldb v1.8.0/go.mod h1:6znkekS3T2vp0waiMhen4GPU1BiAsrP+iXHcE7a7rFo=
 github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 h1:C3w9PqII01/Oq1c1nUAm88MOHcQC9l5mIlSMApZMrHA=
@@ -114,10 +114,10 @@ github.com/planetscale/vtprotobuf v0.6.1-0.20250313105119-ba97887b0a25/go.mod h1
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 h1:Jamvg5psRIccs7FGNTlIRMkT8wgtp5eCXdBlqhYGL6U=
 github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
-github.com/prometheus/client_golang v1.21.1 h1:DOvXXTqVzvkIewV/CDPFdejpMCGeMcbGCQ8YOmu+Ibk=
-github.com/prometheus/client_golang v1.21.1/go.mod h1:U9NM32ykUErtVBxdvD3zfi+EuFkkaBvMb09mIfe0Zgg=
-github.com/prometheus/client_model v0.6.1 h1:ZKSh/rekM+n3CeS952MLRAdFwIKqeY8b62p8ais2e9E=
-github.com/prometheus/client_model v0.6.1/go.mod h1:OrxVMOVHjw3lKMa8+x6HeMGkHMQyHDk9E3jmP2AmGiY=
+github.com/prometheus/client_golang v1.22.0 h1:rb93p9lokFEsctTys46VnV1kLCDpVZ0a/Y92Vm0Zc6Q=
+github.com/prometheus/client_golang v1.22.0/go.mod h1:R7ljNsLXhuQXYZYtw6GAE9AZg8Y7vEW5scdCXrWRXC0=
+github.com/prometheus/client_model v0.6.2 h1:oBsgwpGs7iVziMvrGhE53c/GrLUsZdHnqNwqPLxwZyk=
+github.com/prometheus/client_model v0.6.2/go.mod h1:y3m2F6Gdpfy6Ut/GBsUqTWZqCUvMVzSfMLjcu6wAwpE=
 github.com/prometheus/common v0.63.0 h1:YR/EIY1o3mEFP/kZCD7iDMnLPlGyuU2Gb3HIcXnA98k=
 github.com/prometheus/common v0.63.0/go.mod h1:VVFF/fBIoToEnWRVkYoXEkq3R3paCoxG9PXP74SnV18=
 github.com/prometheus/procfs v0.16.0 h1:xh6oHhKwnOJKMYiYBDWmkHqQPyiY40sny36Cmx2bbsM=
@@ -144,8 +144,8 @@ github.com/senzing-garage/go-messaging v1.5.2 h1:lU9W2HV3zKQsDU9Vs7lwe/C/LbHVCMn
 github.com/senzing-garage/go-messaging v1.5.2/go.mod h1:iEWGVuDGWjolIkwLqnn9oJS7ifF3aoZjTtI44tf1gWQ=
 github.com/senzing-garage/go-observing v0.3.3 h1:AhQYgOG012sDZtWXYcXVAaS5qEoDjlWmPYJDVCUZ/g0=
 github.com/senzing-garage/go-observing v0.3.3/go.mod h1:qFUi5Dwb6vmd7izTZGjGbWKUGRHzWzsgbsX3oNSD198=
-github.com/senzing-garage/go-rest-api-service v0.10.4 h1:9tO9artd4umbDe8J/yy4LGrMzyBK8i+QSAEUUTUBVJk=
-github.com/senzing-garage/go-rest-api-service v0.10.4/go.mod h1:4pbAoRYOQthyibo1sfPE1qTTS5uP80CdX3MV0qv7RoU=
+github.com/senzing-garage/go-rest-api-service v0.10.5-0.20250417150243-211a131def49 h1:SBLd5zITamkAMbqYA0OzmVNQ8iZb2vzooV0wriejH9Y=
+github.com/senzing-garage/go-rest-api-service v0.10.5-0.20250417150243-211a131def49/go.mod h1:iaLE2E+XfH8tyxm15+SAqVxOOcYzeEQW8NcQO2+8i88=
 github.com/senzing-garage/go-rest-api-service-legacy v0.1.1 h1:Ka0Livm51aUdv5s8z+pZ69VmDtKIGWLEZoZqvKapx9c=
 github.com/senzing-garage/go-rest-api-service-legacy v0.1.1/go.mod h1:s+lMso2zTmKgNYnayo9lVdUle1EMMax2BcVJnvFoRpI=
 github.com/senzing-garage/go-sdk-abstract-factory v0.9.7 h1:JYxxwiTCdsZMGE1KuCZmvw2yeIpomLwrrK7FGZyYI5c=
@@ -158,8 +158,8 @@ github.com/senzing-garage/sz-sdk-go v0.15.1 h1:I5q8dXNRxDpfhCVZ1w2tjCngcNqnG0EI7
 github.com/senzing-garage/sz-sdk-go v0.15.1/go.mod h1:awKwu1SVrNEVR8eHZGRuVUMOObDMfD33UYja2ojV3qY=
 github.com/senzing-garage/sz-sdk-go-core v0.9.2 h1:taxWF5tGhY6TzxoAh5Y/vhR+zo9hMitV4mUtsK8NkME=
 github.com/senzing-garage/sz-sdk-go-core v0.9.2/go.mod h1:Pb0SWHu1r3dPBxFqQHvEnguEpnfhQjbDvosTnsNc254=
-github.com/senzing-garage/sz-sdk-go-grpc v0.9.4-0.20250415141700-941ea9092bdd h1:KPlr3CJJPxmMFcGwgcihAxRZUiGO2UCUREdClst0xvA=
-github.com/senzing-garage/sz-sdk-go-grpc v0.9.4-0.20250415141700-941ea9092bdd/go.mod h1:zLq/c79gO3QKIPatCSpUEmUMfkIKOuQ5BlyGrHCd0BE=
+github.com/senzing-garage/sz-sdk-go-grpc v0.9.4 h1:XO3f3E7p9mLXbPrhGXR9H8jdqLtk5ULWjEIs2pl9azo=
+github.com/senzing-garage/sz-sdk-go-grpc v0.9.4/go.mod h1:zLq/c79gO3QKIPatCSpUEmUMfkIKOuQ5BlyGrHCd0BE=
 github.com/senzing-garage/sz-sdk-go-mock v0.8.6 h1:V0/e+2fZVbx1mDkoO9QXv8tj0h28yi3WhXzqGEtQWPo=
 github.com/senzing-garage/sz-sdk-go-mock v0.8.6/go.mod h1:Y2chukFdrIw16da4vYUavD5MRkG0mIBzgsz2yOm+GIc=
 github.com/senzing-garage/sz-sdk-json-type-definition v0.2.7 h1:Sv0CMHPWaF8Jq+VBi56iDbBFeh/rfiGsiFOaAGZ2V4U=

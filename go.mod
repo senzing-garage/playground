@@ -10,7 +10,7 @@ require (
 	github.com/senzing-garage/go-cmdhelping v0.3.3
 	github.com/senzing-garage/go-helpers v0.6.10
 	github.com/senzing-garage/go-observing v0.3.3
-	github.com/senzing-garage/go-rest-api-service v0.10.4
+	github.com/senzing-garage/go-rest-api-service v0.10.5-0.20250417150243-211a131def49
 	github.com/senzing-garage/go-rest-api-service-legacy v0.1.1
 	github.com/senzing-garage/serve-grpc v0.9.6
 	github.com/spf13/cobra v1.9.1
@@ -45,19 +45,18 @@ require (
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/klauspost/compress v1.18.0 // indirect
 	github.com/lib/pq v1.10.9 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/mattn/go-sqlite3 v1.14.27 // indirect
+	github.com/mattn/go-sqlite3 v1.14.28 // indirect
 	github.com/microsoft/go-mssqldb v1.8.0 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/ogen-go/ogen v1.10.1 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect
 	github.com/planetscale/vtprotobuf v0.6.1-0.20250313105119-ba97887b0a25 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
-	github.com/prometheus/client_golang v1.21.1 // indirect
-	github.com/prometheus/client_model v0.6.1 // indirect
+	github.com/prometheus/client_golang v1.22.0 // indirect
+	github.com/prometheus/client_model v0.6.2 // indirect
 	github.com/prometheus/common v0.63.0 // indirect
 	github.com/prometheus/procfs v0.16.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
@@ -70,7 +69,7 @@ require (
 	github.com/senzing-garage/init-database v0.7.10 // indirect
 	github.com/senzing-garage/sz-sdk-go v0.15.1 // indirect
 	github.com/senzing-garage/sz-sdk-go-core v0.9.2 // indirect
-	github.com/senzing-garage/sz-sdk-go-grpc v0.9.4-0.20250415141700-941ea9092bdd // indirect
+	github.com/senzing-garage/sz-sdk-go-grpc v0.9.4 // indirect
 	github.com/senzing-garage/sz-sdk-go-mock v0.8.6 // indirect
 	github.com/senzing-garage/sz-sdk-json-type-definition v0.2.7 // indirect
 	github.com/senzing-garage/sz-sdk-proto v0.8.2 // indirect

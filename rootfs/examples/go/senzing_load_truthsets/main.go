@@ -89,49 +89,39 @@ func extractDataSources(filePath string) []string {
 }
 
 func addDatasourcesToSenzingConfig(szAbstractFactory senzing.SzAbstractFactory, dataSourceNames []string) error {
-	szConfig, err := szAbstractFactory.CreateConfig(ctx)
-	if err != nil {
-		return err
-	}
-
 	szConfigManager, err := szAbstractFactory.CreateConfigManager(ctx)
 	if err != nil {
 		return err
 	}
 
-	oldConfigID, err := szConfigManager.GetDefaultConfigID(ctx)
+	configID, err := szConfigManager.GetDefaultConfigID(ctx)
 	if err != nil {
 		return err
 	}
 
-	oldJsonConfig, err := szConfigManager.GetConfig(ctx, oldConfigID)
-	if err != nil {
-		return err
-	}
-
-	configHandle, err := szConfig.ImportConfig(ctx, oldJsonConfig)
+	szConfig, err := szConfigManager.CreateConfigFromConfigID(ctx, configID)
 	if err != nil {
 		return err
 	}
 
 	for _, value := range dataSourceNames {
-		_, err := szConfig.AddDataSource(ctx, configHandle, value)
+		_, err := szConfig.AddDataSource(ctx, value)
 		if err != nil {
 			fmt.Println(err)
 		}
 	}
 
-	newJsonConfig, err := szConfig.ExportConfig(ctx, configHandle)
+	newJsonConfig, err := szConfig.Export(ctx)
 	if err != nil {
 		return err
 	}
 
-	newConfigID, err := szConfigManager.AddConfig(ctx, newJsonConfig, "Add TruthSet datasources")
+	newConfigID, err := szConfigManager.RegisterConfig(ctx, newJsonConfig, "Add TruthSet datasources")
 	if err != nil {
 		return err
 	}
 
-	err = szConfigManager.ReplaceDefaultConfigID(ctx, oldConfigID, newConfigID)
+	err = szConfigManager.ReplaceDefaultConfigID(ctx, configID, newConfigID)
 	if err != nil {
 		return err
 	}
