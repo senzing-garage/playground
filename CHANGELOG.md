@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.4.9] - 2025-04-17
+
+### Added in 0.4.9
+
+- `SzEngine.WhySearch`
+
+### Changed in 0.4.9
+
+- Restructured `SzConfig` and `SzConfigManager
+
 ## [0.4.8] - 2025-02-27
 
 ### Changed in 0.4.8
