@@ -34,30 +34,30 @@ sz_abstract_factory = SzAbstractFactoryGrpc(grpc_channel)
 
 # Create Senzing objects.
 
-sz_config = sz_abstract_factory.create_config()
 sz_configmanager = sz_abstract_factory.create_configmanager()
 sz_diagnostic = sz_abstract_factory.create_diagnostic()
 sz_engine = sz_abstract_factory.create_engine()
 
 # Get current Senzing configuration.
 
-old_config_id = sz_configmanager.get_default_config_id()
-old_json_config = sz_configmanager.get_config(old_config_id)
-config_handle = sz_config.import_config(old_json_config)
+config_id = sz_configmanager.get_default_config_id()
+sz_config = sz_configmanager.create_config_from_config_id(config_id)
 
 # Add DataSources to Senzing configuration.
 
 for datasource in datasources:
     try:
-        sz_config.add_data_source(config_handle, datasource)
+        sz_config.add_data_source(datasource)
     except SzError as err:
         print(err)
 
 # Persist new Senzing configuration.
 
-new_json_config = sz_config.export_config(config_handle)
-new_config_id = sz_configmanager.add_config(new_json_config, "Add user datasources")
-sz_configmanager.replace_default_config_id(old_config_id, new_config_id)
+new_json_config = sz_config.export()
+new_config_id = sz_configmanager.register_config(
+    new_json_config, "Add user datasources"
+)
+sz_configmanager.replace_default_config_id(config_id, new_config_id)
 
 # With the change in Senzing configuration, Senzing objects need to be updated.
 

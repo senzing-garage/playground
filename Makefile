@@ -143,6 +143,8 @@ docker-build: docker-build-osarch-specific
 docker-run:
 	@docker run \
 		--interactive \
+		--publish 8260:8260 \
+		--publish 8261:8261 \
 		--rm \
 		--tty \
 		--name $(DOCKER_CONTAINER_NAME) \
