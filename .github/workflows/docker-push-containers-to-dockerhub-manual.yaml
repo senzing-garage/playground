@@ -13,6 +13,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Clear space for docker build
+        run: |
+          rm -rf /opt/hostedtoolcache
+
       - name: Get repo name
         id: repo-basename
         run: |
