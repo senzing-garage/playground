@@ -61,10 +61,6 @@ jobs:
           mkdir -p /tmp/sqlite
           cp testdata/sqlite/G2C.db /tmp/sqlite/
 
-      - name: Run go test (DEBUG)
-        run: |
-          go test -v -p 1 ./...
-
       - name: Run go test
         run: |
           go test -json -v -p 1 -coverprofile=./cover.out -covermode=atomic -coverpkg=./... ./...  2>&1 | tee /tmp/gotest.log | gotestfmt
