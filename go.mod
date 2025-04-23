@@ -9,7 +9,7 @@ require (
 	github.com/senzing-garage/demo-entity-search v0.2.4
 	github.com/senzing-garage/go-cmdhelping v0.3.3
 	github.com/senzing-garage/go-helpers v0.6.10
-	github.com/senzing-garage/go-observing v0.3.3
+	github.com/senzing-garage/go-observing v0.3.4
 	github.com/senzing-garage/go-rest-api-service v0.10.5
 	github.com/senzing-garage/go-rest-api-service-legacy v0.1.1
 	github.com/senzing-garage/serve-grpc v0.9.7
@@ -91,7 +91,7 @@ require (
 	golang.org/x/sync v0.13.0 // indirect
 	golang.org/x/sys v0.32.0 // indirect
 	golang.org/x/text v0.24.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250414145226-207652e42e2e // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250422160041-2d3770c4ea7f // indirect
 	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
