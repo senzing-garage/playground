@@ -8,7 +8,7 @@ require (
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/senzing-garage/demo-entity-search v0.2.4
 	github.com/senzing-garage/go-cmdhelping v0.3.3
-	github.com/senzing-garage/go-helpers v0.6.10
+	github.com/senzing-garage/go-helpers v0.6.11
 	github.com/senzing-garage/go-observing v0.3.4
 	github.com/senzing-garage/go-rest-api-service v0.10.5
 	github.com/senzing-garage/go-rest-api-service-legacy v0.1.1
@@ -64,7 +64,7 @@ require (
 	github.com/segmentio/asm v1.2.0 // indirect
 	github.com/senzing-garage/go-databasing v0.5.6 // indirect
 	github.com/senzing-garage/go-logging v1.5.1 // indirect
-	github.com/senzing-garage/go-messaging v1.5.2 // indirect
+	github.com/senzing-garage/go-messaging v1.5.3 // indirect
 	github.com/senzing-garage/go-sdk-abstract-factory v0.9.8 // indirect
 	github.com/senzing-garage/init-database v0.7.10 // indirect
 	github.com/senzing-garage/sz-sdk-go v0.15.1 // indirect
