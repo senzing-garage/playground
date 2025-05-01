@@ -21,7 +21,7 @@
     ```
 
 1. Create a `SENZING_ENGINE_CONFIGURATION_JSON` that will reference the external database.
-   **Remember:**  The path must be relative to the *inside* of the Docker container.
+   **Remember:**  The path in `SQL.CONNECTION` must be relative to the *inside* of the Docker container.
 
    Example:
 
