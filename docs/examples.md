@@ -60,7 +60,7 @@
     ```
 
 1. Visit the web application at [localhost:8260].
-1. Optionally, enter the docker container.
+1. Optionally, exec into the docker container.
 
    Example:
 
