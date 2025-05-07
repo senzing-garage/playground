@@ -12,7 +12,7 @@ require (
 	github.com/senzing-garage/go-observing v0.3.4
 	github.com/senzing-garage/go-rest-api-service v0.10.5
 	github.com/senzing-garage/go-rest-api-service-legacy v0.1.1
-	github.com/senzing-garage/serve-grpc v0.9.8
+	github.com/senzing-garage/serve-grpc v0.9.9
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/viper v1.20.1
 	github.com/stretchr/testify v1.10.0
@@ -69,10 +69,10 @@ require (
 	github.com/senzing-garage/init-database v0.7.11 // indirect
 	github.com/senzing-garage/sz-sdk-go v0.15.2 // indirect
 	github.com/senzing-garage/sz-sdk-go-core v0.9.4 // indirect
-	github.com/senzing-garage/sz-sdk-go-grpc v0.9.4 // indirect
+	github.com/senzing-garage/sz-sdk-go-grpc v0.9.5 // indirect
 	github.com/senzing-garage/sz-sdk-go-mock v0.8.6 // indirect
 	github.com/senzing-garage/sz-sdk-json-type-definition v0.2.8 // indirect
-	github.com/senzing-garage/sz-sdk-proto v0.8.2 // indirect
+	github.com/senzing-garage/sz-sdk-proto v0.8.3 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
 	github.com/spf13/afero v1.14.0 // indirect
@@ -85,13 +85,13 @@ require (
 	go.opentelemetry.io/otel/trace v1.35.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
-	golang.org/x/crypto v0.37.0 // indirect
-	golang.org/x/exp v0.0.0-20250408133849-7e4ce0ab07d0 // indirect
-	golang.org/x/net v0.39.0 // indirect
-	golang.org/x/sync v0.13.0 // indirect
-	golang.org/x/sys v0.32.0 // indirect
-	golang.org/x/text v0.24.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250428153025-10db94c68c34 // indirect
+	golang.org/x/crypto v0.38.0 // indirect
+	golang.org/x/exp v0.0.0-20250506013437-ce4c2cf36ca6 // indirect
+	golang.org/x/net v0.40.0 // indirect
+	golang.org/x/sync v0.14.0 // indirect
+	golang.org/x/sys v0.33.0 // indirect
+	golang.org/x/text v0.25.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250505200425-f936aa4a68b2 // indirect
 	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
