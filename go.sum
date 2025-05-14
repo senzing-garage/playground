@@ -131,8 +131,8 @@ github.com/sagikazarmark/locafero v0.9.0 h1:GbgQGNtTrEmddYDSAH9QLRyfAHY12md+8YFT
 github.com/sagikazarmark/locafero v0.9.0/go.mod h1:UBUyz37V+EdMS3hDF3QWIiVr/2dPrx49OMO0Bn0hJqk=
 github.com/segmentio/asm v1.2.0 h1:9BQrFxC+YOHJlTlHGkTrFWf59nbL3XnCoFLTwDCI7ys=
 github.com/segmentio/asm v1.2.0/go.mod h1:BqMnlJP91P8d+4ibuonYZw9mfnzI9HfxselHZr5aAcs=
-github.com/senzing-garage/demo-entity-search v0.2.4 h1:DL/REz96ZvW4sD5I2qzKFbj5iTMQWmCMVDsyObAgrxE=
-github.com/senzing-garage/demo-entity-search v0.2.4/go.mod h1:KipSH659X3lDV19clEX4h4xGIN+fW9EO4yDAoYeIido=
+github.com/senzing-garage/demo-entity-search v0.2.5 h1:xXQSXCCgmkxSlxpuCBKSRzqg/a3jtMp3I3drH38Y7c0=
+github.com/senzing-garage/demo-entity-search v0.2.5/go.mod h1:Xn4VhtOZtw+wsbfCmT0q0yRJnx2/05BdB/G6MtXsW6o=
 github.com/senzing-garage/go-cmdhelping v0.3.4 h1:WamPZ2SqUQycBjGFcwRgkW0MQ4cEr3ZAvaQS3c+giOk=
 github.com/senzing-garage/go-cmdhelping v0.3.4/go.mod h1:adNIqAhfSrKfPAm4zRcwQxjIj/Ro6Xu1BGzdmvofFno=
 github.com/senzing-garage/go-databasing v0.5.7 h1:/qbjGoTMYI5olGYbfN/uwVW0xRRUyJ20n8uCYVaTdoM=
