@@ -33,7 +33,8 @@ venv.bak/
 .DS_STORE
 
 # Visual Studio code
-.vscode
+.vscode/*
+!.vscode/cspell.json
 *.code-workspace
 .history
 

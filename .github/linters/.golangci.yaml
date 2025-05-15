@@ -29,6 +29,7 @@ linters:
     - fatcontext
     # - forbidigo
     # - forcetypeassert
+    # - funcorder
     # - funlen
     - ginkgolinter
     - gocheckcompilerdirectives
@@ -106,6 +107,9 @@ linters:
     # - wrapcheck
     # - wsl
     - zerologlint
+  disable:
+    - gochecknoglobals
+    - gochecknoinits
   exclusions:
     generated: lax
     presets:
@@ -117,7 +121,28 @@ linters:
       - third_party$
       - builtin$
       - examples$
-
+  settings:
+    depguard:
+      rules:
+        prevent_unmaintained_packages:
+          list-mode: lax # allow unless explicitely denied
+          allow:
+            - github.com/stretchr/testify/*
+          deny:
+            - pkg: io/ioutil
+              desc: "replaced by io and os packages since Go 1.16: https://tip.golang.org/doc/go1.16#ioutil"
+    exhaustruct:
+      exclude:
+        - '.+/cobra\.Command$'
+    ireturn:
+      allow:
+        - anon
+        - empty
+        - error
+        - stdlib
+    mnd:
+      ignored-functions:
+        - '^logger\.Log$'
 formatters:
   enable:
     - gci
@@ -131,3 +156,6 @@ formatters:
       - third_party$
       - builtin$
       - examples$
+  settings:
+    golines:
+      max-len: 120
