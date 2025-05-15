@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"log"
 	"net"
 	"os"
 	"sync"
@@ -15,6 +14,7 @@ import (
 	"github.com/senzing-garage/go-cmdhelping/option"
 	"github.com/senzing-garage/go-cmdhelping/option/optiontype"
 	"github.com/senzing-garage/go-cmdhelping/settings"
+	"github.com/senzing-garage/go-helpers/wraperror"
 	"github.com/senzing-garage/go-observing/observer"
 	"github.com/senzing-garage/go-rest-api-service/senzingrestservice"
 	"github.com/senzing-garage/playground/httpserver"
@@ -24,15 +24,16 @@ import (
 )
 
 const (
-	Short string = "HTTP/gRPC server supporting various services"
-	Use   string = "playground"
-	Long  string = `
+	Long string = `
 A server supporting the following services:
     - HTTP: Senzing API server
     - HTTP: Swagger UI
     - HTTP: Xterm
     - gRPC:
     `
+	ReadHeaderTimeoutInSeconds        = 60
+	Short                      string = "HTTP/gRPC server supporting various services"
+	Use                        string = "playground"
 )
 
 var isInDevelopment = option.ContextVariable{
@@ -107,6 +108,7 @@ func PreRun(cobraCommand *cobra.Command, args []string) {
 // Used in construction of cobra.Command.
 func RunE(_ *cobra.Command, _ []string) error {
 	var err error
+
 	ctx := context.Background()
 
 	// Set default value for SENZING_TOOLS_DATABASE_URL.
@@ -115,7 +117,7 @@ func RunE(_ *cobra.Command, _ []string) error {
 	if !isSet {
 		err = os.Setenv("SENZING_TOOLS_DATABASE_URL", SenzingToolsDatabaseURL)
 		if err != nil {
-			return err
+			return wraperror.Errorf(err, "RunE.os.Setenv error: %w", err)
 		}
 	}
 
@@ -123,7 +125,7 @@ func RunE(_ *cobra.Command, _ []string) error {
 
 	senzingSettings, err := settings.BuildAndVerifySettings(ctx, viper.GetViper())
 	if err != nil {
-		return err
+		return wraperror.Errorf(err, "RunE.BuildAndVerifySettings error: %w", err)
 	}
 
 	// Build observers.
@@ -132,71 +134,32 @@ func RunE(_ *cobra.Command, _ []string) error {
 
 	// Setup gRPC server
 
-	grpcserver := &grpcserver.BasicGrpcServer{
-		AvoidServing:          viper.GetBool(option.AvoidServe.Arg),
-		EnableAll:             true,
-		EnableSzConfig:        viper.GetBool(option.EnableSzConfig.Arg),
-		EnableSzConfigManager: viper.GetBool(option.EnableSzConfigManager.Arg),
-		EnableSzDiagnostic:    viper.GetBool(option.EnableSzDiagnostic.Arg),
-		EnableSzEngine:        viper.GetBool(option.EnableSzEngine.Arg),
-		EnableSzProduct:       viper.GetBool(option.EnableSzProduct.Arg),
-		LogLevelName:          viper.GetString(option.LogLevel.Arg),
-		ObserverOrigin:        viper.GetString(option.ObserverOrigin.Arg),
-		ObserverURL:           viper.GetString(option.ObserverURL.Arg),
-		Port:                  viper.GetInt(option.GrpcPort.Arg),
-		SenzingSettings:       senzingSettings,
-		SenzingInstanceName:   viper.GetString(option.EngineInstanceName.Arg),
-		SenzingVerboseLogging: viper.GetInt64(option.EngineLogLevel.Arg),
-	}
-
-	// Create object and Serve.
-
-	httpServer := &httpserver.BasicHTTPServer{
-		APIUrlRoutePrefix:         "api",
-		AvoidServing:              viper.GetBool(option.AvoidServe.Arg),
-		EnableAll:                 true,
-		EntitySearchRoutePrefix:   "entity-search",
-		IsInDevelopment:           viper.GetBool(isInDevelopment.Arg),
-		JupyterLabRoutePrefix:     "jupyter",
-		LogLevelName:              viper.GetString(option.LogLevel.Arg),
-		ObserverOrigin:            viper.GetString(option.ObserverOrigin.Arg),
-		Observers:                 observers,
-		OpenAPISpecificationRest:  senzingrestservice.OpenAPISpecificationJSON,
-		ReadHeaderTimeout:         60 * time.Second,
-		SenzingInstanceName:       viper.GetString(option.EngineInstanceName.Arg),
-		SenzingSettings:           senzingSettings,
-		SenzingVerboseLogging:     viper.GetInt64(option.EngineLogLevel.Arg),
-		ServerAddress:             viper.GetString(option.ServerAddress.Arg),
-		ServerPort:                viper.GetInt(option.HTTPPort.Arg),
-		SwaggerURLRoutePrefix:     "swagger",
-		TtyOnly:                   viper.GetBool(option.TtyOnly.Arg),
-		XtermAllowedHostnames:     viper.GetStringSlice(option.XtermAllowedHostnames.Arg),
-		XtermArguments:            viper.GetStringSlice(option.XtermArguments.Arg),
-		XtermCommand:              viper.GetString(option.XtermCommand.Arg),
-		XtermConnectionErrorLimit: viper.GetInt(option.XtermConnectionErrorLimit.Arg),
-		XtermKeepalivePingTimeout: viper.GetInt(option.XtermKeepalivePingTimeout.Arg),
-		XtermMaxBufferSizeBytes:   viper.GetInt(option.XtermMaxBufferSizeBytes.Arg),
-		XtermURLRoutePrefix:       "xterm",
-	}
+	grpcServer := getGrpcServer(senzingSettings)
+	httpServer := getHTTPServer(senzingSettings, observers)
 
 	// Start servers.
 
 	var waitGroup sync.WaitGroup
-	waitGroup.Add(2)
+
+	waitGroup.Add(1)
 
 	go func() {
 		defer waitGroup.Done()
+
 		err = httpServer.Serve(ctx)
 		if err != nil {
-			fmt.Printf("Error: httpServer - %v\n", err)
+			fmt.Printf("Error: httpServer - %v\n", err) //nolint
 		}
 	}()
 
+	waitGroup.Add(1)
+
 	go func() {
 		defer waitGroup.Done()
-		err = grpcserver.Serve(ctx)
+
+		err = grpcServer.Serve(ctx)
 		if err != nil {
-			fmt.Printf("Error: grpcServer - %v\n", err)
+			fmt.Printf("Error: grpcServer - %v\n", err) //nolint
 		}
 	}()
 
@@ -219,27 +182,86 @@ func init() {
 	cmdhelper.Init(RootCmd, ContextVariables)
 }
 
+func getGrpcServer(senzingSettings string) *grpcserver.BasicGrpcServer {
+	return &grpcserver.BasicGrpcServer{
+		AvoidServing:          viper.GetBool(option.AvoidServe.Arg),
+		EnableAll:             true,
+		EnableSzConfig:        viper.GetBool(option.EnableSzConfig.Arg),
+		EnableSzConfigManager: viper.GetBool(option.EnableSzConfigManager.Arg),
+		EnableSzDiagnostic:    viper.GetBool(option.EnableSzDiagnostic.Arg),
+		EnableSzEngine:        viper.GetBool(option.EnableSzEngine.Arg),
+		EnableSzProduct:       viper.GetBool(option.EnableSzProduct.Arg),
+		LogLevelName:          viper.GetString(option.LogLevel.Arg),
+		ObserverOrigin:        viper.GetString(option.ObserverOrigin.Arg),
+		ObserverURL:           viper.GetString(option.ObserverURL.Arg),
+		Port:                  viper.GetInt(option.GrpcPort.Arg),
+		SenzingSettings:       senzingSettings,
+		SenzingInstanceName:   viper.GetString(option.EngineInstanceName.Arg),
+		SenzingVerboseLogging: viper.GetInt64(option.EngineLogLevel.Arg),
+	}
+}
+
+func getHTTPServer(senzingSettings string, observers []observer.Observer) *httpserver.BasicHTTPServer {
+	return &httpserver.BasicHTTPServer{
+		APIUrlRoutePrefix:         "api",
+		AvoidServing:              viper.GetBool(option.AvoidServe.Arg),
+		EnableAll:                 true,
+		EntitySearchRoutePrefix:   "entity-search",
+		IsInDevelopment:           viper.GetBool(isInDevelopment.Arg),
+		JupyterLabRoutePrefix:     "jupyter",
+		LogLevelName:              viper.GetString(option.LogLevel.Arg),
+		ObserverOrigin:            viper.GetString(option.ObserverOrigin.Arg),
+		Observers:                 observers,
+		OpenAPISpecificationRest:  senzingrestservice.OpenAPISpecificationJSON,
+		ReadHeaderTimeout:         ReadHeaderTimeoutInSeconds * time.Second,
+		SenzingInstanceName:       viper.GetString(option.EngineInstanceName.Arg),
+		SenzingSettings:           senzingSettings,
+		SenzingVerboseLogging:     viper.GetInt64(option.EngineLogLevel.Arg),
+		ServerAddress:             viper.GetString(option.ServerAddress.Arg),
+		ServerPort:                viper.GetInt(option.HTTPPort.Arg),
+		SwaggerURLRoutePrefix:     "swagger",
+		TtyOnly:                   viper.GetBool(option.TtyOnly.Arg),
+		XtermAllowedHostnames:     viper.GetStringSlice(option.XtermAllowedHostnames.Arg),
+		XtermArguments:            viper.GetStringSlice(option.XtermArguments.Arg),
+		XtermCommand:              viper.GetString(option.XtermCommand.Arg),
+		XtermConnectionErrorLimit: viper.GetInt(option.XtermConnectionErrorLimit.Arg),
+		XtermKeepalivePingTimeout: viper.GetInt(option.XtermKeepalivePingTimeout.Arg),
+		XtermMaxBufferSizeBytes:   viper.GetInt(option.XtermMaxBufferSizeBytes.Arg),
+		XtermURLRoutePrefix:       "xterm",
+	}
+}
+
 // --- Networking -------------------------------------------------------------
 
 func getOutboundIP() net.IP {
+	var result net.IP
+
 	conn, err := net.Dial("udp", "8.8.8.8:80")
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
+
 	defer func() {
 		if err := conn.Close(); err != nil {
 			panic(err)
 		}
 	}()
-	localAddr := conn.LocalAddr().(*net.UDPAddr)
-	return localAddr.IP
+
+	localAddr, isOK := conn.LocalAddr().(*net.UDPAddr)
+	if isOK {
+		result = localAddr.IP
+	}
+
+	return result
 }
 
 func getDefaultAllowedHostnames() []string {
 	result := []string{"localhost"}
 	outboundIPAddress := getOutboundIP().String()
+
 	if len(outboundIPAddress) > 0 {
 		result = append(result, outboundIPAddress)
 	}
+
 	return result
 }

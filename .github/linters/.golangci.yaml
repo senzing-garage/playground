@@ -11,9 +11,9 @@ linters:
     - containedctx
     - contextcheck
     - copyloopvar
-    # - cyclop
+    - cyclop
     - decorder
-    # - depguard
+    - depguard
     - dogsled
     - dupl
     - dupword
@@ -24,24 +24,24 @@ linters:
     - errname
     - errorlint
     - exhaustive
-    # - exhaustruct
+    - exhaustruct
     - exptostd
     - fatcontext
-    # - forbidigo
-    # - forcetypeassert
-    # - funcorder
-    # - funlen
+    - forbidigo
+    - forcetypeassert
+    - funcorder
+    - funlen
     - ginkgolinter
     - gocheckcompilerdirectives
-    # - gochecknoglobals
-    # - gochecknoinits
+    - gochecknoglobals
+    - gochecknoinits
     - gochecksumtype
     - gocognit
     - goconst
     - gocritic
     - gocyclo
-    # - godot
-    # - godox
+    - godot
+    - godox
     - goheader
     - gomoddirectives
     - gomodguard
@@ -57,26 +57,26 @@ linters:
     - interfacebloat
     - intrange
     - ireturn
-    # - lll
+    - lll
     - loggercheck
     - maintidx
     - makezero
     - mirror
     - misspell
-    # - mnd
+    - mnd
     - musttag
     - nakedret
     - nestif
     - nilerr
     - nilnesserr
     - nilnil
-    # - nlreturn
+    - nlreturn
     - noctx
     - nolintlint
     - nonamedreturns
     - nosprintfhostport
-    # - paralleltest
-    # - perfsprint
+    - paralleltest
+    - perfsprint
     - prealloc
     - predeclared
     - promlinter
@@ -91,25 +91,26 @@ linters:
     - staticcheck
     - tagalign
     - tagliatelle
-    # - testableexamples
+    - testableexamples
     - testifylint
-    # - testpackage
-    # - thelper
+    - testpackage
+    - thelper
     - tparallel
     - unconvert
     - unparam
     - unused
-    # - usestdlibvars
-    # - usetesting
-    # - varnamelen
+    - usestdlibvars
+    - usetesting
+    - varnamelen
     - wastedassign
     - whitespace
-    # - wrapcheck
-    # - wsl
+    - wrapcheck
+    - wsl
     - zerologlint
   disable:
     - gochecknoglobals
     - gochecknoinits
+    - paralleltest
   exclusions:
     generated: lax
     presets:
@@ -134,6 +135,13 @@ linters:
     exhaustruct:
       exclude:
         - '.+/cobra\.Command$'
+        - '.+/entitysearchservice\.BasicHTTPService$'
+        - '.+/grpcserver\.BasicGrpcServer$'
+        - '.+/http\.Server$'
+        - '.+/httpserver\.BasicHTTPServer$'
+        - '.+/httpserver\.TemplateVariables$'
+        - '.+/observer\.NullObserver$'
+        - '.+/xtermservice\.XtermServiceImpl$'
     ireturn:
       allow:
         - anon
@@ -147,9 +155,9 @@ formatters:
   enable:
     - gci
     - gofmt
-    # - gofumpt
+    - gofumpt
     - goimports
-    # - golines
+    - golines
   exclusions:
     generated: lax
     paths:
