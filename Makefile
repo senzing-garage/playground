@@ -80,6 +80,9 @@ dependencies-for-development: venv dependencies-for-development-osarch-specific
 	@go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@latest
 	@go install github.com/vladopajic/go-test-coverage/v2@latest
 	@go install golang.org/x/tools/cmd/godoc@latest
+	@go install golang.org/x/vuln/cmd/govulncheck@latest
+	@go install mvdan.cc/gofumpt@latest
+	@sudo npm install -g cspell@latest
 	$(activate-venv); \
 		python3 -m pip install --upgrade pip; \
 		python3 -m pip install --requirement development-requirements.txt
@@ -106,7 +109,7 @@ setup: setup-osarch-specific
 # -----------------------------------------------------------------------------
 
 .PHONY: lint
-lint: golangci-lint pylint mypy bandit black flake8 isort
+lint: golangci-lint govulncheck cspell pylint mypy bandit black flake8 isort
 
 # -----------------------------------------------------------------------------
 # Build
@@ -256,10 +259,25 @@ bandit:
 	@$(activate-venv); bandit $(shell git ls-files '*.py' ':!:docs/source/*')
 
 
+.PHONY: bearer
+bearer:
+	@bearer scan --config-file .github/linters/bearer.yml .
+
+
+.PHONY: cspell
+cspell:
+	@cspell lint --dot .
+
+
 .PHONY: black
 black:
 	$(info --- black ----------------------------------------------------------------------)
 	@$(activate-venv); black $(shell git ls-files '*.py' ':!:docs/source/*')
+
+
+.PHONY: exhaustruct
+exhaustruct:
+	exhaustruct ./...
 
 
 .PHONY: flake8
@@ -268,9 +286,19 @@ flake8:
 	@$(activate-venv); flake8 $(shell git ls-files '*.py' ':!:docs/source/*')
 
 
+.PHONY: gofumpt
+gofumpt:
+	gofumpt -d ./**/*.go
+
+
 .PHONY: golangci-lint
 golangci-lint:
 	@${GOBIN}/golangci-lint run --config=.github/linters/.golangci.yaml
+
+
+.PHONY: govulncheck
+govulncheck:
+	@${GOBIN}/govulncheck ./...
 
 
 .PHONY: isort
@@ -312,6 +340,308 @@ pytest:
 .PHONY: sphinx
 sphinx: sphinx-osarch-specific
 	$(info --- sphinx ---------------------------------------------------------------------)
+
+
+# -----------------------------------------------------------------------------
+# Fixers
+# -----------------------------------------------------------------------------
+
+.PHONY: fix
+fix: fix-asciicheck
+fix: fix-bidichk
+fix: fix-canonicalheader
+# fix: fix-copyloopvar
+fix: fix-cyclop
+fix: fix-dupword
+# fix: fix-durationcheck
+# fix: fix-err113
+fix: fix-errchkjson
+fix: fix-errname
+fix: fix-errorlint
+# fix: fix-exhaustive
+# fix: fix-exhaustruct
+# fix: fix-exptostd
+# fix: fix-fatcontext
+# fix: fix-ginkgolinter
+# fix: fix-gocheckcompilerdirectives
+# fix: fix-gochecknoglobals
+# fix: fix-godot
+fix: fix-gofumpt
+# fix: fix-grouper
+# fix: fix-ifacecheck
+# fix: fix-interfacebloat
+fix: fix-inamedparam
+# fix: fix-ireturn
+fix: fix-loggercheck
+# fix: fix-maintidx
+# fix: fix-mirror
+# fix: fix-mnd
+fix: fix-nakedret
+# fix: fix-nilerr
+fix: fix-nilnesserr
+fix: fix-nilnil
+fix: fix-paralleltest
+fix: fix-perfsprint
+# fix: fix-predeclared
+# fix: fix-protogetter
+# fix: fix-rowserrcheck
+fix: fix-tagalign
+fix: fix-tagliatelle
+# fix: fix-testableexamples
+fix: fix-testifylint
+# fix: fix-testpackage
+# fix: fix-thelper
+# fix: fix-usestdlibvars
+fix: fix-usetesting
+# fix: fix-whitespace
+fix: fix-wrapcheck
+fix: fix-wsl
+	$(info fixes complete)
+
+
+.PHONY: fix-asciicheck
+fix-asciicheck:
+	@asciicheck --fix ./...
+
+
+.PHONY: fix-bidichk
+fix-bidichk:
+	@bidichk --fix ./...
+
+
+.PHONY: fix-canonicalheader
+fix-canonicalheader:
+	@canonicalheader --fix ./...
+
+
+.PHONY: fix-copyloopvar
+fix-copyloopvar:
+	@copyloopvar --fix ./...
+
+
+.PHONY: fix-cyclop
+fix-cyclop:
+	@cyclop --fix ./...
+
+
+.PHONY: fix-dupword
+fix-dupword:
+	@dupword --fix ./...
+
+
+.PHONY: fix-durationcheck
+fix-durationcheck:
+	@durationcheck --fix ./...
+
+
+.PHONY: fix-err113
+fix-err113:
+	@err113 --fix ./...
+
+
+.PHONY: fix-errchkjson
+fix-errchkjson:
+	@errchkjson --fix ./...
+
+
+.PHONY: fix-errname
+fix-errname:
+	@errname --fix ./...
+
+
+.PHONY: fix-errorlint
+fix-errorlint:
+	@go-errorlint --fix ./...
+
+
+.PHONY: fix-exhaustive
+fix-exhaustive:
+	@go-exhaustive --fix ./...
+
+
+.PHONY: fix-exhaustruct
+fix-exhaustruct:
+	@go-exhaustruct --fix ./...
+
+
+.PHONY: fix-exptostd
+fix-exptostd:
+	@go-exptostd --fix ./...
+
+
+.PHONY: fix-fatcontext
+fix-fatcontext:
+	@go-fatcontext -fix ./...
+
+
+.PHONY: fix-ginkgolinter
+fix-ginkgolinter:
+	@go-ginkgolinter --fix ./...
+
+
+.PHONY: fix-gocheckcompilerdirectives
+fix-gocheckcompilerdirectives:
+	@go-gocheckcompilerdirectives --fix ./...
+
+
+.PHONY: fix-gochecknoglobals
+fix-gochecknoglobals:
+	@go-gochecknoglobals --fix ./...
+
+
+.PHONY: fix-godot
+fix-godot:
+	@go-godot --fix ./...
+
+
+.PHONY: fix-gofumpt
+fix-gofumpt:
+	@gofumpt -w ./**/*.go
+
+
+.PHONY: fix-grouper
+fix-grouper:
+	@grouper --fix ./...
+
+
+.PHONY: fix-ifacecheck
+fix-ifacecheck:
+	@ifacecheck --fix ./...
+
+
+.PHONY: fix-interfacebloat
+fix-interfacebloat:
+	@interfacebloat --fix ./...
+
+
+.PHONY: fix-inamedparam
+fix-inamedparam:
+	@inamedparam --fix ./...
+
+
+.PHONY: fix-ireturn
+fix-ireturn:
+	@ireturn --fix ./...
+
+
+.PHONY: fix-loggercheck
+fix-loggercheck:
+	@loggercheck --fix ./...
+
+
+.PHONY: fix-maintidx
+fix-maintidx:
+	@maintidx --fix ./...
+
+
+.PHONY: fix-mirror
+fix-mirror:
+	@mirror --fix ./...
+
+
+.PHONY: fix-mnd
+fix-mnd:
+	@mnd --fix ./...
+
+
+.PHONY: fix-nakedret
+fix-nakedret:
+	@nakedret --fix ./...
+
+
+.PHONY: fix-nilerr
+fix-nilerr:
+	@nilerr --fix ./...
+
+
+.PHONY: fix-nilnesserr
+fix-nilnesserr:
+	@nilnesserr --fix ./...
+
+
+.PHONY: fix-nilnil
+fix-nilnil:
+	@nilnil --fix ./...
+
+
+.PHONY: fix-paralleltest
+fix-paralleltest:
+	@paralleltest --fix ./...
+
+
+.PHONY: fix-perfsprint
+fix-perfsprint:
+	@perfsprint --fix ./...
+
+
+.PHONY: fix-predeclared
+fix-predeclared:
+	@predeclared --fix ./...
+
+
+.PHONY: fix-protogetter
+fix-protogetter:
+	@protogetter --fix ./...
+
+
+.PHONY: fix-rowserrcheck
+fix-rowserrcheck:
+	@rowserrcheck --fix ./...
+
+
+.PHONY: fix-tagalign
+fix-tagalign:
+	@tagalign --fix ./...
+
+
+.PHONY: fix-tagliatelle
+fix-tagliatelle:
+	@tagliatelle --fix ./...
+
+
+.PHONY: fix-testableexamples
+fix-testableexamples:
+	@testableexamples --fix ./...
+
+
+.PHONY: fix-testifylint
+fix-testifylint:
+	@testifylint --fix ./...
+
+
+.PHONY: fix-testpackage
+fix-testpackage:
+	@testpackage --fix ./...
+
+
+.PHONY: fix-thelper
+fix-thelper:
+	@thelper --fix ./...
+
+
+.PHONY: fix-usestdlibvars
+fix-usestdlibvars:
+	@usestdlibvars --fix ./...
+
+
+.PHONY: fix-usetesting
+fix-usetesting:
+	@usetesting --fix ./...
+
+
+.PHONY: fix-whitespace
+fix-whitespace:
+	@whitespace --fix ./...
+
+
+.PHONY: fix-wrapcheck
+fix-wrapcheck:
+	@wrapcheck --fix ./...
+
+
+.PHONY: fix-wsl
+fix-wsl:
+	@wsl --fix ./...
 
 
 .PHONY: view-sphinx

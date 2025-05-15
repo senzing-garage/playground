@@ -1,0 +1,39 @@
+name: govulncheck
+
+on:
+  push:
+    branches-ignore: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  govulncheck:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go: ["1.24"]
+        senzingsdk-version: [staging-v4]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go }}
+
+      - name: Install Senzing SDK
+        uses: senzing-factory/github-action-install-senzing-sdk@v3
+        with:
+          senzingsdk-repository-package: ${{ secrets.SENZING_APT_BETA_STAGING_REPOSITORY_PACKAGE }}
+          senzingsdk-repository-path: ${{ secrets.SENZING_APT_BETA_STAGING_REPOSITORY_URL }}
+
+      - uses: golang/govulncheck-action@v1
+        with:
+          go-version-input: ${{ matrix.go }}
