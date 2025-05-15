@@ -66,7 +66,7 @@ require (
 	github.com/senzing-garage/go-logging v1.5.2 // indirect
 	github.com/senzing-garage/go-messaging v1.5.3 // indirect
 	github.com/senzing-garage/go-sdk-abstract-factory v0.9.9 // indirect
-	github.com/senzing-garage/init-database v0.7.11 // indirect
+	github.com/senzing-garage/init-database v0.7.12 // indirect
 	github.com/senzing-garage/sz-sdk-go v0.15.3 // indirect
 	github.com/senzing-garage/sz-sdk-go-core v0.9.4 // indirect
 	github.com/senzing-garage/sz-sdk-go-grpc v0.9.5 // indirect
