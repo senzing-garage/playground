@@ -85,4 +85,4 @@ jobs:
     needs: go-test-darwin
     uses: senzing-factory/build-resources/.github/workflows/go-coverage.yaml@v2
     with:
-      coverage-config: ./.github/coverage/testcoverage.yaml
+      coverage-config: ./.github/coverage/testcoverage-darwin.yaml
