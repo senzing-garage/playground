@@ -7,7 +7,7 @@ fpvs==0.3.0
 isort==6.0.1
 mypy==1.15.0
 psutil==7.0.0
-pylint==3.3.6
+pylint==3.3.7
 pytest-cov==6.1.1
 pytest-schema==0.1.2
 pytest==8.3.5
@@ -17,7 +17,7 @@ sphinx-jinja2-compat==0.3.0
 sphinx-prompt==1.9.0
 sphinx-rtd-theme==3.0.2
 sphinx-tabs==3.4.5
-sphinx-toolbox==3.9.0
+sphinx-toolbox==4.0.0
 sphinx==8.2.3
 sphinxcontrib-applehelp==2.0.0
 sphinxcontrib-devhelp==2.0.0
@@ -27,5 +27,5 @@ sphinxcontrib-jsmath==1.0.1
 sphinxcontrib-qthelp==2.0.0
 sphinxcontrib-serializinghtml==2.0.0
 twine==6.1.0
-virtualenv==20.30.0
+virtualenv==20.31.2
 wheel==0.46.1
