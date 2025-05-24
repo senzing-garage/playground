@@ -1,6 +1,11 @@
 name: Go test windows
 
-on: [pull_request, workflow_dispatch]
+on:
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "15 7 * * *"
+  workflow_dispatch:
 
 env:
   SENZING_LOG_LEVEL: TRACE
@@ -12,6 +17,8 @@ permissions:
 jobs:
   go-test-windows:
     name: "Go test with Senzing: ${{ matrix.senzingsdk-version }}; OS: windows-latest; Go: ${{ matrix.go }}"
+    outputs:
+      status: ${{ job.status }}
     runs-on: windows-latest
     strategy:
       matrix:
@@ -80,3 +87,12 @@ jobs:
     uses: senzing-factory/build-resources/.github/workflows/go-coverage.yaml@v2
     with:
       coverage-config: ./.github/coverage/testcoverage.yaml
+
+  slack-notification:
+    needs: [go-test-windows, coverage]
+    if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.go-test-windows.outputs.status ) && contains(fromJSON('["failure", "cancelled"]'), needs.coverage.outputs.job-status ) && github.event_name == 'schedule' }}
+    secrets:
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v2
+    with:
+      job-status: ${{ needs.go-test-windows.outputs.status && needs.coverage.outputs.job-status }}
