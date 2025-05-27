@@ -89,10 +89,10 @@ jobs:
       coverage-config: ./.github/coverage/testcoverage.yaml
 
   slack-notification:
-    needs: [go-test-windows, coverage]
-    if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.go-test-windows.outputs.status ) && contains(fromJSON('["failure", "cancelled"]'), needs.coverage.outputs.job-status ) && github.event_name == 'schedule' }}
+    needs: [go-test-windows]
+    if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.go-test-windows.outputs.status ) && github.event_name == 'schedule' }}
     secrets:
       SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
     uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v2
     with:
-      job-status: ${{ needs.go-test-windows.outputs.status && needs.coverage.outputs.job-status }}
+      job-status: ${{ needs.go-test-windows.outputs.status }}
