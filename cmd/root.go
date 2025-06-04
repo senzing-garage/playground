@@ -117,7 +117,7 @@ func RunE(_ *cobra.Command, _ []string) error {
 	if !isSet {
 		err = os.Setenv("SENZING_TOOLS_DATABASE_URL", SenzingToolsDatabaseURL)
 		if err != nil {
-			return wraperror.Errorf(err, "RunE.os.Setenv error: %w", err)
+			return wraperror.Errorf(err, "os.Setenv: SENZING_TOOLS_DATABASE_URL=%s", SenzingToolsDatabaseURL)
 		}
 	}
 
@@ -125,7 +125,7 @@ func RunE(_ *cobra.Command, _ []string) error {
 
 	senzingSettings, err := settings.BuildAndVerifySettings(ctx, viper.GetViper())
 	if err != nil {
-		return wraperror.Errorf(err, "RunE.BuildAndVerifySettings error: %w", err)
+		return wraperror.Errorf(err, "BuildAndVerifySettings")
 	}
 
 	// Build observers.

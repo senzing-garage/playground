@@ -3,10 +3,10 @@
 package cmd
 
 import (
-	"fmt"
 	"io"
 	"os"
 
+	"github.com/senzing-garage/go-helpers/wraperror"
 	"github.com/spf13/cobra"
 )
 
@@ -17,7 +17,7 @@ var CompletionCmd = &cobra.Command{
 	Long: `To load completions, run:
 source < (playground completion)
 
-To load completions automaticallon on login, add this line to your .bashrc file:
+To load completions automatically on login, add this line to your .bashrc file:
 source < (playground completion)
 `,
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -34,7 +34,7 @@ func init() {
 
 func completionAction(out io.Writer) error {
 	if err := RootCmd.GenBashCompletion(out); err != nil {
-		return fmt.Errorf("completionAction: %w", err)
+		return wraperror.Errorf(err, "completionAction")
 	}
 
 	return nil
