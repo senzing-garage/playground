@@ -2,7 +2,7 @@
 # Stages
 # -----------------------------------------------------------------------------
 
-ARG IMAGE_SENZINGSDK_RUNTIME=senzing/senzingsdk-runtime-beta:latest
+ARG IMAGE_SENZINGSDK_RUNTIME=senzing/senzingsdk-runtime:latest
 ARG IMAGE_BUILDER=golang:1.24.1-bookworm
 ARG IMAGE_FPM=dockter/fpm:latest
 ARG IMAGE_FINAL=alpine

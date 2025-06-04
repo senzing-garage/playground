@@ -151,8 +151,8 @@ github.com/senzing-garage/go-rest-api-service-legacy v0.1.1 h1:Ka0Livm51aUdv5s8z
 github.com/senzing-garage/go-rest-api-service-legacy v0.1.1/go.mod h1:s+lMso2zTmKgNYnayo9lVdUle1EMMax2BcVJnvFoRpI=
 github.com/senzing-garage/go-sdk-abstract-factory v0.9.10 h1:D/xfgwAB6c37cTRSf1dXD3QM2AuWXfiJXtTotWvRQYM=
 github.com/senzing-garage/go-sdk-abstract-factory v0.9.10/go.mod h1:aSiDfD8UN+dZecAVU4cTXnni/OW2jUKriOf5rOcaHtM=
-github.com/senzing-garage/init-database v0.7.12 h1:z+2F9DpOmm4w2KUvaSwK4xFtaY9MLCvSYbLOHScovRY=
-github.com/senzing-garage/init-database v0.7.12/go.mod h1:jvwWcJgl6kagBMe55er4tVAXpyS+uxPtv2kchqE1x5k=
+github.com/senzing-garage/init-database v0.7.13 h1:drT/KdP17BJN+5v5QEqgxd4ea7y/aIJAsziMn1Mq1Cs=
+github.com/senzing-garage/init-database v0.7.13/go.mod h1:ZFiG99MGk6mwrqLP30Z63NFDg4016T09b1Zr0Xs3BXE=
 github.com/senzing-garage/serve-grpc v0.9.11 h1:uX2qH467Q21c1X+HkPauTy1Mk7FDS/P+bOyHiHQ1H88=
 github.com/senzing-garage/serve-grpc v0.9.11/go.mod h1:GoTUq0t6u2M6sisSMOxaXvs0yuGJyxzFsTp9LLl7KVc=
 github.com/senzing-garage/sz-sdk-go v0.15.4 h1:Q3dquqNBOtr25ICVk8KVj55qjvKib2eW2vGvgKX02Kg=
