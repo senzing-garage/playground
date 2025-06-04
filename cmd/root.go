@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"log"
 	"net"
 	"os"
 	"sync"
@@ -15,6 +14,7 @@ import (
 	"github.com/senzing-garage/go-cmdhelping/option"
 	"github.com/senzing-garage/go-cmdhelping/option/optiontype"
 	"github.com/senzing-garage/go-cmdhelping/settings"
+	"github.com/senzing-garage/go-helpers/wraperror"
 	"github.com/senzing-garage/go-observing/observer"
 	"github.com/senzing-garage/go-rest-api-service/senzingrestservice"
 	"github.com/senzing-garage/playground/httpserver"
@@ -24,15 +24,16 @@ import (
 )
 
 const (
-	Short string = "HTTP/gRPC server supporting various services"
-	Use   string = "playground"
-	Long  string = `
+	Long string = `
 A server supporting the following services:
     - HTTP: Senzing API server
     - HTTP: Swagger UI
     - HTTP: Xterm
     - gRPC:
     `
+	ReadHeaderTimeoutInSeconds        = 60
+	Short                      string = "HTTP/gRPC server supporting various services"
+	Use                        string = "playground"
 )
 
 var isInDevelopment = option.ContextVariable{
@@ -99,14 +100,15 @@ func Execute() {
 	}
 }
 
-// Used in construction of cobra.Command
+// Used in construction of cobra.Command.
 func PreRun(cobraCommand *cobra.Command, args []string) {
 	cmdhelper.PreRun(cobraCommand, args, Use, ContextVariables)
 }
 
-// Used in construction of cobra.Command
+// Used in construction of cobra.Command.
 func RunE(_ *cobra.Command, _ []string) error {
 	var err error
+
 	ctx := context.Background()
 
 	// Set default value for SENZING_TOOLS_DATABASE_URL.
@@ -115,7 +117,7 @@ func RunE(_ *cobra.Command, _ []string) error {
 	if !isSet {
 		err = os.Setenv("SENZING_TOOLS_DATABASE_URL", SenzingToolsDatabaseURL)
 		if err != nil {
-			return err
+			return wraperror.Errorf(err, "RunE.os.Setenv error: %w", err)
 		}
 	}
 
@@ -123,7 +125,7 @@ func RunE(_ *cobra.Command, _ []string) error {
 
 	senzingSettings, err := settings.BuildAndVerifySettings(ctx, viper.GetViper())
 	if err != nil {
-		return err
+		return wraperror.Errorf(err, "RunE.BuildAndVerifySettings error: %w", err)
 	}
 
 	// Build observers.
@@ -132,7 +134,56 @@ func RunE(_ *cobra.Command, _ []string) error {
 
 	// Setup gRPC server
 
-	grpcserver := &grpcserver.BasicGrpcServer{
+	grpcServer := getGrpcServer(senzingSettings)
+	httpServer := getHTTPServer(senzingSettings, observers)
+
+	// Start servers.
+
+	var waitGroup sync.WaitGroup
+
+	waitGroup.Add(1)
+
+	go func() {
+		defer waitGroup.Done()
+
+		err = httpServer.Serve(ctx)
+		if err != nil {
+			fmt.Printf("Error: httpServer - %v\n", err) //nolint
+		}
+	}()
+
+	waitGroup.Add(1)
+
+	go func() {
+		defer waitGroup.Done()
+
+		err = grpcServer.Serve(ctx)
+		if err != nil {
+			fmt.Printf("Error: grpcServer - %v\n", err) //nolint
+		}
+	}()
+
+	waitGroup.Wait()
+
+	return nil
+}
+
+// Used in construction of cobra.Command.
+func Version() string {
+	return cmdhelper.Version(githubVersion, githubIteration)
+}
+
+// ----------------------------------------------------------------------------
+// Private functions
+// ----------------------------------------------------------------------------
+
+// Since init() is always invoked, define command line parameters.
+func init() {
+	cmdhelper.Init(RootCmd, ContextVariables)
+}
+
+func getGrpcServer(senzingSettings string) *grpcserver.BasicGrpcServer {
+	return &grpcserver.BasicGrpcServer{
 		AvoidServing:          viper.GetBool(option.AvoidServe.Arg),
 		EnableAll:             true,
 		EnableSzConfig:        viper.GetBool(option.EnableSzConfig.Arg),
@@ -148,10 +199,10 @@ func RunE(_ *cobra.Command, _ []string) error {
 		SenzingInstanceName:   viper.GetString(option.EngineInstanceName.Arg),
 		SenzingVerboseLogging: viper.GetInt64(option.EngineLogLevel.Arg),
 	}
+}
 
-	// Create object and Serve.
-
-	httpServer := &httpserver.BasicHTTPServer{
+func getHTTPServer(senzingSettings string, observers []observer.Observer) *httpserver.BasicHTTPServer {
+	return &httpserver.BasicHTTPServer{
 		APIUrlRoutePrefix:         "api",
 		AvoidServing:              viper.GetBool(option.AvoidServe.Arg),
 		EnableAll:                 true,
@@ -162,7 +213,7 @@ func RunE(_ *cobra.Command, _ []string) error {
 		ObserverOrigin:            viper.GetString(option.ObserverOrigin.Arg),
 		Observers:                 observers,
 		OpenAPISpecificationRest:  senzingrestservice.OpenAPISpecificationJSON,
-		ReadHeaderTimeout:         60 * time.Second,
+		ReadHeaderTimeout:         ReadHeaderTimeoutInSeconds * time.Second,
 		SenzingInstanceName:       viper.GetString(option.EngineInstanceName.Arg),
 		SenzingSettings:           senzingSettings,
 		SenzingVerboseLogging:     viper.GetInt64(option.EngineLogLevel.Arg),
@@ -178,68 +229,39 @@ func RunE(_ *cobra.Command, _ []string) error {
 		XtermMaxBufferSizeBytes:   viper.GetInt(option.XtermMaxBufferSizeBytes.Arg),
 		XtermURLRoutePrefix:       "xterm",
 	}
-
-	// Start servers.
-
-	var waitGroup sync.WaitGroup
-	waitGroup.Add(2)
-
-	go func() {
-		defer waitGroup.Done()
-		err = httpServer.Serve(ctx)
-		if err != nil {
-			fmt.Printf("Error: httpServer - %v\n", err)
-		}
-	}()
-
-	go func() {
-		defer waitGroup.Done()
-		err = grpcserver.Serve(ctx)
-		if err != nil {
-			fmt.Printf("Error: grpcServer - %v\n", err)
-		}
-	}()
-
-	waitGroup.Wait()
-
-	return nil
-}
-
-// Used in construction of cobra.Command
-func Version() string {
-	return cmdhelper.Version(githubVersion, githubIteration)
-}
-
-// ----------------------------------------------------------------------------
-// Private functions
-// ----------------------------------------------------------------------------
-
-// Since init() is always invoked, define command line parameters.
-func init() {
-	cmdhelper.Init(RootCmd, ContextVariables)
 }
 
 // --- Networking -------------------------------------------------------------
 
 func getOutboundIP() net.IP {
+	var result net.IP
+
 	conn, err := net.Dial("udp", "8.8.8.8:80")
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
+
 	defer func() {
 		if err := conn.Close(); err != nil {
 			panic(err)
 		}
 	}()
-	localAddr := conn.LocalAddr().(*net.UDPAddr)
-	return localAddr.IP
+
+	localAddr, isOK := conn.LocalAddr().(*net.UDPAddr)
+	if isOK {
+		result = localAddr.IP
+	}
+
+	return result
 }
 
 func getDefaultAllowedHostnames() []string {
 	result := []string{"localhost"}
 	outboundIPAddress := getOutboundIP().String()
+
 	if len(outboundIPAddress) > 0 {
 		result = append(result, outboundIPAddress)
 	}
+
 	return result
 }

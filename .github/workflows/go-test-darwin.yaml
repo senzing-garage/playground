@@ -1,6 +1,11 @@
 name: Go test darwin
 
-on: [pull_request, workflow_dispatch]
+on:
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "15 7 * * *"
+  workflow_dispatch:
 
 env:
   SENZING_LOG_LEVEL: TRACE
@@ -13,6 +18,8 @@ permissions:
 jobs:
   go-test-darwin:
     name: "Go test with Senzing: ${{ matrix.senzingsdk-version }}; OS: ${{ matrix.os }}; Go: ${{ matrix.go }}"
+    outputs:
+      status: ${{ job.status }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -85,4 +92,13 @@ jobs:
     needs: go-test-darwin
     uses: senzing-factory/build-resources/.github/workflows/go-coverage.yaml@v2
     with:
-      coverage-config: ./.github/coverage/testcoverage.yaml
+      coverage-config: ./.github/coverage/testcoverage-darwin.yaml
+
+  slack-notification:
+    needs: [go-test-darwin]
+    if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.go-test-darwin.outputs.status ) && github.event_name == 'schedule' }}
+    secrets:
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v2
+    with:
+      job-status: ${{ needs.go-test-darwin.outputs.status }}
