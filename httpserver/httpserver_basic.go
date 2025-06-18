@@ -114,7 +114,7 @@ func (httpServer *BasicHTTPServer) Serve(ctx context.Context) error {
 	listenOnAddress := fmt.Sprintf("%s:%v", httpServer.ServerAddress, httpServer.ServerPort)
 	userMessages = append(userMessages, fmt.Sprintf("Starting server on interface:port '%s'...", listenOnAddress))
 
-	for userMessage := range userMessages {
+	for _, userMessage := range userMessages {
 		outputln(userMessage)
 	}
 

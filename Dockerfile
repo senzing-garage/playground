@@ -2,7 +2,7 @@
 # Stages
 # -----------------------------------------------------------------------------
 
-ARG IMAGE_BUILDER=golang:1.24.1-bookworm
+ARG IMAGE_BUILDER=golang:1.24.4-bookworm
 ARG IMAGE_FINAL=senzing/senzingsdk-runtime:latest
 
 # -----------------------------------------------------------------------------
@@ -126,7 +126,7 @@ RUN export STAT_TMP=$(stat --format=%a /tmp) \
 
 # Install go.
 
-RUN wget -O /tmp/go1.linux-amd64.tar.gz https://go.dev/dl/go1.24.2.linux-amd64.tar.gz \
+RUN wget -O /tmp/go1.linux-amd64.tar.gz https://go.dev/dl/go1.24.4.linux-amd64.tar.gz \
  && tar -C /usr/local -xzf /tmp/go1.linux-amd64.tar.gz 
 
 # Copy files from repository.
