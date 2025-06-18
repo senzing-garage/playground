@@ -2,7 +2,7 @@
 # Stages
 # -----------------------------------------------------------------------------
 
-ARG IMAGE_BUILDER=golang:1.24.1-bookworm
+ARG IMAGE_BUILDER=golang:1.24.4-bookworm
 ARG IMAGE_FINAL=senzing/senzingsdk-runtime:latest
 
 # -----------------------------------------------------------------------------
