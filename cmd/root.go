@@ -135,6 +135,7 @@ func RunE(_ *cobra.Command, _ []string) error {
 	// Setup gRPC server
 
 	grpcServer := getGrpcServer(senzingSettings)
+
 	err = grpcServer.Initialize(ctx)
 	if err != nil {
 		return wraperror.Errorf(err, "grpcServer.Initialize")
