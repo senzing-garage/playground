@@ -161,7 +161,6 @@ func RunE(_ *cobra.Command, _ []string) error {
 
 	go func() {
 		defer waitGroup.Done()
-		err = grpcServer.Initialize(ctx)
 
 		err = grpcServer.Serve(ctx)
 		if err != nil {
