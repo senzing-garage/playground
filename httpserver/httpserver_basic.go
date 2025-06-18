@@ -114,7 +114,7 @@ func (httpServer *BasicHTTPServer) Serve(ctx context.Context) error {
 	listenOnAddress := fmt.Sprintf("%s:%v", httpServer.ServerAddress, httpServer.ServerPort)
 	userMessages = append(userMessages, fmt.Sprintf("Starting server on interface:port '%s'...", listenOnAddress))
 
-	for userMessage := range userMessages {
+	for _, userMessage := range userMessages {
 		outputln(userMessage)
 	}
 
@@ -137,7 +137,7 @@ func (httpServer *BasicHTTPServer) Serve(ctx context.Context) error {
 		}
 	}
 
-	return wraperror.Errorf(err, "Serve error: %w", err)
+	return wraperror.Errorf(err, wraperror.NoMessage)
 }
 
 // ----------------------------------------------------------------------------
@@ -543,7 +543,7 @@ func (httpServer *BasicHTTPServer) handleFuncForSite(writer http.ResponseWriter,
 func newReverseProxy(targetHost string) (*httputil.ReverseProxy, error) {
 	url, err := url.Parse(targetHost)
 	if err != nil {
-		return nil, wraperror.Errorf(err, "httpserver.newReverseProxy error: %w", err)
+		return nil, wraperror.Errorf(err, "url.Parse: %s", targetHost)
 	}
 
 	return httputil.NewSingleHostReverseProxy(url), nil
