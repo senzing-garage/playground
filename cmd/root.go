@@ -135,6 +135,11 @@ func RunE(_ *cobra.Command, _ []string) error {
 	// Setup gRPC server
 
 	grpcServer := getGrpcServer(senzingSettings)
+	err = grpcServer.Initialize(ctx)
+	if err != nil {
+		return wraperror.Errorf(err, "grpcServer.Initialize")
+	}
+
 	httpServer := getHTTPServer(senzingSettings, observers)
 
 	// Start servers.
@@ -156,6 +161,7 @@ func RunE(_ *cobra.Command, _ []string) error {
 
 	go func() {
 		defer waitGroup.Done()
+		err = grpcServer.Initialize(ctx)
 
 		err = grpcServer.Serve(ctx)
 		if err != nil {
