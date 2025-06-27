@@ -9,7 +9,7 @@ require (
 	github.com/senzing-garage/demo-entity-search v0.2.6
 	github.com/senzing-garage/go-cmdhelping v0.3.6
 	github.com/senzing-garage/go-helpers v0.6.13
-	github.com/senzing-garage/go-observing v0.3.5
+	github.com/senzing-garage/go-observing v0.3.6
 	github.com/senzing-garage/go-rest-api-service v0.10.8
 	github.com/senzing-garage/go-rest-api-service-legacy v0.1.1
 	github.com/senzing-garage/serve-grpc v0.9.15
