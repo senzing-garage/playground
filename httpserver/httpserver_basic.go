@@ -359,6 +359,7 @@ func (httpServer *BasicHTTPServer) openAPIFunc(ctx context.Context, openAPISpeci
 
 	return func(writer http.ResponseWriter, request *http.Request) {
 		var bytesBuffer bytes.Buffer
+
 		bufioWriter := bufio.NewWriter(&bytesBuffer)
 
 		openAPISpecificationTemplate, err := template.New("OpenApiTemplate").
