@@ -3,7 +3,7 @@
 # -----------------------------------------------------------------------------
 
 ARG IMAGE_BUILDER=golang:1.24.4-bookworm
-ARG IMAGE_FINAL=senzing/senzingsdk-runtime:latest
+ARG IMAGE_FINAL=senzing/senzingsdk-runtime-beta:latest
 
 # -----------------------------------------------------------------------------
 # Stage: senzingsdk_runtime
@@ -127,7 +127,7 @@ RUN export STAT_TMP=$(stat --format=%a /tmp) \
 # Install go.
 
 RUN wget -O /tmp/go1.linux-amd64.tar.gz https://go.dev/dl/go1.24.4.linux-amd64.tar.gz \
- && tar -C /usr/local -xzf /tmp/go1.linux-amd64.tar.gz 
+ && tar -C /usr/local -xzf /tmp/go1.linux-amd64.tar.gz
 
 # Copy files from repository.
 
@@ -140,7 +140,7 @@ COPY --from=builder /app/venv /app/venv
 
 # Prepare jupyter lab environment.
 
-RUN chmod --recursive 777 /app /examples /tmp 
+RUN chmod --recursive 777 /app /examples /tmp
 
 # Create ${BUILD_USER} user.
 
