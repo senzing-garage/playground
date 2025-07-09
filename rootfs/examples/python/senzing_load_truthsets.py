@@ -63,7 +63,7 @@ sz_config = sz_configmanager.create_config_from_config_id(config_id)
 
 for datasource in datasources:
     try:
-        sz_config.add_data_source(datasource)
+        sz_config.register_data_source(datasource)
     except SzError as err:
         print(err)
 
