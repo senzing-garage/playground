@@ -6,7 +6,7 @@ require (
 	github.com/docktermj/cloudshell v0.2.0
 	github.com/flowchartsman/swaggerui v0.0.0-20221017034628-909ed4f3701b
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
-	github.com/senzing-garage/demo-entity-search v0.2.9
+	github.com/senzing-garage/demo-entity-search v0.2.10
 	github.com/senzing-garage/go-cmdhelping v0.3.6
 	github.com/senzing-garage/go-helpers v0.6.13
 	github.com/senzing-garage/go-observing v0.3.6
@@ -16,7 +16,7 @@ require (
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/viper v1.20.1
 	github.com/stretchr/testify v1.10.0
-	google.golang.org/grpc v1.74.0
+	google.golang.org/grpc v1.73.0
 )
 
 require (
@@ -91,7 +91,7 @@ require (
 	golang.org/x/sync v0.16.0 // indirect
 	golang.org/x/sys v0.34.0 // indirect
 	golang.org/x/text v0.27.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250715232539-7130f93afb79 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250721164621-a45f3dfb1074 // indirect
 	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
