@@ -240,9 +240,23 @@ func getHTTPServer(senzingSettings string, observers []observer.Observer) *https
 // --- Networking -------------------------------------------------------------
 
 func getOutboundIP() net.IP {
+	const (
+		timeoutSeconds   = 30
+		keepAliveSeconds = 30
+		ctxSeconds       = 5
+	)
+
 	var result net.IP
 
-	conn, err := net.Dial("udp", "8.8.8.8:80")
+	dialer := &net.Dialer{ //nolint
+		Timeout:   timeoutSeconds * time.Second, // Overall timeout for the dialer
+		KeepAlive: keepAliveSeconds * time.Second,
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), ctxSeconds*time.Second) // Context with a 5-second timeout
+	defer cancel()
+
+	conn, err := dialer.DialContext(ctx, "udp", "8.8.8.8:80")
 	if err != nil {
 		panic(err)
 	}
