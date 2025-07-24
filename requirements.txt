@@ -1,5 +1,5 @@
 autopep8==2.3.2
-grpcio==1.73.1
+grpcio==1.74.0
 jupyter==1.1.1
 jupyterlab-code-formatter==3.0.2
 nbconvert==7.16.6
