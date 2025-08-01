@@ -49,15 +49,15 @@ var isInDevelopment = option.ContextVariable{
 // ----------------------------------------------------------------------------
 
 var ContextVariablesForMultiPlatform = []option.ContextVariable{
-	isInDevelopment,
 	option.AvoidServe,
 	option.Configuration,
+	option.CoreInstanceName,
+	option.CoreLogLevel,
+	option.CoreSettings,
 	option.DatabaseURL,
-	option.EngineInstanceName,
-	option.EngineLogLevel,
-	option.EngineSettings,
 	option.GrpcPort,
 	option.HTTPPort,
+	option.IsInDevelopment,
 	option.LogLevel,
 	option.ObserverOrigin,
 	option.ObserverURL,
@@ -202,8 +202,8 @@ func getGrpcServer(senzingSettings string) *grpcserver.BasicGrpcServer {
 		ObserverURL:           viper.GetString(option.ObserverURL.Arg),
 		Port:                  viper.GetInt(option.GrpcPort.Arg),
 		SenzingSettings:       senzingSettings,
-		SenzingInstanceName:   viper.GetString(option.EngineInstanceName.Arg),
-		SenzingVerboseLogging: viper.GetInt64(option.EngineLogLevel.Arg),
+		SenzingInstanceName:   viper.GetString(option.CoreInstanceName.Arg),
+		SenzingVerboseLogging: viper.GetInt64(option.CoreLogLevel.Arg),
 	}
 }
 
@@ -220,9 +220,9 @@ func getHTTPServer(senzingSettings string, observers []observer.Observer) *https
 		Observers:                 observers,
 		OpenAPISpecificationRest:  senzingrestservice.OpenAPISpecificationJSON,
 		ReadHeaderTimeout:         ReadHeaderTimeoutInSeconds * time.Second,
-		SenzingInstanceName:       viper.GetString(option.EngineInstanceName.Arg),
+		SenzingInstanceName:       viper.GetString(option.CoreInstanceName.Arg),
 		SenzingSettings:           senzingSettings,
-		SenzingVerboseLogging:     viper.GetInt64(option.EngineLogLevel.Arg),
+		SenzingVerboseLogging:     viper.GetInt64(option.CoreLogLevel.Arg),
 		ServerAddress:             viper.GetString(option.ServerAddress.Arg),
 		ServerPort:                viper.GetInt(option.HTTPPort.Arg),
 		SwaggerURLRoutePrefix:     "swagger",
