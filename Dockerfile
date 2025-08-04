@@ -107,7 +107,7 @@ RUN export STAT_TMP=$(stat --format=%a /tmp) \
  && chmod ${STAT_TMP} /tmp \
  && rm -rf /var/lib/apt/lists/*
 
-# Install Java-11.
+# Install Java-17.
 
 RUN mkdir -p /etc/apt/keyrings \
  && wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public > /etc/apt/keyrings/adoptium.asc
@@ -120,7 +120,7 @@ RUN export STAT_TMP=$(stat --format=%a /tmp) \
  && apt-get -yqqq install \
         curl \
         python3-venv \
-        temurin-11-jdk \
+        temurin-17-jdk \
  && chmod ${STAT_TMP} /tmp \
  && rm -rf /var/lib/apt/lists/*
 
