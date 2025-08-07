@@ -6,4 +6,4 @@ nbconvert==7.16.6
 notebook==7.4.5
 protobuf==6.31.1
 pyspark==4.0.0
-senzing-grpc==0.5.11
+senzing-grpc==0.5.13
