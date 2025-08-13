@@ -10,7 +10,7 @@ require (
 	github.com/senzing-garage/go-cmdhelping v0.3.7
 	github.com/senzing-garage/go-helpers v0.6.13
 	github.com/senzing-garage/go-observing v0.3.6
-	github.com/senzing-garage/go-rest-api-service v0.10.11
+	github.com/senzing-garage/go-rest-api-service v0.10.12
 	github.com/senzing-garage/go-rest-api-service-legacy v0.1.1
 	github.com/senzing-garage/serve-grpc v0.9.20
 	github.com/spf13/cobra v1.9.1
