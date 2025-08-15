@@ -11,7 +11,7 @@ require (
 	github.com/senzing-garage/go-helpers v0.6.13
 	github.com/senzing-garage/go-observing v0.3.6
 	github.com/senzing-garage/go-rest-api-service v0.10.12
-	github.com/senzing-garage/go-rest-api-service-legacy v0.1.1
+	github.com/senzing-garage/go-rest-api-service-legacy v0.1.2
 	github.com/senzing-garage/serve-grpc v0.9.20
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/viper v1.20.1
