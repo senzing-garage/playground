@@ -21,9 +21,10 @@ jobs:
       status: ${{ job.status }}
     runs-on: windows-latest
     strategy:
+      fail-fast: false
       matrix:
         go: ["1.24"]
-        senzingsdk-version: [staging-v4]
+        senzingsdk-version: [production-v4, staging-v4]
 
     steps:
       - name: Checkout repository
@@ -42,7 +43,7 @@ jobs:
       - name: Install Senzing SDK
         uses: senzing-factory/github-action-install-senzing-sdk@v3
         with:
-          senzingsdk-repository-path: ${{ secrets.SENZING_WIN_BETA_REPOSITORY }}
+          senzingsdk-version: ${{ matrix.senzingsdk-version }}
 
       - name: Add to "Path" environment variable
         run: |
@@ -62,21 +63,21 @@ jobs:
           $Env:SENZING_PATH = "$Env:USERPROFILE\Senzing"
           $Env:CGO_CFLAGS = "-g -I$Env:SENZING_PATH\er\sdk\c"
           $Env:CGO_LDFLAGS = "-L$Env:SENZING_PATH\er\lib -lSz"
-          go test -json -v -p 1 -coverprofile=cover -covermode=atomic -coverpkg=./... ./... 2>&1 | tee "C:\Temp\gotest.log" | gotestfmt
-          cp cover cover.out
+          go test -json -v -p 1 -coverprofile=cover -covermode=atomic -coverpkg=./... ./... 2>&1 | tee "C:\Temp\gotest-${{ matrix.senzingsdk-version }}.log" | gotestfmt
+          cp cover "cover-${{ matrix.senzingsdk-version }}.out"
 
       - name: Store coverage file
         uses: actions/upload-artifact@v4
         with:
-          name: cover.out
-          path: cover.out
+          name: "cover-${{ matrix.senzingsdk-version }}.out"
+          path: "cover-${{ matrix.senzingsdk-version }}.out"
 
       - name: Upload test log
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: test-log
-          path: "C:\\Temp\\gotest.log"
+          name: "test-log-${{ matrix.senzingsdk-version }}"
+          path: "C:\\Temp\\gotest-${{ matrix.senzingsdk-version }}.log"
           if-no-files-found: error
 
   coverage:
