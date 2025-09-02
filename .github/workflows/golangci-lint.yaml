@@ -17,8 +17,10 @@ jobs:
     name: lint
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         go: ["1.24"]
+        senzingsdk-version: [production-v4, staging-v4]
 
     steps:
       - name: Checkout repository
@@ -29,8 +31,7 @@ jobs:
       - name: Install Senzing SDK
         uses: senzing-factory/github-action-install-senzing-sdk@v3
         with:
-          senzingsdk-repository-package: ${{ secrets.SENZING_APT_BETA_STAGING_REPOSITORY_PACKAGE }}
-          senzingsdk-repository-path: ${{ secrets.SENZING_APT_BETA_STAGING_REPOSITORY_URL }}
+          senzingsdk-version: ${{ matrix.senzingsdk-version }}
 
       - name: Copy Senzing headers
         run: |
