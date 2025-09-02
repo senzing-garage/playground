@@ -94,6 +94,7 @@ jobs:
     uses: senzing-factory/build-resources/.github/workflows/go-coverage.yaml@v2
     with:
       coverage-config: ./.github/coverage/testcoverage-darwin.yaml
+      profile: "cover-production-v4.out,cover-staging-v4.out"
 
   slack-notification:
     needs: [go-test-darwin]
