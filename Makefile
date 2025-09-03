@@ -76,6 +76,7 @@ venv: venv-osarch-specific
 
 .PHONY: dependencies-for-development
 dependencies-for-development: venv dependencies-for-development-osarch-specific
+	@go install github.com/bombsimon/wsl/v5/cmd/wsl@latest
 	@go install github.com/daixiang0/gci@latest
 	@go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@latest
 	@go install github.com/vladopajic/go-test-coverage/v2@latest
