@@ -1,6 +1,5 @@
-.github/
-docs/
 .DS_Store
+.github/
 .gitignore
 .project
 .pydevproject
@@ -8,5 +7,6 @@ CHANGELOG.md
 CODE_OF_CONDUCT.md
 CONTRIBUTING.md
 docker-compose.test.yaml
+docs/
 LICENSE
 README.md
