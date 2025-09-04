@@ -52,7 +52,7 @@ jobs:
           cp /opt/senzing/er/sdk/c/szhelpers/*.h ./szproduct/szhelpers
 
       - name: Setup go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version: ${{ matrix.go }}
 
