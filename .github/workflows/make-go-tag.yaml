@@ -23,6 +23,11 @@ jobs:
 
       - name: Make go version tag
         uses: senzing-factory/github-action-make-go-tag@v2
+        with:
+          actor: ${{ secrets.SENZING_GITHUB_ACTOR }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          gpg_private_key: ${{ secrets.SENZING_GITHUB_GPG_PRIVATE_KEY }}
+          gpg_passphrase: ${{ secrets.SENZING_GITHUB_GPG_PASSPHRASE }}
 
   slack-notification:
     needs: [make-go-tag]
