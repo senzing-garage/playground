@@ -22,7 +22,7 @@ jobs:
           persist-credentials: false
 
       - name: Make go version tag
-        uses: senzing-factory/github-action-make-go-tag@v1
+        uses: senzing-factory/github-action-make-go-tag@v2
 
   slack-notification:
     needs: [make-go-tag]
