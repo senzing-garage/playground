@@ -4,6 +4,6 @@ jupyter==1.1.1
 jupyterlab-code-formatter==3.0.2
 nbconvert==7.16.6
 notebook==7.4.5
-protobuf==6.32.0
+protobuf==6.32.1
 pyspark==4.0.1
 senzing-grpc==0.5.13
