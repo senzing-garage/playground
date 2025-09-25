@@ -12,13 +12,13 @@ jobs:
   dependabot-approve-and-merge-minor:
     secrets:
       SENZING_GITHUB_CODEOWNER_PR_RW_TOKEN: ${{ secrets.SENZING_GITHUB_CODEOWNER_PR_RW_TOKEN }}
-    uses: senzing-factory/build-resources/.github/workflows/dependabot-approve-and-merge.yaml@v2
+    uses: senzing-factory/build-resources/.github/workflows/dependabot-approve-and-merge.yaml@v3
     with:
       update-type: "minor"
 
   dependabot-approve-and-merge-patch:
     secrets:
       SENZING_GITHUB_CODEOWNER_PR_RW_TOKEN: ${{ secrets.SENZING_GITHUB_CODEOWNER_PR_RW_TOKEN }}
-    uses: senzing-factory/build-resources/.github/workflows/dependabot-approve-and-merge.yaml@v2
+    uses: senzing-factory/build-resources/.github/workflows/dependabot-approve-and-merge.yaml@v3
     with:
       update-type: "patch"
