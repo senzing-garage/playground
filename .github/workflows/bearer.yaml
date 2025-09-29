@@ -6,11 +6,12 @@ on:
   pull_request:
     branches: [main]
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   rule_check:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
 
     steps:

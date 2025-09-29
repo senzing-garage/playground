@@ -5,12 +5,13 @@ on:
     tags:
       - "[0-9]+.[0-9]+.[0-9]+"
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
 
 jobs:
   make-go-github-file:
+    permissions:
+      contents: write
+      pull-requests: write
     secrets:
       SENZING_GITHUB_ACTOR: ${{ secrets.SENZING_GITHUB_ACTOR }}
       SENZING_GITHUB_GPG_PASSPHRASE: ${{ secrets.SENZING_GITHUB_GPG_PASSPHRASE }}

@@ -19,6 +19,8 @@ jobs:
     name: "Go test with Senzing: ${{ matrix.senzingsdk-version }}; OS: windows-latest; Go: ${{ matrix.go }}"
     outputs:
       status: ${{ job.status }}
+    permissions:
+      contents: read
     runs-on: windows-latest
     strategy:
       fail-fast: false
@@ -85,6 +87,8 @@ jobs:
   coverage:
     name: Coverage
     needs: go-test-windows
+    permissions:
+      contents: read
     uses: senzing-factory/build-resources/.github/workflows/go-coverage.yaml@v3
     with:
       coverage-config: ./.github/coverage/testcoverage.yaml

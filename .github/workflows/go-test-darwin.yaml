@@ -12,14 +12,15 @@ env:
   SENZING_TOOLS_DATABASE_URL: sqlite3://na:na@nowhere/tmp/sqlite/G2C.db
   SENZING_TOOLS_ENABLE_ALL: true
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   go-test-darwin:
     name: "Go test with Senzing: ${{ matrix.senzingsdk-version }}; OS: ${{ matrix.os }}; Go: ${{ matrix.go }}"
     outputs:
       status: ${{ job.status }}
+    permissions:
+      contents: read
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -91,6 +92,8 @@ jobs:
   coverage:
     name: Coverage
     needs: go-test-darwin
+    permissions:
+      contents: read
     uses: senzing-factory/build-resources/.github/workflows/go-coverage.yaml@v3
     with:
       coverage-config: ./.github/coverage/testcoverage-darwin.yaml
