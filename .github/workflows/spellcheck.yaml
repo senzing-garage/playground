@@ -4,11 +4,12 @@ on:
   pull_request:
     branches: [main]
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   spellcheck:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
 
     steps:

@@ -2,14 +2,15 @@ name: black
 
 on: [push, pull_request]
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   black:
     name: black Python ${{ matrix.python-version }}
     outputs:
       status: ${{ job.status }}
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -19,6 +20,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v6
@@ -44,6 +47,6 @@ jobs:
     if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.black.outputs.status ) && github.ref_name == github.event.repository.default_branch }}
     secrets:
       SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v2
+    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v3
     with:
       job-status: ${{ needs.black.outputs.status }}
