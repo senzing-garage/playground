@@ -28,7 +28,7 @@ USER root
 # Install packages via apt-get.
 
 RUN apt-get update \
- && apt-get -y install \
+ && apt-get -y --no-install-recommends install \
         libsqlite3-dev \
         python3 \
         python3-dev \
@@ -95,8 +95,8 @@ USER root
 
 RUN export STAT_TMP=$(stat --format=%a /tmp) \
  && chmod 777 /tmp \
- && apt-get update -qqq \
- && apt-get -yqqq install \
+ && apt-get update \
+ && apt-get -y --no-install-recommends install \
         gnupg2 \
         jq \
         libodbc1 \
@@ -116,8 +116,8 @@ RUN echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adopti
 
 RUN export STAT_TMP=$(stat --format=%a /tmp) \
  && chmod 777 /tmp \
- && apt-get update -qqq \
- && apt-get -yqqq install \
+ && apt-get update \
+ && apt-get -y --no-install-recommends install \
         curl \
         python3-venv \
         temurin-17-jdk \
