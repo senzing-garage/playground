@@ -123,7 +123,7 @@ RUN export STAT_TMP=$(stat --format=%a /tmp) \
 
 RUN wget -O /tmp/go1.linux-amd64.tar.gz https://go.dev/dl/go1.24.4.linux-amd64.tar.gz \
  && tar -C /usr/local -xzf /tmp/go1.linux-amd64.tar.gz\
- && rm /tmp/go1.24.4.linux-amd64.tar.gz
+ && rm /tmp/go1.linux-amd64.tar.gz
 
 # Copy files from repository.
 
