@@ -12,7 +12,7 @@ require (
 	github.com/senzing-garage/go-observing v0.3.6
 	github.com/senzing-garage/go-rest-api-service v0.10.12
 	github.com/senzing-garage/go-rest-api-service-legacy v0.1.2
-	github.com/senzing-garage/serve-grpc v0.9.22
+	github.com/senzing-garage/serve-grpc v0.9.23
 	github.com/spf13/cobra v1.10.1
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.11.1
@@ -65,12 +65,12 @@ require (
 	github.com/senzing-garage/go-databasing v0.5.8 // indirect
 	github.com/senzing-garage/go-logging v1.5.3 // indirect
 	github.com/senzing-garage/go-messaging v1.5.3 // indirect
-	github.com/senzing-garage/go-sdk-abstract-factory v0.9.15 // indirect
+	github.com/senzing-garage/go-sdk-abstract-factory v0.9.16 // indirect
 	github.com/senzing-garage/init-database v0.7.21 // indirect
-	github.com/senzing-garage/sz-sdk-go v0.15.10 // indirect
-	github.com/senzing-garage/sz-sdk-go-core v0.9.11 // indirect
-	github.com/senzing-garage/sz-sdk-go-grpc v0.9.10 // indirect
-	github.com/senzing-garage/sz-sdk-go-mock v0.8.12 // indirect
+	github.com/senzing-garage/sz-sdk-go v0.15.11 // indirect
+	github.com/senzing-garage/sz-sdk-go-core v0.9.12 // indirect
+	github.com/senzing-garage/sz-sdk-go-grpc v0.9.11 // indirect
+	github.com/senzing-garage/sz-sdk-go-mock v0.8.13 // indirect
 	github.com/senzing-garage/sz-sdk-json-type-definition v0.2.18 // indirect
 	github.com/senzing-garage/sz-sdk-proto v0.8.8 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
@@ -88,12 +88,12 @@ require (
 	go.yaml.in/yaml/v2 v2.4.3 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.org/x/crypto v0.43.0 // indirect
-	golang.org/x/exp v0.0.0-20251017212417-90e834f514db // indirect
+	golang.org/x/exp v0.0.0-20251023183803-a4bb9ffd2546 // indirect
 	golang.org/x/net v0.46.0 // indirect
 	golang.org/x/sync v0.17.0 // indirect
 	golang.org/x/sys v0.37.0 // indirect
 	golang.org/x/text v0.30.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20251020155222-88f65dc88635 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20251022142026-3a174f9686a8 // indirect
 	google.golang.org/protobuf v1.36.10 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
