@@ -22,5 +22,5 @@ jobs:
       - name: Run Bandit Scan
         uses: PyCQA/bandit-action@v1
         with:
-          targets: "sz_tools"
+          targets: "rootfs/examples"
           python-version: ${{ matrix.python-version }}
