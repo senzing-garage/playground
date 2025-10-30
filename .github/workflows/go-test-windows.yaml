@@ -71,13 +71,13 @@ jobs:
           cp cover "cover-${{ matrix.senzingsdk-version }}.out"
 
       - name: Store coverage file
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: "cover-${{ matrix.senzingsdk-version }}.out"
           path: "cover-${{ matrix.senzingsdk-version }}.out"
 
       - name: Upload test log
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
           name: "test-log-${{ matrix.senzingsdk-version }}"
