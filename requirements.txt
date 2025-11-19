@@ -3,7 +3,7 @@ grpcio==1.76.0
 jupyter==1.1.1
 jupyterlab-code-formatter==3.0.2
 nbconvert==7.16.6
-notebook==7.4.7
+notebook==7.5.0
 protobuf==6.33.1
 pyspark==4.0.1
 senzing-grpc==0.5.13
