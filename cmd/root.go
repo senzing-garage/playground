@@ -49,15 +49,15 @@ var isInDevelopment = option.ContextVariable{
 // ----------------------------------------------------------------------------
 
 var ContextVariablesForMultiPlatform = []option.ContextVariable{
-	isInDevelopment,
 	option.AvoidServe,
 	option.Configuration,
+	option.CoreInstanceName,
+	option.CoreLogLevel,
+	option.CoreSettings,
 	option.DatabaseURL,
-	option.EngineInstanceName,
-	option.EngineLogLevel,
-	option.EngineSettings,
 	option.GrpcPort,
 	option.HTTPPort,
+	option.IsInDevelopment,
 	option.LogLevel,
 	option.ObserverOrigin,
 	option.ObserverURL,
@@ -202,8 +202,8 @@ func getGrpcServer(senzingSettings string) *grpcserver.BasicGrpcServer {
 		ObserverURL:           viper.GetString(option.ObserverURL.Arg),
 		Port:                  viper.GetInt(option.GrpcPort.Arg),
 		SenzingSettings:       senzingSettings,
-		SenzingInstanceName:   viper.GetString(option.EngineInstanceName.Arg),
-		SenzingVerboseLogging: viper.GetInt64(option.EngineLogLevel.Arg),
+		SenzingInstanceName:   viper.GetString(option.CoreInstanceName.Arg),
+		SenzingVerboseLogging: viper.GetInt64(option.CoreLogLevel.Arg),
 	}
 }
 
@@ -220,9 +220,9 @@ func getHTTPServer(senzingSettings string, observers []observer.Observer) *https
 		Observers:                 observers,
 		OpenAPISpecificationRest:  senzingrestservice.OpenAPISpecificationJSON,
 		ReadHeaderTimeout:         ReadHeaderTimeoutInSeconds * time.Second,
-		SenzingInstanceName:       viper.GetString(option.EngineInstanceName.Arg),
+		SenzingInstanceName:       viper.GetString(option.CoreInstanceName.Arg),
 		SenzingSettings:           senzingSettings,
-		SenzingVerboseLogging:     viper.GetInt64(option.EngineLogLevel.Arg),
+		SenzingVerboseLogging:     viper.GetInt64(option.CoreLogLevel.Arg),
 		ServerAddress:             viper.GetString(option.ServerAddress.Arg),
 		ServerPort:                viper.GetInt(option.HTTPPort.Arg),
 		SwaggerURLRoutePrefix:     "swagger",
@@ -240,9 +240,23 @@ func getHTTPServer(senzingSettings string, observers []observer.Observer) *https
 // --- Networking -------------------------------------------------------------
 
 func getOutboundIP() net.IP {
+	const (
+		timeoutSeconds   = 30
+		keepAliveSeconds = 30
+		ctxSeconds       = 5
+	)
+
 	var result net.IP
 
-	conn, err := net.Dial("udp", "8.8.8.8:80")
+	dialer := &net.Dialer{ //nolint
+		Timeout:   timeoutSeconds * time.Second, // Overall timeout for the dialer
+		KeepAlive: keepAliveSeconds * time.Second,
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), ctxSeconds*time.Second) // Context with a 5-second timeout
+	defer cancel()
+
+	conn, err := dialer.DialContext(ctx, "udp", "8.8.8.8:80")
 	if err != nil {
 		panic(err)
 	}

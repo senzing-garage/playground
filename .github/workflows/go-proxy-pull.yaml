@@ -5,13 +5,14 @@ on:
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+"
 
-permissions:
-  contents: write
+permissions: {}
 
 jobs:
   go-proxy-pull:
     outputs:
       status: ${{ job.status }}
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
 
     steps:
@@ -25,6 +26,6 @@ jobs:
     if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.go-proxy-pull.outputs.status) }}
     secrets:
       SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v2
+    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v3
     with:
       job-status: ${{ needs.go-proxy-pull.outputs.status }}

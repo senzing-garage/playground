@@ -6,31 +6,33 @@ on:
   pull_request:
     branches: [main]
 
-permissions:
-  # Required: allow read access to the content for analysis.
-  contents: read
-  # Optional: allow read access to pull request. Use with `only-new-issues` option.
-  pull-requests: read
+permissions: {}
 
 jobs:
   golangci:
     name: lint
+    permissions:
+      # Required: allow read access to the content for analysis.
+      contents: read
+      # Optional: allow read access to pull request. Use with `only-new-issues` option.
+      pull-requests: read
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         go: ["1.24"]
+        senzingsdk-version: [production-v4, staging-v4]
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
-          fetch-depth: 0
+          persist-credentials: false
 
       - name: Install Senzing SDK
         uses: senzing-factory/github-action-install-senzing-sdk@v3
         with:
-          senzingsdk-repository-package: ${{ secrets.SENZING_APT_BETA_STAGING_REPOSITORY_PACKAGE }}
-          senzingsdk-repository-path: ${{ secrets.SENZING_APT_BETA_STAGING_REPOSITORY_URL }}
+          senzingsdk-version: ${{ matrix.senzingsdk-version }}
 
       - name: Copy Senzing headers
         run: |
@@ -51,12 +53,12 @@ jobs:
           cp /opt/senzing/er/sdk/c/szhelpers/*.h ./szproduct/szhelpers
 
       - name: Setup go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version: ${{ matrix.go }}
 
       - name: Perform linting
-        uses: golangci/golangci-lint-action@v8
+        uses: golangci/golangci-lint-action@v9
         with:
           args: --config=${{ github.workspace }}/.github/linters/.golangci.yaml
           only-new-issues: false

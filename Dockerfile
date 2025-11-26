@@ -2,8 +2,8 @@
 # Stages
 # -----------------------------------------------------------------------------
 
-ARG IMAGE_BUILDER=golang:1.24.4-bookworm
-ARG IMAGE_FINAL=senzing/senzingsdk-runtime-beta:latest
+ARG IMAGE_BUILDER=golang:1.25.4-bookworm@sha256:e17419604b6d1f9bc245694425f0ec9b1b53685c80850900a376fb10cb0f70cb
+ARG IMAGE_FINAL=senzing/senzingsdk-runtime:4.0.0@sha256:332d2ff9f00091a6d57b5b469cc60fd7dc9d0265e83d0e8c9e5296541d32a4aa
 
 # -----------------------------------------------------------------------------
 # Stage: senzingsdk_runtime
@@ -28,7 +28,7 @@ USER root
 # Install packages via apt-get.
 
 RUN apt-get update \
- && apt-get -y install \
+ && apt-get -y --no-install-recommends install \
         libsqlite3-dev \
         python3 \
         python3-dev \
@@ -45,8 +45,8 @@ ENV PATH="/app/venv/bin:$PATH"
 # Install packages via PIP.
 
 COPY requirements.txt .
-RUN pip3 install --upgrade pip \
- && pip3 install -r requirements.txt \
+RUN pip3 install --no-cache-dir --upgrade pip \
+ && pip3 install --no-cache-dir -r requirements.txt \
  && rm requirements.txt
 
 # Copy local files from the Git repository.
@@ -66,7 +66,8 @@ ENV LD_LIBRARY_PATH=/opt/senzing/er/lib/
 # Build go program.
 
 WORKDIR ${GOPATH}/src/playground
-RUN make build-with-libsqlite3
+RUN make build-with-libsqlite3\
+ && go clean -cache -modcache -testcache
 
 # Copy binaries to /output.
 
@@ -91,43 +92,38 @@ ARG BUILD_GID="101"
 HEALTHCHECK CMD ["/app/healthcheck.sh"]
 USER root
 
-# Install packages via apt-get.
-
-RUN export STAT_TMP=$(stat --format=%a /tmp) \
- && chmod 777 /tmp \
- && apt-get update -qqq \
- && apt-get -yqqq install \
-        gnupg2 \
-        jq \
-        libodbc1 \
-        libsqlite3-dev \
-        postgresql-client \
-        supervisor \
-        unixodbc \
- && chmod ${STAT_TMP} /tmp \
- && rm -rf /var/lib/apt/lists/*
-
-# Install Java-11.
+# Install Java-17.
 
 RUN mkdir -p /etc/apt/keyrings \
  && wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public > /etc/apt/keyrings/adoptium.asc
 
 RUN echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" >> /etc/apt/sources.list
 
+# Install packages via apt-get.
+
 RUN export STAT_TMP=$(stat --format=%a /tmp) \
  && chmod 777 /tmp \
- && apt-get update -qqq \
- && apt-get -yqqq install \
+ && apt-get update \
+ && apt-get -y --no-install-recommends install \
         curl \
+        gnupg2 \
+        jq \
+        libodbc1 \
+        libsqlite3-dev \
+        postgresql-client \
         python3-venv \
-        temurin-11-jdk \
+        supervisor \
+        temurin-17-jdk \
+        unixodbc \
  && chmod ${STAT_TMP} /tmp \
- && rm -rf /var/lib/apt/lists/*
+ && rm -rf /var/lib/apt/lists/* \
+  && rm -rf /var/cache/apt/*
 
 # Install go.
 
 RUN wget -O /tmp/go1.linux-amd64.tar.gz https://go.dev/dl/go1.24.4.linux-amd64.tar.gz \
- && tar -C /usr/local -xzf /tmp/go1.linux-amd64.tar.gz
+ && tar -C /usr/local -xzf /tmp/go1.linux-amd64.tar.gz\
+ && rm /tmp/go1.linux-amd64.tar.gz
 
 # Copy files from repository.
 
@@ -172,7 +168,8 @@ EOF
 RUN go install github.com/janpfeifer/gonb@latest \
  && go install golang.org/x/tools/cmd/goimports@latest \
  && go install golang.org/x/tools/gopls@latest \
- && gonb --install
+ && gonb --install \
+ && go clean -cache -modcache -testcache
 
 # Install go packages for SDK
 

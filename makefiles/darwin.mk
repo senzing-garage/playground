@@ -4,11 +4,12 @@
 # Variables
 # -----------------------------------------------------------------------------
 
-SENZING_DIR ?= /opt/senzing/er
+SENZING_DIR ?= $(HOME)/senzing/er
 SENZING_TOOLS_SENZING_DIRECTORY ?= $(SENZING_DIR)
-LD_LIBRARY_PATH ?= $(SENZING_TOOLS_SENZING_DIRECTORY)/lib:$(SENZING_TOOLS_SENZING_DIRECTORY)/lib/macos
+LD_LIBRARY_PATH := $(SENZING_TOOLS_SENZING_DIRECTORY)/lib:$(SENZING_TOOLS_SENZING_DIRECTORY)/lib/macos
 DYLD_LIBRARY_PATH := $(LD_LIBRARY_PATH)
-CGO_LDFLAGS := "-Wl,-no_warn_duplicate_libraries"
+CGO_CFLAGS := -g -I${SENZING_DIR}/sdk/c
+CGO_LDFLAGS := -L$(SENZING_DIR)/lib -lSz -Wl,-no_warn_duplicate_libraries
 PATH := $(MAKEFILE_DIRECTORY)/bin:/$(HOME)/go/bin:$(PATH)
 SENZING_TOOLS_DATABASE_URL ?= sqlite3://na:na@nowhere/tmp/sqlite/G2C.db
 
@@ -34,7 +35,7 @@ clean-osarch-specific:
 .PHONY: coverage-osarch-specific
 coverage-osarch-specific: export SENZING_LOG_LEVEL=TRACE
 coverage-osarch-specific:
-	@go test -v -coverprofile=coverage.out -p 1 ./...
+	@go test -v -exec macos_exec_dyld.sh -coverprofile=coverage.out -p 1 ./...
 	@go tool cover -html="coverage.out" -o coverage.html
 	@open file://$(MAKEFILE_DIRECTORY)/coverage.html
 
@@ -75,7 +76,7 @@ setup-osarch-specific:
 
 .PHONY: test-osarch-specific
 test-osarch-specific:
-	@go test -exec macos_exec_dyld.sh -json -v -p 1 ./... 2>&1 | tee /tmp/gotest.log | gotestfmt
+	@go test -exec $(MAKEFILE_DIRECTORY)/bin/macos_exec_dyld.sh -json -v -p 1 ./... 2>&1 | tee /tmp/gotest.log | gotestfmt
 
 
 .PHONY: venv-osarch-specific

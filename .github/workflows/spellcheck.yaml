@@ -4,16 +4,10 @@ on:
   pull_request:
     branches: [main]
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   spellcheck:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: streetsidesoftware/cspell-action@v7
-        with:
-          config: .vscode/cspell.json
+    permissions:
+      contents: read
+    uses: senzing-factory/build-resources/.github/workflows/cspell.yaml@v3

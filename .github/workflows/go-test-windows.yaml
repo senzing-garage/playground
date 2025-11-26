@@ -19,18 +19,23 @@ jobs:
     name: "Go test with Senzing: ${{ matrix.senzingsdk-version }}; OS: windows-latest; Go: ${{ matrix.go }}"
     outputs:
       status: ${{ job.status }}
+    permissions:
+      contents: read
     runs-on: windows-latest
     strategy:
+      fail-fast: false
       matrix:
         go: ["1.24"]
-        senzingsdk-version: [staging-v4]
+        senzingsdk-version: [production-v4, staging-v4]
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
       - name: Setup go ${{ matrix.go }}
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version: ${{ matrix.go }}
 
@@ -42,7 +47,7 @@ jobs:
       - name: Install Senzing SDK
         uses: senzing-factory/github-action-install-senzing-sdk@v3
         with:
-          senzingsdk-repository-path: ${{ secrets.SENZING_WIN_BETA_REPOSITORY }}
+          senzingsdk-version: ${{ matrix.senzingsdk-version }}
 
       - name: Add to "Path" environment variable
         run: |
@@ -62,35 +67,38 @@ jobs:
           $Env:SENZING_PATH = "$Env:USERPROFILE\Senzing"
           $Env:CGO_CFLAGS = "-g -I$Env:SENZING_PATH\er\sdk\c"
           $Env:CGO_LDFLAGS = "-L$Env:SENZING_PATH\er\lib -lSz"
-          go test -json -v -p 1 -coverprofile=cover -covermode=atomic -coverpkg=./... ./... 2>&1 | tee "C:\Temp\gotest.log" | gotestfmt
-          cp cover cover.out
+          go test -json -v -p 1 -coverprofile=cover -covermode=atomic -coverpkg=./... ./... 2>&1 | tee "C:\Temp\gotest-${{ matrix.senzingsdk-version }}.log" | gotestfmt
+          cp cover "cover-${{ matrix.senzingsdk-version }}.out"
 
       - name: Store coverage file
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
-          name: cover.out
-          path: cover.out
+          name: "cover-${{ matrix.senzingsdk-version }}.out"
+          path: "cover-${{ matrix.senzingsdk-version }}.out"
 
       - name: Upload test log
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
-          name: test-log
-          path: "C:\\Temp\\gotest.log"
+          name: "test-log-${{ matrix.senzingsdk-version }}"
+          path: "C:\\Temp\\gotest-${{ matrix.senzingsdk-version }}.log"
           if-no-files-found: error
 
   coverage:
     name: Coverage
     needs: go-test-windows
-    uses: senzing-factory/build-resources/.github/workflows/go-coverage.yaml@v2
+    permissions:
+      contents: read
+    uses: senzing-factory/build-resources/.github/workflows/go-coverage.yaml@v3
     with:
       coverage-config: ./.github/coverage/testcoverage.yaml
+      profile: "cover-production-v4.out,cover-staging-v4.out"
 
   slack-notification:
     needs: [go-test-windows]
     if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.go-test-windows.outputs.status ) && github.event_name == 'schedule' }}
     secrets:
       SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v2
+    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v3
     with:
       job-status: ${{ needs.go-test-windows.outputs.status }}

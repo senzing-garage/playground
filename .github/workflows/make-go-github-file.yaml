@@ -5,23 +5,24 @@ on:
     tags:
       - "[0-9]+.[0-9]+.[0-9]+"
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
 
 jobs:
   make-go-github-file:
+    permissions:
+      contents: write
+      pull-requests: write
     secrets:
       SENZING_GITHUB_ACTOR: ${{ secrets.SENZING_GITHUB_ACTOR }}
       SENZING_GITHUB_GPG_PASSPHRASE: ${{ secrets.SENZING_GITHUB_GPG_PASSPHRASE }}
       SENZING_GITHUB_GPG_PRIVATE_KEY: ${{ secrets.SENZING_GITHUB_GPG_PRIVATE_KEY }}
-    uses: senzing-factory/build-resources/.github/workflows/make-go-github-file.yaml@v2
+    uses: senzing-factory/build-resources/.github/workflows/make-go-github-file.yaml@v3
 
   slack-notification:
     needs: [make-go-github-file]
     if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.make-go-github-file.outputs.job-status) }}
     secrets:
       SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v2
+    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v3
     with:
       job-status: ${{ needs.make-go-github-file.outputs.job-status }}

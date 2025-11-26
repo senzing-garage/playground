@@ -12,29 +12,31 @@ env:
   SENZING_TOOLS_DATABASE_URL: sqlite3://na:na@nowhere/tmp/sqlite/G2C.db
   SENZING_TOOLS_ENABLE_ALL: true
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   go-test-darwin:
     name: "Go test with Senzing: ${{ matrix.senzingsdk-version }}; OS: ${{ matrix.os }}; Go: ${{ matrix.go }}"
     outputs:
       status: ${{ job.status }}
+    permissions:
+      contents: read
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         go: ["1.24"]
         os: [macos-latest]
-        senzingsdk-version: [staging-v4]
+        senzingsdk-version: [production-v4, staging-v4]
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
-          fetch-depth: 0
+          persist-credentials: false
 
       - name: Setup go ${{ matrix.go }}
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version: ${{ matrix.go }}
 
@@ -46,7 +48,7 @@ jobs:
       - name: Install Senzing SDK
         uses: senzing-factory/github-action-install-senzing-sdk@v3
         with:
-          senzingsdk-repository-path: ${{ secrets.SENZING_OSX_BETA_REPOSITORY }}
+          senzingsdk-version: ${{ matrix.senzingsdk-version }}
 
       - name: Set environment variables
         run: |
@@ -59,10 +61,10 @@ jobs:
             echo  CGO_LDFLAGS="-L${SENZING_PATH}/er/lib -lSz -Wl,-no_warn_duplicate_libraries"
           } >> "$GITHUB_ENV"
 
-      - name: Copy /etc files
-        run: |
-          sudo mkdir -p "${SENZING_PATH}/etc"
-          sudo cp testdata/senzing-license/g2.lic "${SENZING_PATH}/er/etc/g2.lic"
+      # - name: Copy /etc files
+      #   run: |
+      #     sudo mkdir -p "${SENZING_PATH}/etc"
+      #     sudo cp testdata/senzing-license/g2.lic "${SENZING_PATH}/er/etc/g2.lic"
 
       - name: Copy test database files
         run: |
@@ -71,34 +73,37 @@ jobs:
 
       - name: Run go test
         run: |
-          go test -exec "${GITHUB_WORKSPACE}/bin/macos_exec_dyld.sh" -json -v -p 1 -coverprofile=./cover.out -covermode=atomic -coverpkg=./... ./...  2>&1 | tee /tmp/gotest.log | gotestfmt
+          go test -exec "${GITHUB_WORKSPACE}/bin/macos_exec_dyld.sh" -json -v -p 1 -coverprofile="./cover-${{ matrix.senzingsdk-version }}.out" -covermode=atomic -coverpkg=./... ./...  2>&1 | tee "/tmp/gotest-${{ matrix.senzingsdk-version }}.log" | gotestfmt
 
       - name: Store coverage file
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
-          name: cover.out
-          path: ./cover.out
+          name: "cover-${{ matrix.senzingsdk-version }}.out"
+          path: "./cover-${{ matrix.senzingsdk-version }}.out"
 
       - name: Upload test log
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: always()
         with:
-          name: test-log
-          path: /tmp/gotest.log
+          name: "test-log-${{ matrix.senzingsdk-version }}"
+          path: "/tmp/gotest-${{ matrix.senzingsdk-version }}.log"
           if-no-files-found: error
 
   coverage:
     name: Coverage
     needs: go-test-darwin
-    uses: senzing-factory/build-resources/.github/workflows/go-coverage.yaml@v2
+    permissions:
+      contents: read
+    uses: senzing-factory/build-resources/.github/workflows/go-coverage.yaml@v3
     with:
       coverage-config: ./.github/coverage/testcoverage-darwin.yaml
+      profile: "cover-production-v4.out,cover-staging-v4.out"
 
   slack-notification:
     needs: [go-test-darwin]
     if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.go-test-darwin.outputs.status ) && github.event_name == 'schedule' }}
     secrets:
       SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v2
+    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v3
     with:
       job-status: ${{ needs.go-test-darwin.outputs.status }}
