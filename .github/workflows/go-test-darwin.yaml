@@ -61,10 +61,10 @@ jobs:
             echo  CGO_LDFLAGS="-L${SENZING_PATH}/er/lib -lSz -Wl,-no_warn_duplicate_libraries"
           } >> "$GITHUB_ENV"
 
-      # - name: Copy /etc files
-      #   run: |
-      #     sudo mkdir -p "${SENZING_PATH}/etc"
-      #     sudo cp testdata/senzing-license/g2.lic "${SENZING_PATH}/er/etc/g2.lic"
+      - name: Copy /etc files
+        run: |
+          sudo mkdir -p "${SENZING_PATH}/etc"
+          sudo cp testdata/senzing-license/g2.lic "${SENZING_PATH}/er/etc/g2.lic"
 
       - name: Copy test database files
         run: |
