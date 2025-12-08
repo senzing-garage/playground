@@ -13,7 +13,7 @@ require (
 	github.com/senzing-garage/go-rest-api-service v0.10.12
 	github.com/senzing-garage/go-rest-api-service-legacy v0.1.2
 	github.com/senzing-garage/serve-grpc v0.9.23
-	github.com/spf13/cobra v1.10.1
+	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.11.1
 	google.golang.org/grpc v1.77.0
