@@ -70,6 +70,7 @@ make fix
 ### Multi-Server Design
 
 The application runs two servers concurrently in [cmd/root.go](cmd/root.go):
+
 - **HTTP Server** (port 8260): REST API, Swagger UI, Entity Search, JupyterLab, Xterm web terminal
 - **gRPC Server** (port 8261): Senzing SDK services via `serve-grpc`
 
@@ -82,6 +83,7 @@ The application runs two servers concurrently in [cmd/root.go](cmd/root.go):
 ### Senzing Integration
 
 Uses Senzing SDK components:
+
 - `go-rest-api-service` - REST API implementation
 - `serve-grpc` - gRPC server for Senzing SDK
 - `demo-entity-search` - Entity search web interface
@@ -90,6 +92,7 @@ Uses Senzing SDK components:
 ### Configuration
 
 Environment variables follow pattern `SENZING_TOOLS_*`:
+
 - `SENZING_TOOLS_DATABASE_URL` - Database connection
 - `SENZING_TOOLS_HTTP_PORT` - HTTP port (default 8260)
 - `SENZING_TOOLS_GRPC_PORT` - gRPC port (default 8261)
@@ -98,10 +101,11 @@ Environment variables follow pattern `SENZING_TOOLS_*`:
 ## Prerequisites
 
 Senzing C library must be installed:
+
 - `/opt/senzing/er/lib` - Shared objects
 - `/opt/senzing/er/sdk/c` - SDK headers
 - `/etc/opt/senzing` - Configuration
 
 ## Senzing Guidelines
 
-Follow instructions at https://raw.githubusercontent.com/senzing-factory/claude/refs/tags/v1/commands/senzing.md
+Follow instructions at <https://raw.githubusercontent.com/senzing-factory/claude/refs/tags/v1/commands/senzing.md>
