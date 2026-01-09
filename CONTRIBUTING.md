@@ -14,44 +14,35 @@ There are a number of ways you can contribute:
 
 ## License Agreements
 
-If your contribution modifies the git repository, the following agreements must be established.
+If your contribution modifies the Git repository, the following agreements must be established.
 
-*Note:*  License agreements are only needed for adding, modifying, and deleting artifacts kept within the repository.
+_Note:_ License agreements are only needed for adding, modifying, and deleting artifacts kept within the repository.
 In simple terms, license agreements are needed before pull requests can be accepted.
 A license agreement is not needed for submitting feature request, bug reporting, or other project management.
 
 ### Individual Contributor License Agreement
 
-In order to contribute to this repository, an
-[Individual Contributor License Agreement (ICLA)]
-must be completed, submitted and accepted.
+In order to contribute to this repository, an [Individual Contributor License Agreement (ICLA)] must be completed, submitted, and accepted.
 
 ### Corporate Contributor License Agreement
 
-If the contribution to this repository is on behalf of a company, a
-[Corporate Contributor License Agreement (CCLA)]
-must also be completed, submitted and accepted.
+If the contribution to this repository is on behalf of a company, a [Corporate Contributor License Agreement (CCLA)] must also be completed, submitted, and accepted.
 
 ### Project License Agreement
 
-The license agreement for this repository is stated in the
-[LICENSE] file.
+The license agreement for this repository is stated in the [LICENSE] file.
 
 ## Questions
 
 Please do not use the GitHub issue tracker to submit questions.
 
-TODO: Instead, use ???
-
-1. ??? Slack ???
-1. ??? stackoverflow.com ???
+Instead, email <support@senzing.com>.
+For open discussions, use GitHub's [Discussions].
 
 ## Feature Requests
 
 All feature requests are "GitHub issues".
-To request a feature, create a
-[GitHub issue]
-in this repository.
+To request a feature, create a [GitHub issue] in this repository.
 
 When creating an issue, there will be a choice to create a "Bug report" or a "Feature request".
 Choose "Feature request".
@@ -67,8 +58,7 @@ Choose "Bug report".
 
 ## Contributing code or documentation
 
-To contribute code or documentation to the repository, you must have
-[License Agreements] in place.
+To contribute code or documentation to the repository, you must have [License Agreements] in place.
 This needs to be complete before a [Pull Request] can be accepted.
 
 ### Setting up a development environment
@@ -104,11 +94,7 @@ cd ${GIT_REPOSITORY_DIR}
 
 ### Coding conventions
 
-TODO:
-
 ### Testing
-
-TODO:
 
 ### Pull Requests
 
@@ -125,10 +111,11 @@ Accepting pull requests will be at the discretion of Senzing, Inc. and the repos
 [Corporate Contributor License Agreement (CCLA)]: .github/senzing-corporate-contributor-license-agreement.pdf
 [Creating a pull request from a branch]: https://help.github.com/articles/creating-a-pull-request/
 [Creating a pull request from a fork]: https://help.github.com/articles/creating-a-pull-request-from-a-fork/
+[Discussions]: https://github.com/senzing-garage/playground/discussions
 [GitHub issue]: https://help.github.com/articles/creating-an-issue/
 [Individual Contributor License Agreement (ICLA)]: .github/senzing-individual-contributor-license-agreement.pdf
-[LICENSE]: LICENSE
 [License Agreements]: #license-agreements
+[LICENSE]: LICENSE
 [Pull Request]: #pull-requests
 [Reporting bugs]: #bug-reporting
 [Requesting features]: #feature-requests

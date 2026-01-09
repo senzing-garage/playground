@@ -1,16 +1,18 @@
 name: Golangci lint
 
 on:
-  push:
-    branches-ignore: [main]
   pull_request:
     branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
 
 permissions: {}
 
 jobs:
   golangci:
-    name: lint
+    name: Lint
     permissions:
       # Required: allow read access to the content for analysis.
       contents: read
@@ -22,6 +24,7 @@ jobs:
       matrix:
         go: ["1.24"]
         senzingsdk-version: [production-v4, staging-v4]
+    timeout-minutes: 10
 
     steps:
       - name: Checkout repository
