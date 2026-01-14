@@ -86,7 +86,7 @@ dependencies-for-development: venv dependencies-for-development-osarch-specific
 	@sudo npm install -g cspell@latest
 	$(activate-venv); \
 		python3 -m pip install --upgrade pip; \
-		python3 -m pip install --requirement development-requirements.txt
+		python3 -m pip install --group all
 
 
 .PHONY: dependencies
@@ -96,7 +96,7 @@ dependencies: venv
 	@go mod tidy
 	$(activate-venv); \
 		python3 -m pip install --upgrade pip; \
-		python3 -m pip install --requirement requirements.txt
+		python3 -m pip install --group all
 
 # -----------------------------------------------------------------------------
 # Setup

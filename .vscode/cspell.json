@@ -123,6 +123,7 @@
     "Makefile",
     "requirements.txt",
     "rootfs/*",
-    "testdata/*"
+    "testdata/*",
+    "venv/*"
   ]
 }
