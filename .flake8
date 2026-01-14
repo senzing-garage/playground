@@ -1,8 +1,0 @@
-[flake8]
-extend-ignore =
-    # E203 and E704 needed for black 
-    E203,
-    E704,
-    E501,
-    W503
-max-line-length=88

@@ -46,6 +46,10 @@
   - [bearer repository]
   - [bearer configuration]
 
+## zizmor.yaml
+
+- [zizmor.yaml]
+
 [.checkov.yaml]: .checkov.yaml
 [.golangci.yaml]: .golangci.yaml
 [.jscpd.json]: .jscpd.json
@@ -67,3 +71,4 @@
 [wsl]: https://github.com/bombsimon/wsl
 [yaml-lint configuration]: https://yamllint.readthedocs.io/en/stable/configuration.html
 [yaml-lint]: https://github.com/adrienverge/yamllint
+[zizmor.yaml]: zizmor.yaml
