@@ -37,9 +37,8 @@ jobs:
           source ./venv/bin/activate
           echo "PATH=${PATH}" >> "${GITHUB_ENV}"
           python -m pip install --upgrade pip
-          python -m pip install --requirement requirements.txt
-          python -m pip install wheel
-          python -m pip wheel -r requirements.txt --wheel-dir=vendor
+          python -m pip install --group all
+          python -m pip wheel   --group all --wheel-dir=vendor
 
       - name: Run fpvs scan
         run: |

@@ -44,10 +44,10 @@ ENV PATH="/app/venv/bin:$PATH"
 
 # Install packages via PIP.
 
-COPY requirements.txt .
+COPY pyproject.toml .
 RUN pip3 install --no-cache-dir --upgrade pip \
- && pip3 install --no-cache-dir -r requirements.txt \
- && rm requirements.txt
+ && pip3 install --no-cache-dir . \
+ && rm pyproject.toml
 
 # Copy local files from the Git repository.
 

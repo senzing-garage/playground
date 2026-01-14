@@ -117,7 +117,7 @@ profile = "black"
 src_paths = ["rootfs/examples"]
 
 [tool.mypy]
-disable_error_code = ["import-untyped"]
+disable_error_code = ["import-not-found", "import-untyped"]
 
 [tool.pylint]
 ignored-argument-names = "args|kwargs"

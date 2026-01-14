@@ -43,5 +43,6 @@ jobs:
       - name: Run isort
         uses: isort/isort-action@v1
         with:
-          requirements-files: requirements.txt
+          configuration: "--settings-file=pyproject.toml"
+          # requirements-files: requirements.txt
           sort-paths: "rootfs/examples"

@@ -59,6 +59,7 @@
     "pydevproject",
     "pylint",
     "pypa",
+    "pyproject",
     "pyspark",
     "pytest",
     "qthelp",
