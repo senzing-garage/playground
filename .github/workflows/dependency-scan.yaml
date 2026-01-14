@@ -43,7 +43,6 @@ jobs:
       - name: Run fpvs scan
         run: |
           source ./venv/bin/activate
-          python -m pip install fpvs
           git clone https://gitlab.com/gitlab-org/security-products/gemnasium-db.git
           fpvs-scan --verbose
 
@@ -73,7 +72,8 @@ jobs:
           python -m venv ./venv
           source ./venv/bin/activate
           echo "PATH=${PATH}" >> "${GITHUB_ENV}"
-          python -m pip install .
+          python -m pip install --upgrade pip
+          python -m pip install --group all
 
       - name: Run pip-audit
         uses: pypa/gh-action-pip-audit@v1.1.0
