@@ -42,7 +42,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install --group all .
 
-      - name: Analysing the code with pylint
+      - name: Analyzing the code with pylint
         run: |
           # shellcheck disable=SC2046
           pylint $(git ls-files '*.py' ':!:docs/source/*')

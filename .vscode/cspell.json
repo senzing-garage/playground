@@ -99,7 +99,8 @@
     "USERPROFILE",
     "venv",
     "virtualenv",
-    "wraperror"
+    "wraperror",
+    "zizmor"
   ],
   "ignorePaths": [
     ".dockerignore",

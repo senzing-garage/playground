@@ -126,17 +126,8 @@ max-line-length = 120
 profile = "black"
 src_paths = ["rootfs/examples"]
 
-[[tool.mypy.overrides]]
-module = "mypy-grpc.*"
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = "mypy-requests.*"
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = "mypy-senzing_grpc.*"
-ignore_missing_imports = true
+[tool.mypy]
+disable_error_code = ["import-untyped"]
 
 [tool.pylint]
 ignored-argument-names = "args|kwargs"
