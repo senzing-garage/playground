@@ -94,6 +94,7 @@
     "testcoverage",
     "testdata",
     "testrecords",
+    "TOOLSDIRECTORY",
     "truthset",
     "typehints",
     "unmarshalling",
