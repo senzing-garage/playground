@@ -22,6 +22,11 @@ jobs:
       - name: Clear space for docker build
         run: |
           rm -rf /opt/hostedtoolcache
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          docker system prune -af
 
       - name: Get repository name
         id: repo-basename
