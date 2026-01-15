@@ -2,7 +2,7 @@
 # Stages
 # -----------------------------------------------------------------------------
 
-ARG IMAGE_BUILDER=golang:1.25.4-bookworm@sha256:e17419604b6d1f9bc245694425f0ec9b1b53685c80850900a376fb10cb0f70cb
+ARG IMAGE_BUILDER=golang:1.25.5-bookworm@sha256:5117d68695f57faa6c2b3a49a6f3187ec1f66c75d5b080e4360bfe4c1ada398c
 ARG IMAGE_FINAL=senzing/senzingsdk-runtime:4.1.0@sha256:e57d751dc0148bb8eeafedb7accf988413f50b54a7e46f25dfe4559d240063e5
 
 # -----------------------------------------------------------------------------
@@ -16,7 +16,7 @@ FROM ${IMAGE_FINAL} AS senzingsdk_runtime
 # -----------------------------------------------------------------------------
 
 FROM ${IMAGE_BUILDER} AS builder
-ENV REFRESHED_AT=2025-11-14
+ENV REFRESHED_AT=2026-01-13
 LABEL Name="senzing/go-builder" \
       Maintainer="support@senzing.com" \
       Version="0.1.0"
@@ -44,10 +44,10 @@ ENV PATH="/app/venv/bin:$PATH"
 
 # Install packages via PIP.
 
-COPY requirements.txt .
+COPY pyproject.toml .
 RUN pip3 install --no-cache-dir --upgrade pip \
- && pip3 install --no-cache-dir -r requirements.txt \
- && rm requirements.txt
+ && pip3 install --no-cache-dir . \
+ && rm pyproject.toml
 
 # Copy local files from the Git repository.
 
@@ -79,7 +79,7 @@ RUN mkdir -p /output \
 # -----------------------------------------------------------------------------
 
 FROM ${IMAGE_FINAL} AS final
-ENV REFRESHED_AT=2025-11-14
+ENV REFRESHED_AT=2026-01-13
 LABEL Name="senzing/playground" \
       Maintainer="support@senzing.com" \
       Version="0.4.6"
@@ -108,7 +108,7 @@ RUN export STAT_TMP=$(stat --format=%a /tmp) \
         curl \
         gnupg2 \
         jq \
-        libaio-dev \        
+        libaio-dev \
         libsqlite3-dev \
         postgresql-client \
         python3-venv \
@@ -121,7 +121,7 @@ RUN export STAT_TMP=$(stat --format=%a /tmp) \
 
 # Install go.
 
-RUN wget -O /tmp/go1.linux-amd64.tar.gz https://go.dev/dl/go1.24.4.linux-amd64.tar.gz \
+RUN wget -O /tmp/go1.linux-amd64.tar.gz https://go.dev/dl/go1.25.4.linux-amd64.tar.gz \
  && tar -C /usr/local -xzf /tmp/go1.linux-amd64.tar.gz\
  && rm /tmp/go1.linux-amd64.tar.gz
 
