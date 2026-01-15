@@ -111,6 +111,7 @@ linters:
     - gochecknoglobals
     - gochecknoinits
     - paralleltest
+    - prealloc
   exclusions:
     generated: lax
     presets:

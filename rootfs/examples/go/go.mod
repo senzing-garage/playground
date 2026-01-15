@@ -1,8 +1,8 @@
 module gonb_1307d433
 
-go 1.24
+go 1.25.4
 
-toolchain go1.24.2
+toolchain go1.25.4
 
 require (
 	github.com/senzing-garage/sz-sdk-go v0.15.1
