@@ -30,7 +30,7 @@ env.bak/
 venv.bak/
 
 # macOS artifacts
-.DS_STORE
+.DS_Store
 
 # Visual Studio code
 .vscode/*
@@ -56,3 +56,5 @@ coverage.out
 customers.json
 reference.json
 watchlist.json
+
+.claude/settings.local.json

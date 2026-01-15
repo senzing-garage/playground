@@ -70,9 +70,7 @@ for datasource in datasources:
 # Persist new Senzing configuration.
 
 new_json_config = sz_config.export()
-new_config_id = sz_configmanager.register_config(
-    new_json_config, "Add TruthSet datasources"
-)
+new_config_id = sz_configmanager.register_config(new_json_config, "Add TruthSet datasources")
 sz_configmanager.replace_default_config_id(config_id, new_config_id)
 
 # With the change in Senzing configuration, Senzing objects need to be updated.
