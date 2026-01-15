@@ -15,7 +15,7 @@ dependencies = [
   "jupyter==1.1.1",
   "jupyterlab-code-formatter==3.0.2",
   "nbconvert==7.16.6",
-  "notebook==7.5.0",
+  "notebook==7.5.1",
   "protobuf==6.33.2",
   "pyspark==4.0.1",
   "senzing-grpc==0.5.13",
