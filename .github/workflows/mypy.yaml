@@ -1,21 +1,26 @@
-name: mypy
+name: Mypy
 
-on: [push, pull_request]
+on:
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
 
 permissions: {}
 
 jobs:
   mypy:
-    name: mypy Python ${{ matrix.python-version }}
-    outputs:
-      status: ${{ job.status }}
+    name: Mypy Python ${{ matrix.python-version }}
     permissions:
       contents: read
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+    timeout-minutes: 10
 
     steps:
       - name: Checkout repository
@@ -34,19 +39,9 @@ jobs:
           source ./venv/bin/activate
           echo "PATH=${PATH}" >> "${GITHUB_ENV}"
           python -m pip install --upgrade pip
-          python -m pip install --requirement requirements.txt
-          python -m pip install mypy
+          python -m pip install --group all
 
       - name: Run mypy tests
         run: |
           # shellcheck disable=SC2046
-          mypy --strict $(git ls-files '*.py' ':!:docs/source/*')
-
-  slack-notification:
-    needs: [mypy]
-    if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.mypy.outputs.status ) && github.ref_name == github.event.repository.default_branch }}
-    secrets:
-      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v3
-    with:
-      job-status: ${{ needs.mypy.outputs.status }}
+          mypy $(git ls-files '*.py' ':!:docs/source/*')

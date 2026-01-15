@@ -1,10 +1,12 @@
-name: bearer
+name: Bearer
 
 on:
-  push:
-    branches-ignore: [main]
   pull_request:
     branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
 
 permissions: {}
 
@@ -13,6 +15,7 @@ jobs:
     permissions:
       contents: read
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Checkout repository

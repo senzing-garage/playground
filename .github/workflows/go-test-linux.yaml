@@ -2,10 +2,15 @@ name: Go test linux
 
 on:
   push:
+    branches: [main]
   pull_request:
     branches: [main]
   schedule:
     - cron: "15 7 * * *"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
 
 env:
   SENZING_LOG_LEVEL: TRACE
@@ -24,9 +29,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        go: ["1.24"]
+        go: ["1.25"]
         os: [ubuntu-latest]
         senzingsdk-version: [production-v4, staging-v4]
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repository
@@ -72,13 +78,13 @@ jobs:
           go test -json -v -p 1 -coverprofile="./cover-${{ matrix.senzingsdk-version }}.out" -covermode=atomic -coverpkg=./... ./...  2>&1 | tee "/tmp/gotest-${{ matrix.senzingsdk-version }}.log" | gotestfmt
 
       - name: Store coverage file
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: "cover-${{ matrix.senzingsdk-version }}.out"
           path: "./cover-${{ matrix.senzingsdk-version }}.out"
 
       - name: Upload test log
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         if: always()
         with:
           name: "test-log-${{ matrix.senzingsdk-version }}"
