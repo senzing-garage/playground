@@ -4,9 +4,9 @@
 # Variables
 # -----------------------------------------------------------------------------
 
-SENZING_DIR ?= $(HOME)/senzing/er
+SENZING_DIR ?= /opt/senzing/er
 SENZING_TOOLS_SENZING_DIRECTORY ?= $(SENZING_DIR)
-LD_LIBRARY_PATH := $(SENZING_TOOLS_SENZING_DIRECTORY)/lib:$(SENZING_TOOLS_SENZING_DIRECTORY)/lib/macos
+LD_LIBRARY_PATH ?= $(SENZING_TOOLS_SENZING_DIRECTORY)/lib:$(SENZING_TOOLS_SENZING_DIRECTORY)/lib/macos
 DYLD_LIBRARY_PATH := $(LD_LIBRARY_PATH)
 CGO_CFLAGS := -g -I${SENZING_DIR}/sdk/c
 CGO_LDFLAGS := -L$(SENZING_DIR)/lib -lSz -Wl,-no_warn_duplicate_libraries
