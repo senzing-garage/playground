@@ -36,6 +36,4 @@ jobs:
       - name: Run flake8 lint
         uses: py-actions/flake8@v2
         with:
-          max-line-length: 88
           path: rootfs/examples
-          plugins: flake8-black

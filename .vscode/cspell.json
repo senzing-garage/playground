@@ -102,6 +102,7 @@
     "USERPROFILE",
     "venv",
     "virtualenv",
+    "vulns",
     "wraperror",
     "zizmor"
   ],
