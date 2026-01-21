@@ -120,7 +120,7 @@ src_paths = ["rootfs/examples"]
 disable_error_code = ["import-not-found", "import-untyped"]
 
 [tool.pip_audit]
-ignore-vuln = ["CVE-2025-53000"]
+ignore-vulns = ["CVE-2025-53000"]
 
 [tool.pylint]
 ignored-argument-names = "args|kwargs"
