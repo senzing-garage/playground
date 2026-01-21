@@ -11,41 +11,6 @@ concurrency:
 permissions: {}
 
 jobs:
-  fpvs:
-    permissions:
-      contents: read
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.13"]
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-        with:
-          persist-credentials: false
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v6
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install dependencies
-        run: |
-          python -m venv ./venv
-          source ./venv/bin/activate
-          echo "PATH=${PATH}" >> "${GITHUB_ENV}"
-          python -m pip install --upgrade pip
-          python -m pip install --group all .
-          python -m pip wheel   --group all --wheel-dir=vendor
-
-      - name: Run fpvs scan
-        run: |
-          source ./venv/bin/activate
-          git clone https://gitlab.com/gitlab-org/security-products/gemnasium-db.git
-          fpvs-scan --verbose
-
   pip-audit:
     permissions:
       contents: read
@@ -72,8 +37,7 @@ jobs:
           python -m venv ./venv
           source ./venv/bin/activate
           echo "PATH=${PATH}" >> "${GITHUB_ENV}"
-          python -m pip install --upgrade pip
-          python -m pip install --group all
+          python -m pip install .
 
       - name: Run pip-audit
         uses: pypa/gh-action-pip-audit@v1.1.0

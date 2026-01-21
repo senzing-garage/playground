@@ -40,9 +40,9 @@ jobs:
           source ./venv/bin/activate
           echo "PATH=${PATH}" >> "${GITHUB_ENV}"
           python -m pip install --upgrade pip
-          python -m pip install --group all
+          python -m pip install --group all .
 
-      - name: Analyzing the code with pylint
+      - name: Analysing the code with pylint
         run: |
           # shellcheck disable=SC2046
           pylint $(git ls-files '*.py' ':!:docs/source/*')

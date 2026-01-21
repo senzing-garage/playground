@@ -100,7 +100,7 @@ test = [
 ]
 
 [tool.setuptools.packages.find]
-where = ["."]
+where = ["rootfs/examples"]
 
 [tool.bandit]
 skips = ["B101"]
