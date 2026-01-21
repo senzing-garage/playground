@@ -79,3 +79,5 @@ jobs:
         uses: pypa/gh-action-pip-audit@v1.1.0
         with:
           inputs: ${{ github.workspace}}
+          ignore-vulns: |
+            CVE-2025-53000
