@@ -20,8 +20,6 @@ permissions: {}
 jobs:
   go-test-windows:
     name: "Go test with Senzing: ${{ matrix.senzingsdk-version }}; OS: windows-latest; Go: ${{ matrix.go }}"
-    outputs:
-      status: ${{ job.status }}
     permissions:
       contents: read
     runs-on: windows-latest
@@ -53,7 +51,7 @@ jobs:
         with:
           senzingsdk-version: ${{ matrix.senzingsdk-version }}
 
-      - name: Add to "Path" environment variable
+      - name: Set environment variables
         run: |
           Add-Content "$env:GITHUB_PATH" "$Env:USERPROFILE\Senzing\er\lib"
 
@@ -100,9 +98,9 @@ jobs:
 
   slack-notification:
     needs: [go-test-windows]
-    if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.go-test-windows.outputs.status ) && github.event_name == 'schedule' }}
+    if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.go-test-windows.result ) && github.event_name == 'schedule' }}
     secrets:
       SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
     uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v3
     with:
-      job-status: ${{ needs.go-test-windows.outputs.status }}
+      job-status: ${{ needs.go-test-windows.result }}
