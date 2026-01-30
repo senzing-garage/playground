@@ -17,7 +17,7 @@ dependencies = [
   "nbconvert==7.16.6",
   "notebook==7.5.1",
   "protobuf==6.33.2",
-  "pyspark==4.1.0",
+  "pyspark==4.1.1",
   "senzing-grpc==0.5.13",
 ]
 license = "Apache-2.0"
