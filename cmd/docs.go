@@ -18,10 +18,12 @@ var DocsCmd = &cobra.Command{
 	Short: "Generate documentation for the command",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		_ = args
+
 		dir, err := cmd.Flags().GetString("dir")
 		if err != nil {
 			return wraperror.Errorf(err, "getting 'dir' value")
 		}
+
 		if dir == "" {
 			if dir, err = os.MkdirTemp("", "playground"); err != nil {
 				return wraperror.Errorf(err, "constructing cobra.Command")
