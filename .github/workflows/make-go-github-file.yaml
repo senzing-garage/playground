@@ -13,16 +13,17 @@ jobs:
       contents: write
       pull-requests: write
     secrets:
-      SENZING_GITHUB_ACTOR: ${{ secrets.SENZING_GITHUB_ACTOR }}
-      SENZING_GITHUB_GPG_PASSPHRASE: ${{ secrets.SENZING_GITHUB_GPG_PASSPHRASE }}
-      SENZING_GITHUB_GPG_PRIVATE_KEY: ${{ secrets.SENZING_GITHUB_GPG_PRIVATE_KEY }}
-    uses: senzing-factory/build-resources/.github/workflows/make-go-github-file.yaml@v3
+      GIT_ACTOR: ${{ secrets.SENZING_GITHUB_ACTOR }}
+      GPG_PASSPHRASE: ${{ secrets.SENZING_GITHUB_GPG_PASSPHRASE }}
+      GPG_PRIVATE_KEY: ${{ secrets.SENZING_GITHUB_GPG_PRIVATE_KEY }}
+    uses: senzing-factory/build-resources/.github/workflows/make-go-github-file.yaml@v4
 
   slack-notification:
     needs: [make-go-github-file]
-    if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.make-go-github-file.outputs.job-status) }}
+    if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.make-go-github-file.result) }}
     secrets:
       SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v3
+      SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
+    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v4
     with:
-      job-status: ${{ needs.make-go-github-file.outputs.job-status }}
+      job-status: ${{ needs.make-go-github-file.result }}
