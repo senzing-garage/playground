@@ -15,7 +15,7 @@ dependencies = [
   "jupyter==1.1.1",
   "jupyterlab-code-formatter==3.0.2",
   "nbconvert==7.16.6",
-  "notebook==7.5.2",
+  "notebook==7.5.3",
   "protobuf==6.33.5",
   "pyspark==4.1.1",
   "senzing-grpc==0.5.13",
@@ -53,7 +53,7 @@ development = [
   "psutil==7.2.1",
   "pytest-cov==7.0.0",
   "pytest-schema==0.1.2",
-  "setuptools==80.10.1",
+  "setuptools==80.10.2",
   "twine==6.2.0",
   "virtualenv==20.36.1",
   "wheel==0.46.3",
@@ -96,7 +96,7 @@ test = [
   "pytest==8.4.2; python_version <= '3.11'",
   "pytest==9.0.2; python_version > '3.11'",
   "coverage==7.10.7; python_version <= '3.11'",
-  "coverage==7.13.1; python_version > '3.11'",
+  "coverage==7.13.2; python_version > '3.11'",
 ]
 
 [tool.setuptools.packages.find]
