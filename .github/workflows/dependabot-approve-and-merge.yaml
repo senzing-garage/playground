@@ -16,8 +16,8 @@ jobs:
       contents: write
       pull-requests: write
     secrets:
-      SENZING_GITHUB_CODEOWNER_PR_RW_TOKEN: ${{ secrets.SENZING_GITHUB_CODEOWNER_PR_RW_TOKEN }}
-    uses: senzing-factory/build-resources/.github/workflows/dependabot-approve-and-merge.yaml@v3
+      CODEOWNER_PR_RW_TOKEN: ${{ secrets.SENZING_GITHUB_CODEOWNER_PR_RW_TOKEN }}
+    uses: senzing-factory/build-resources/.github/workflows/dependabot-approve-and-merge.yaml@v4
     with:
       update-type: "minor"
 
@@ -26,7 +26,7 @@ jobs:
       contents: write
       pull-requests: write
     secrets:
-      SENZING_GITHUB_CODEOWNER_PR_RW_TOKEN: ${{ secrets.SENZING_GITHUB_CODEOWNER_PR_RW_TOKEN }}
-    uses: senzing-factory/build-resources/.github/workflows/dependabot-approve-and-merge.yaml@v3
+      CODEOWNER_PR_RW_TOKEN: ${{ secrets.SENZING_GITHUB_CODEOWNER_PR_RW_TOKEN }}
+    uses: senzing-factory/build-resources/.github/workflows/dependabot-approve-and-merge.yaml@v4
     with:
       update-type: "patch"
