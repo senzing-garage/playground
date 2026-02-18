@@ -394,7 +394,7 @@ func (httpServer *BasicHTTPServer) populateStaticTemplate(
 	// templateBytes, err := static.ReadFile(filepath)
 	templateBytes, err := fs.ReadFile(httpServer.getStatic(), filepath)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error: %s\n", err.Error())
+		fmt.Fprintf(os.Stderr, "Error: %s\n", err.Error()) // #nosec G705 -- writing to stderr, not HTTP response
 		http.Error(responseWriter, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 
 		return
@@ -402,7 +402,7 @@ func (httpServer *BasicHTTPServer) populateStaticTemplate(
 
 	templateParsed, err := template.New("HtmlTemplate").Parse(string(templateBytes))
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error: %s\n", err.Error())
+		fmt.Fprintf(os.Stderr, "Error: %s\n", err.Error()) // #nosec G705 -- writing to stderr, not HTTP response
 		http.Error(responseWriter, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 
 		return
@@ -410,7 +410,7 @@ func (httpServer *BasicHTTPServer) populateStaticTemplate(
 
 	err = templateParsed.Execute(responseWriter, templateVariables)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error: %s\n", err.Error())
+		fmt.Fprintf(os.Stderr, "Error: %s\n", err.Error()) // #nosec G705 -- writing to stderr, not HTTP response
 		http.Error(responseWriter, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 
 		return
@@ -553,7 +553,7 @@ func newReverseProxy(targetHost string) (*httputil.ReverseProxy, error) {
 // reverseProxyRequestHandler handles the http request using proxy.
 func reverseProxyRequestHandler(proxy *httputil.ReverseProxy) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		proxy.ServeHTTP(w, r)
+		proxy.ServeHTTP(w, r) // #nosec G704 -- proxy target is internally configured
 	}
 }
 
