@@ -48,7 +48,7 @@ all = [
 ]
 development = [
   "build==1.4.0",
-  "cryptography==46.0.3",
+  "cryptography==46.0.4",
   "fpvs==0.3.0",
   "psutil==7.2.2",
   "pytest-cov==7.0.0",
