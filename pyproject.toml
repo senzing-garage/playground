@@ -11,7 +11,7 @@ classifiers = [
 ]
 dependencies = [
   "autopep8==2.3.2",
-  "grpcio==1.76.0",
+  "grpcio==1.78.0",
   "jupyter==1.1.1",
   "jupyterlab-code-formatter==3.0.2",
   "nbconvert==7.17.0",
