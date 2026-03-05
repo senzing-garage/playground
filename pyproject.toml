@@ -13,7 +13,7 @@ dependencies = [
   "autopep8==2.3.2",
   "grpcio==1.78.0",
   "jupyter==1.1.1",
-  "jupyterlab-code-formatter==3.0.2",
+  "jupyterlab-code-formatter==3.0.3",
   "nbconvert==7.17.0",
   "notebook==7.5.3",
   "protobuf==6.33.5",
