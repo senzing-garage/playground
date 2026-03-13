@@ -19,7 +19,6 @@ env:
 permissions: {}
 
 jobs:
-
   sdk-versions:
     runs-on: ubuntu-latest
     outputs:
@@ -27,6 +26,7 @@ jobs:
     steps:
       - id: cfg
         uses: senzing-factory/build-resources/sdk-versions@v4
+
   go-test-darwin:
     name: "Go test with Senzing: ${{ matrix.senzingsdk-version }}; OS: ${{ matrix.os }}; Go: ${{ matrix.go }}"
     needs: sdk-versions
@@ -84,8 +84,10 @@ jobs:
           cp testdata/sqlite/G2C.db /tmp/sqlite/
 
       - name: Run go test
+        env:
+          SENZING_SDK_VERSION: ${{ matrix.senzingsdk-version }}
         run: |
-          go test -exec "${GITHUB_WORKSPACE}/bin/macos_exec_dyld.sh" -json -v -p 1 -coverprofile="./cover-${{ matrix.senzingsdk-version }}.out" -covermode=atomic -coverpkg=./... ./...  2>&1 | tee "/tmp/gotest-${{ matrix.senzingsdk-version }}.log" | gotestfmt
+          go test -exec "${GITHUB_WORKSPACE}/bin/macos_exec_dyld.sh" -json -v -p 1 -coverprofile="./cover-${SENZING_SDK_VERSION}.out" -covermode=atomic -coverpkg=./... ./...  2>&1 | tee "/tmp/gotest-${SENZING_SDK_VERSION}.log" | gotestfmt
 
       - name: Store coverage file
         uses: actions/upload-artifact@v6
