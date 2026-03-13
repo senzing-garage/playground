@@ -10,8 +10,6 @@ permissions: {}
 jobs:
   make-go-tag:
     name: Make a vM.m.P tag
-    outputs:
-      status: ${{ job.status }}
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -33,10 +31,10 @@ jobs:
 
   slack-notification:
     needs: [make-go-tag]
-    if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.make-go-tag.outputs.status ) }}
+    if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.make-go-tag.result ) }}
     secrets:
       SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
     uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v4
     with:
-      job-status: ${{ needs.make-go-tag.outputs.status }}
+      job-status: ${{ needs.make-go-tag.result }}

@@ -11,8 +11,17 @@ concurrency:
 permissions: {}
 
 jobs:
+
+  sdk-versions:
+    runs-on: ubuntu-latest
+    outputs:
+      senzingsdk-versions: ${{ steps.cfg.outputs.senzingsdk-versions }}
+    steps:
+      - id: cfg
+        uses: senzing-factory/build-resources/sdk-versions@v4
   golangci:
     name: Lint
+    needs: sdk-versions
     permissions:
       # Required: allow read access to the content for analysis.
       contents: read
@@ -23,7 +32,7 @@ jobs:
       fail-fast: false
       matrix:
         go: ["1.26"]
-        senzingsdk-version: [production-v4, staging-v4]
+        senzingsdk-version: ${{ fromJSON(needs.sdk-versions.outputs.senzingsdk-versions) }}
     timeout-minutes: 10
 
     steps:
