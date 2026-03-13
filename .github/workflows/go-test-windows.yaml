@@ -18,8 +18,17 @@ env:
 permissions: {}
 
 jobs:
+  sdk-versions:
+    runs-on: ubuntu-latest
+    outputs:
+      senzingsdk-versions: ${{ steps.cfg.outputs.senzingsdk-versions }}
+    steps:
+      - id: cfg
+        uses: senzing-factory/build-resources/sdk-versions@v4
+
   go-test-windows:
     name: "Go test with Senzing: ${{ matrix.senzingsdk-version }}; OS: windows-latest; Go: ${{ matrix.go }}"
+    needs: sdk-versions
     permissions:
       contents: read
     runs-on: windows-latest
@@ -27,7 +36,7 @@ jobs:
       fail-fast: false
       matrix:
         go: ["1.26"]
-        senzingsdk-version: [production-v4, staging-v4]
+        senzingsdk-version: ${{ fromJSON(needs.sdk-versions.outputs.senzingsdk-versions) }}
     timeout-minutes: 30
 
     steps:
@@ -65,12 +74,14 @@ jobs:
           copy testdata/sqlite/G2C.db "C:\Temp\sqlite\G2C.db"
 
       - name: Run go test
+        env:
+          SENZING_SDK_VERSION: ${{ matrix.senzingsdk-version }}
         run: |
           $Env:SENZING_PATH = "$Env:USERPROFILE\Senzing"
           $Env:CGO_CFLAGS = "-g -I$Env:SENZING_PATH\er\sdk\c"
           $Env:CGO_LDFLAGS = "-L$Env:SENZING_PATH\er\lib -lSz"
-          go test -json -v -p 1 -coverprofile=cover -covermode=atomic -coverpkg=./... ./... 2>&1 | tee "C:\Temp\gotest-${{ matrix.senzingsdk-version }}.log" | gotestfmt
-          cp cover "cover-${{ matrix.senzingsdk-version }}.out"
+          go test -json -v -p 1 -coverprofile=cover -covermode=atomic -coverpkg=./... ./... 2>&1 | tee "C:\Temp\gotest-$env:SENZING_SDK_VERSION.log" | gotestfmt
+          cp cover "cover-$env:SENZING_SDK_VERSION.out"
 
       - name: Store coverage file
         uses: actions/upload-artifact@v6
