@@ -55,7 +55,7 @@ development = [
   "pytest-schema==0.1.2",
   "setuptools==82.0.0",
   "twine==6.2.0",
-  "virtualenv==20.36.1",
+  "virtualenv==20.38.0",
   "wheel==0.46.3",
 ]
 documentation = [
@@ -85,12 +85,12 @@ lint = [
   "black==26.1.0; python_version > '3.11'",
   "flake8==7.3.0",
   "isort==6.1.0; python_version <= '3.11'",
-  "isort==7.0.0; python_version > '3.11'",
+  "isort==8.0.0; python_version > '3.11'",
   "mypy==1.19.1",
   "pylint-per-file-ignores==2.0.3; python_version <= '3.11'",
   "pylint-per-file-ignores==3.2.0; python_version > '3.11'",
   "pylint==3.3.9; python_version <= '3.11'",
-  "pylint==4.0.4; python_version > '3.11'",
+  "pylint==4.0.5; python_version > '3.11'",
 ]
 test = [
   "pytest==8.4.2; python_version <= '3.11'",
