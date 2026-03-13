@@ -80,8 +80,8 @@ jobs:
           $Env:SENZING_PATH = "$Env:USERPROFILE\Senzing"
           $Env:CGO_CFLAGS = "-g -I$Env:SENZING_PATH\er\sdk\c"
           $Env:CGO_LDFLAGS = "-L$Env:SENZING_PATH\er\lib -lSz"
-          go test -json -v -p 1 -coverprofile=cover -covermode=atomic -coverpkg=./... ./... 2>&1 | tee "C:\Temp\gotest-${SENZING_SDK_VERSION}.log" | gotestfmt
-          cp cover "cover-${SENZING_SDK_VERSION}.out"
+          go test -json -v -p 1 -coverprofile=cover -covermode=atomic -coverpkg=./... ./... 2>&1 | tee "C:\Temp\gotest-$env:SENZING_SDK_VERSION.log" | gotestfmt
+          cp cover "cover-$env:SENZING_SDK_VERSION.out"
 
       - name: Store coverage file
         uses: actions/upload-artifact@v6
