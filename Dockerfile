@@ -3,7 +3,7 @@
 # -----------------------------------------------------------------------------
 
 ARG IMAGE_BUILDER=golang:1.26.0-bookworm@sha256:2a0ba12e116687098780d3ce700f9ce3cb340783779646aafbabed748fa6677c
-ARG IMAGE_FINAL=senzing/senzingsdk-runtime:4.2.1@sha256:b3af3bace2ae835e1de6ac10637e0ab3a9cf26b8803d22d32f26b8da12a74bed
+ARG IMAGE_FINAL=senzing/senzingsdk-runtime:4.2.4@sha256:ca9f5e5d2fb4e7bc0e0b65f919e8777f37f3313b5ca8f9aa2d6abdcf9b18d9d7
 
 # -----------------------------------------------------------------------------
 # Stage: senzingsdk_runtime
@@ -16,7 +16,7 @@ FROM ${IMAGE_FINAL} AS senzingsdk_runtime
 # -----------------------------------------------------------------------------
 
 FROM ${IMAGE_BUILDER} AS builder
-ENV REFRESHED_AT=2026-03-09
+ENV REFRESHED_AT=2026-04-20
 LABEL Name="senzing/go-builder" \
       Maintainer="support@senzing.com" \
       Version="0.1.0"
@@ -79,7 +79,7 @@ RUN mkdir -p /output \
 # -----------------------------------------------------------------------------
 
 FROM ${IMAGE_FINAL} AS final
-ENV REFRESHED_AT=2026-03-09
+ENV REFRESHED_AT=2026-04-20
 LABEL Name="senzing/playground" \
       Maintainer="support@senzing.com" \
       Version="0.4.6"
@@ -121,7 +121,7 @@ RUN export STAT_TMP=$(stat --format=%a /tmp) \
 
 # Install go.
 
-RUN wget -O /tmp/go1.linux-amd64.tar.gz https://go.dev/dl/go1.25.4.linux-amd64.tar.gz \
+RUN wget -O /tmp/go1.linux-amd64.tar.gz https://go.dev/dl/go1.26.2.linux-amd64.tar.gz \
  && tar -C /usr/local -xzf /tmp/go1.linux-amd64.tar.gz\
  && rm /tmp/go1.linux-amd64.tar.gz
 
