@@ -51,7 +51,7 @@ jobs:
           go-version: ${{ matrix.go }}
 
       - name: Set up gotestfmt
-        uses: gotesttools/gotestfmt-action@v2
+        uses: gotesttools/gotestfmt-action@v2.2.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
