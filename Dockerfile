@@ -16,12 +16,10 @@ FROM ${IMAGE_FINAL} AS senzingsdk_runtime
 # -----------------------------------------------------------------------------
 
 FROM ${IMAGE_BUILDER} AS builder
-ENV REFRESHED_AT=2026-04-20
+ENV REFRESHED_AT=2026-04-22
 LABEL Name="senzing/go-builder" \
       Maintainer="support@senzing.com" \
       Version="0.1.0"
-
-# Run as "root" for system installation.
 
 USER root
 
@@ -42,17 +40,12 @@ RUN apt-get update \
 RUN python3 -m venv /app/venv
 ENV PATH="/app/venv/bin:$PATH"
 
-# Install packages via PIP.
+# Install Python packages (cached unless pyproject.toml changes).
 
 COPY pyproject.toml .
 RUN pip3 install --no-cache-dir --upgrade pip \
  && pip3 install --no-cache-dir . \
  && rm pyproject.toml
-
-# Copy local files from the Git repository.
-
-COPY ./rootfs /
-COPY . ${GOPATH}/src/playground
 
 # Copy files from prior stage.
 
@@ -63,10 +56,18 @@ COPY --from=senzingsdk_runtime  "/opt/senzing/er/sdk/c/" "/opt/senzing/er/sdk/c/
 
 ENV LD_LIBRARY_PATH=/opt/senzing/er/lib/
 
-# Build go program.
+# Download Go modules (cached unless go.mod/go.sum change).
 
+COPY go.mod go.sum ${GOPATH}/src/playground/
 WORKDIR ${GOPATH}/src/playground
-RUN make build-with-libsqlite3\
+RUN go mod download
+
+# Copy remaining source and build.
+
+COPY ./rootfs /
+COPY . ${GOPATH}/src/playground
+
+RUN make build-with-libsqlite3 \
  && go clean -cache -modcache -testcache
 
 # Copy binaries to /output.
@@ -79,11 +80,10 @@ RUN mkdir -p /output \
 # -----------------------------------------------------------------------------
 
 FROM ${IMAGE_FINAL} AS final
-ENV REFRESHED_AT=2026-04-20
+ENV REFRESHED_AT=2026-04-22
 LABEL Name="senzing/playground" \
       Maintainer="support@senzing.com" \
       Version="0.4.6"
-
 
 ARG BUILD_USER="senzing"
 ARG BUILD_UID="1001"
@@ -92,16 +92,12 @@ ARG BUILD_GID="101"
 HEALTHCHECK CMD ["/app/healthcheck.sh"]
 USER root
 
-# Install Java-17.
+# Install Java-17 and system packages in a single layer.
 
 RUN mkdir -p /etc/apt/keyrings \
- && wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public > /etc/apt/keyrings/adoptium.asc
-
-RUN echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" >> /etc/apt/sources.list
-
-# Install packages via apt-get.
-
-RUN export STAT_TMP=$(stat --format=%a /tmp) \
+ && wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public > /etc/apt/keyrings/adoptium.asc \
+ && echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" >> /etc/apt/sources.list \
+ && export STAT_TMP=$(stat --format=%a /tmp) \
  && chmod 777 /tmp \
  && apt-get update \
  && apt-get -y --no-install-recommends install \
@@ -116,14 +112,11 @@ RUN export STAT_TMP=$(stat --format=%a /tmp) \
         temurin-17-jdk \
         unixodbc \
  && chmod ${STAT_TMP} /tmp \
- && rm -rf /var/lib/apt/lists/* \
-  && rm -rf /var/cache/apt/*
+ && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
-# Install go.
+# Copy Go from builder instead of re-downloading.
 
-RUN wget -O /tmp/go1.linux-amd64.tar.gz https://go.dev/dl/go1.26.2.linux-amd64.tar.gz \
- && tar -C /usr/local -xzf /tmp/go1.linux-amd64.tar.gz\
- && rm /tmp/go1.linux-amd64.tar.gz
+COPY --from=builder /usr/local/go /usr/local/go
 
 # Copy files from repository.
 
@@ -175,8 +168,7 @@ RUN go install github.com/janpfeifer/gonb@latest \
 
 WORKDIR /examples/go
 
-RUN go get -u ./... \
- && go get -t -u ./... \
+RUN go get -t -u ./... \
  && go mod tidy
 
 WORKDIR ${HOME}

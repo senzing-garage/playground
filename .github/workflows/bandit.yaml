@@ -13,17 +13,7 @@ permissions: {}
 jobs:
   bandit:
     permissions:
-      security-events: write
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.13"]
-    timeout-minutes: 10
-
-    steps:
-      - name: Run Bandit Scan
-        uses: PyCQA/bandit-action@v1
-        with:
-          python-version: ${{ matrix.python-version }}
-          targets: rootfs/examples
+      contents: read
+    uses: senzing-factory/build-resources/.github/workflows/bandit.yaml@v4
+    with:
+      targets: rootfs/examples
