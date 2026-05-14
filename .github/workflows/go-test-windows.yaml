@@ -70,8 +70,9 @@ jobs:
         with:
           client-id: ${{ secrets.SENZINGSDK_STAGING_CLIENT_ID }}
           private-key: ${{ secrets.SENZINGSDK_STAGING_APP_KEY }}
-          owner: senzing-factory
+          owner: senzing-factory # zizmor: ignore[github-app]
           repositories: scoop-senzingsdk-staging
+          permission-contents: read
 
       - name: Install Senzing SDK
         uses: senzing-factory/github-action-install-senzing-sdk@v5
