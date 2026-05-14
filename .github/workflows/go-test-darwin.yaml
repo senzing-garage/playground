@@ -27,6 +27,14 @@ jobs:
       - id: cfg
         uses: senzing-factory/build-resources/sdk-versions@v4
 
+      - name: Notify Slack on failure
+        if: (failure() || cancelled()) && (github.ref_name == github.event.repository.default_branch || github.event_name == 'schedule')
+        uses: senzing-factory/build-resources/slack-failure-notification@v4
+        with:
+          job-status: ${{ job.status }}
+          slack-channel: ${{ secrets.SLACK_CHANNEL }}
+          slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
+
   go-test-darwin:
     name: "Go test with Senzing: ${{ matrix.senzingsdk-version }}; OS: ${{ matrix.os }}; Go: ${{ matrix.go }}"
     needs: sdk-versions
@@ -57,10 +65,21 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Mint staging tap token
+        if: matrix.senzingsdk-version != 'production-v4'
+        id: staging-token
+        uses: actions/create-github-app-token@v3.1.1
+        with:
+          client-id: ${{ secrets.SENZINGSDK_STAGING_CLIENT_ID }}
+          private-key: ${{ secrets.SENZINGSDK_STAGING_APP_KEY }}
+          owner: senzing-factory
+          repositories: homebrew-senzingsdk-staging
+
       - name: Install Senzing SDK
-        uses: senzing-factory/github-action-install-senzing-sdk@v4
+        uses: senzing-factory/github-action-install-senzing-sdk@v5
         with:
           senzingsdk-version: ${{ matrix.senzingsdk-version }}
+          senzingsdk-token: ${{ steps.staging-token.outputs.token || github.token }}
 
       - name: Set environment variables
         run: |
@@ -112,13 +131,3 @@ jobs:
     with:
       coverage-config: ./.github/coverage/testcoverage-darwin.yaml
       profile: "cover-production-v4.out,cover-staging-v4.out"
-
-  slack-notification:
-    needs: [go-test-darwin]
-    if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.go-test-darwin.result ) && github.event_name == 'schedule' }}
-    secrets:
-      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
-    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v4
-    with:
-      job-status: ${{ needs.go-test-darwin.result }}

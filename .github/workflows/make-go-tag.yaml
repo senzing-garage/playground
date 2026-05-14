@@ -29,12 +29,10 @@ jobs:
           gpg_private_key: ${{ secrets.SENZING_GITHUB_GPG_PRIVATE_KEY }}
           gpg_passphrase: ${{ secrets.SENZING_GITHUB_GPG_PASSPHRASE }}
 
-  slack-notification:
-    needs: [make-go-tag]
-    if: ${{ always() && contains(fromJSON('["failure", "cancelled"]'), needs.make-go-tag.result ) }}
-    secrets:
-      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
-    uses: senzing-factory/build-resources/.github/workflows/build-failure-slack-notification.yaml@v4
-    with:
-      job-status: ${{ needs.make-go-tag.result }}
+      - name: Notify Slack on failure
+        if: failure() || cancelled()
+        uses: senzing-factory/build-resources/slack-failure-notification@v4
+        with:
+          job-status: ${{ job.status }}
+          slack-channel: ${{ secrets.SLACK_CHANNEL }}
+          slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
