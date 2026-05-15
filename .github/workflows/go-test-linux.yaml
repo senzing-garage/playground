@@ -28,14 +28,6 @@ jobs:
       - id: cfg
         uses: senzing-factory/build-resources/sdk-versions@v4
 
-      - name: Notify Slack on failure
-        if: (failure() || cancelled()) && (github.ref_name == github.event.repository.default_branch || github.event_name == 'schedule')
-        uses: senzing-factory/build-resources/slack-failure-notification@v4
-        with:
-          job-status: ${{ job.status }}
-          slack-channel: ${{ secrets.SLACK_CHANNEL }}
-          slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
-
   go-test-linux:
     name: "Go test with Senzing: ${{ matrix.senzingsdk-version }}; OS: ${{ matrix.os }}; Go: ${{ matrix.go }}"
     needs: sdk-versions
@@ -108,6 +100,14 @@ jobs:
           name: "test-log-${{ matrix.senzingsdk-version }}"
           path: "/tmp/gotest-${{ matrix.senzingsdk-version }}.log"
           if-no-files-found: error
+
+      - name: Notify Slack on failure
+        if: (failure() || cancelled()) && (github.ref_name == github.event.repository.default_branch || github.event_name == 'schedule')
+        uses: senzing-factory/build-resources/slack-failure-notification@v4
+        with:
+          job-status: ${{ job.status }}
+          slack-channel: ${{ secrets.SLACK_CHANNEL }}
+          slack-bot-token: ${{ secrets.SLACK_BOT_TOKEN }}
 
   coverage:
     name: Coverage
