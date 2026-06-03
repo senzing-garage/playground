@@ -1,6 +1,6 @@
 module github.com/senzing-garage/playground
 
-go 1.26.0
+go 1.26.4
 
 require (
 	github.com/docktermj/cloudshell v0.2.0
