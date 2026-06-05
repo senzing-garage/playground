@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Pull new module version
-        uses: andrewslotin/go-proxy-pull-action@v1.4.0
+        uses: andrewslotin/go-proxy-pull-action@v1.5.0
         with:
           import_path: github.com/${{ github.repository }}
 
