@@ -70,7 +70,7 @@ jobs:
           go-version: ${{ matrix.go }}
 
       - name: Perform linting
-        uses: golangci/golangci-lint-action@v9.2.0
+        uses: golangci/golangci-lint-action@v9.2.1
         with:
           args: --config=${{ github.workspace }}/.github/linters/.golangci.yaml
           only-new-issues: false
