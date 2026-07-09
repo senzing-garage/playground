@@ -1,0 +1,7 @@
+# Trivy vulnerability ignore file.
+# See https://trivy.dev/docs/configuration/filtering/#by-vulnerability-ids
+
+# GO-2026-5932: The golang.org/x/crypto/openpgp package is unmaintained.
+# Informational advisory with no fixed version. Pulled in only as an indirect
+# dependency; the openpgp package is not used by this module.
+GO-2026-5932
