@@ -94,7 +94,7 @@ lint = [
 ]
 test = [
   "pytest==8.4.2; python_version <= '3.11'",
-  "pytest==9.1.0; python_version > '3.11'",
+  "pytest==9.1.1; python_version > '3.11'",
   "coverage==7.10.7; python_version <= '3.11'",
   "coverage==7.14.1; python_version > '3.11'",
 ]
