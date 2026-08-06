@@ -11,13 +11,13 @@ classifiers = [
 ]
 dependencies = [
   "autopep8==2.3.2",
-  "grpcio==1.81.1",
+  "grpcio==1.82.1",
   "jupyter==1.1.1",
   "jupyterlab-code-formatter==3.0.3",
   "nbconvert==7.17.1",
   "notebook==7.6.0",
   "protobuf==7.35.1",
-  "pyspark==4.1.2",
+  "pyspark==4.2.0",
   "senzing-grpc==0.5.13",
 ]
 license = "Apache-2.0"
@@ -36,7 +36,7 @@ source = "https://github.com/senzing-garage/playground"
 template_python = "template_python.main_entry:main"
 
 [build-system]
-requires = ["setuptools>=80", "wheel"]
+requires = ["setuptools>=83.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [dependency-groups]
@@ -48,14 +48,14 @@ all = [
 ]
 development = [
   "build==1.5.0",
-  "cryptography==49.0.0",
+  "cryptography==50.0.0",
   "fpvs==0.3.0",
   "psutil==7.2.2",
   "pytest-cov==7.1.0",
   "pytest-schema==0.1.2",
-  "setuptools==82.0.1",
+  "setuptools==83.0.0",
   "twine==6.2.0",
-  "virtualenv==21.5.1",
+  "virtualenv==21.6.1",
   "wheel==0.47.0",
 ]
 documentation = [
@@ -86,7 +86,7 @@ lint = [
   "flake8==7.3.0",
   "isort==6.1.0; python_version <= '3.11'",
   "isort==8.0.1; python_version > '3.11'",
-  "mypy==2.1.0",
+  "mypy==2.3.0",
   "pylint-per-file-ignores==2.0.3; python_version <= '3.11'",
   "pylint-per-file-ignores==3.2.1; python_version > '3.11'",
   "pylint==3.3.9; python_version <= '3.11'",
@@ -96,7 +96,7 @@ test = [
   "pytest==8.4.2; python_version <= '3.11'",
   "pytest==9.1.1; python_version > '3.11'",
   "coverage==7.10.7; python_version <= '3.11'",
-  "coverage==7.14.3; python_version > '3.11'",
+  "coverage==7.15.2; python_version > '3.11'",
 ]
 
 [tool.setuptools.packages.find]
