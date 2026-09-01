@@ -56,7 +56,7 @@ development = [
   "setuptools==84.0.0",
   "twine==7.0.0",
   "virtualenv==21.7.4",
-  "wheel==0.47.0",
+  "wheel==0.48.0",
 ]
 documentation = [
   "autodocsumm",
