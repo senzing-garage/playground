@@ -15,8 +15,8 @@ dependencies = [
   "jupyter==1.1.1",
   "jupyterlab-code-formatter==3.1.0",
   "nbconvert==7.17.1",
-  "notebook==7.6.1",
-  "protobuf==7.35.1",
+  "notebook==7.6.2",
+  "protobuf==7.36.0",
   "pyspark==4.2.0",
   "senzing-grpc==0.5.13",
 ]
@@ -48,14 +48,14 @@ all = [
 ]
 development = [
   "build==1.5.0",
-  "cryptography==50.0.0",
+  "cryptography==50.0.1",
   "fpvs==0.3.0",
   "psutil==7.2.2",
   "pytest-cov==7.1.0",
   "pytest-schema==0.1.2",
   "setuptools==84.0.0",
   "twine==7.0.0",
-  "virtualenv==21.7.4",
+  "virtualenv==21.7.5",
   "wheel==0.48.0",
 ]
 documentation = [
@@ -85,12 +85,12 @@ lint = [
   "black==26.5.1; python_version > '3.11'",
   "flake8==7.3.0",
   "isort==6.1.0; python_version <= '3.11'",
-  "isort==8.0.1; python_version > '3.11'",
-  "mypy==2.3.0",
+  "isort==9.0.0; python_version > '3.11'",
+  "mypy==2.3.1",
   "pylint-per-file-ignores==2.0.3; python_version <= '3.11'",
   "pylint-per-file-ignores==3.2.1; python_version > '3.11'",
   "pylint==3.3.9; python_version <= '3.11'",
-  "pylint==4.0.7; python_version > '3.11'",
+  "pylint==4.0.8; python_version > '3.11'",
 ]
 test = [
   "pytest==8.4.2; python_version <= '3.11'",
