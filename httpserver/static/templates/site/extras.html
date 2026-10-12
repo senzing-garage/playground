@@ -52,18 +52,6 @@
     </tr>
     <tr>
       <td style="text-align: center; vertical-align: middle;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="{{.APIServerStatus}}"
-          class="bi bi-circle-fill" viewBox="0 0 16 16">
-          <circle cx="8" cy="8" r="8" />
-        </svg>
-      </td>
-      <td>Senzing API Server</td>
-      <td>{{if .APIServerURL}}<a href="{{.APIServerURL}}">{{.APIServerURL}}</a> {{end}}</td>
-      <td>--enable-senzing-rest-api</td>
-      <td>SENZING_TOOLS_ENABLE_SENZING_REST_API</td>
-    </tr>
-    <tr>
-      <td style="text-align: center; vertical-align: middle;">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="{{.EntitySearchStatus}}"
           class="bi bi-circle-fill" viewBox="0 0 16 16">
           <circle cx="8" cy="8" r="8" />
@@ -73,18 +61,6 @@
       <td>{{if .EntitySearchURL}}<a href="{{.EntitySearchURL}}">{{.EntitySearchURL}}</a> {{end}}</td>
       <td>--enable-entity-search</td>
       <td>SENZING_TOOLS_ENABLE_ENTITY_SEARCH</td>
-    </tr>
-    <tr>
-      <td style="text-align: center; vertical-align: middle;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="{{.SwaggerStatus}}"
-          class="bi bi-circle-fill" viewBox="0 0 16 16">
-          <circle cx="8" cy="8" r="8" />
-        </svg>
-      </td>
-      <td>Swagger UI</td>
-      <td>{{if .SwaggerURL}}<a href="{{.SwaggerURL}}">{{.SwaggerURL}}</a> {{end}}</td>
-      <td>--enable-swagger-ui</td>
-      <td>SENZING_TOOLS_ENABLE_SWAGGER_UI</td>
     </tr>
     <tr>
       <td style="text-align: center; vertical-align: middle;">

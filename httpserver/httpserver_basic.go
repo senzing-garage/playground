@@ -1,8 +1,6 @@
 package httpserver
 
 import (
-	"bufio"
-	"bytes"
 	"context"
 	"embed"
 	"fmt"
@@ -15,13 +13,10 @@ import (
 	"time"
 
 	"github.com/docktermj/cloudshell/xtermservice"
-	"github.com/flowchartsman/swaggerui"
 	"github.com/pkg/browser"
 	"github.com/senzing-garage/demo-entity-search/entitysearchservice"
 	"github.com/senzing-garage/go-helpers/wraperror"
 	"github.com/senzing-garage/go-observing/observer"
-	"github.com/senzing-garage/go-rest-api-service-legacy/restapiservicelegacy"
-	"github.com/senzing-garage/go-rest-api-service/senzingrestapi"
 	"google.golang.org/grpc"
 )
 
@@ -31,13 +26,10 @@ import (
 
 // BasicHTTPServer is the default implementation of the HttpServer interface.
 type BasicHTTPServer struct {
-	APIUrlRoutePrefix         string // IMPROVE: Only works with "api"
 	AvoidServing              bool
 	EnableAll                 bool
 	EnableEntitySearch        bool
 	EnableJupyterLab          bool
-	EnableSenzingRestAPI      bool
-	EnableSwaggerUI           bool
 	EnableXterm               bool
 	EntitySearchRoutePrefix   string // IMPROVE: Only works with "entity-search"
 	GrpcDialOptions           []grpc.DialOption
@@ -47,15 +39,12 @@ type BasicHTTPServer struct {
 	LogLevelName              string
 	ObserverOrigin            string
 	Observers                 []observer.Observer
-	OpenAPISpecificationRest  []byte
 	ReadHeaderTimeout         time.Duration
 	SenzingInstanceName       string
 	SenzingSettings           string
 	SenzingVerboseLogging     int64
 	ServerAddress             string
-	ServerOptions             []senzingrestapi.ServerOption
 	ServerPort                int
-	SwaggerURLRoutePrefix     string // IMPROVE: Only works with "swagger"
 	TtyOnly                   bool
 	XtermAllowedHostnames     []string
 	XtermArguments            []string
@@ -67,17 +56,12 @@ type BasicHTTPServer struct {
 }
 
 type TemplateVariables struct {
-	APIServerStatus string
-	APIServerURL    string
 	BasicHTTPServer
 	EntitySearchStatus string
 	EntitySearchURL    string
 	HTMLTitle          string
 	JupyterLabStatus   string
 	JupyterLabURL      string
-	RequestHost        string
-	SwaggerStatus      string
-	SwaggerURL         string
 	XtermStatus        string
 	XtermURL           string
 }
@@ -149,10 +133,7 @@ func (httpServer *BasicHTTPServer) getRootMux(ctx context.Context) (*http.ServeM
 
 	rootMux := http.NewServeMux()
 
-	userMessages = append(userMessages, httpServer.addSenzingRestAPIToMux(ctx, rootMux)...)
-	userMessages = append(userMessages, httpServer.addSenzingRestAPIProxyToMux(ctx, rootMux)...)
 	userMessages = append(userMessages, httpServer.addEntitySearchToMux(ctx, rootMux)...)
-	userMessages = append(userMessages, httpServer.addSwaggerToMux(ctx, rootMux)...)
 	userMessages = append(userMessages, httpServer.addJupiterToMux(ctx, rootMux)...)
 	userMessages = append(userMessages, httpServer.addXtermToMux(ctx, rootMux)...)
 	userMessages = append(userMessages, httpServer.addSiteToMux(ctx, rootMux)...)
@@ -160,37 +141,6 @@ func (httpServer *BasicHTTPServer) getRootMux(ctx context.Context) (*http.ServeM
 	userMessages = append(userMessages, httpServer.addStaticToMux(ctx, rootMux)...)
 
 	return rootMux, userMessages
-}
-
-func (httpServer *BasicHTTPServer) addSenzingRestAPIToMux(ctx context.Context, rootMux *http.ServeMux) []string {
-	var result []string
-
-	if httpServer.EnableAll || httpServer.EnableSenzingRestAPI {
-		senzingAPIMux := httpServer.getSenzingRestAPIMux(ctx)
-		rootMux.Handle(fmt.Sprintf("/%s/", httpServer.APIUrlRoutePrefix), http.StripPrefix("/api", senzingAPIMux))
-		result = append(result, fmt.Sprintf(
-			"Serving Senzing REST API at http://localhost:%d/%s",
-			httpServer.ServerPort,
-			httpServer.APIUrlRoutePrefix))
-	}
-
-	return result
-}
-
-func (httpServer *BasicHTTPServer) addSenzingRestAPIProxyToMux(ctx context.Context, rootMux *http.ServeMux) []string {
-	var result []string
-
-	if httpServer.EnableAll || httpServer.EnableSenzingRestAPI || httpServer.EnableEntitySearch {
-		senzingAPIProxyMux := httpServer.getSenzingRestAPIProxyMux(ctx)
-		rootMux.Handle("/entity-search/api/", http.StripPrefix("/entity-search/api", senzingAPIProxyMux))
-
-		result = append(result, fmt.Sprintf(
-			"Serving Senzing REST API Reverse Proxy at http://localhost:%d/%s",
-			httpServer.ServerPort,
-			"entity-search/api"))
-	}
-
-	return result
 }
 
 func (httpServer *BasicHTTPServer) addEntitySearchToMux(ctx context.Context, rootMux *http.ServeMux) []string {
@@ -207,25 +157,6 @@ func (httpServer *BasicHTTPServer) addEntitySearchToMux(ctx context.Context, roo
 			"Serving Entity Search at    http://localhost:%d/%s",
 			httpServer.ServerPort,
 			httpServer.EntitySearchRoutePrefix))
-	}
-
-	return result
-}
-
-func (httpServer *BasicHTTPServer) addSwaggerToMux(ctx context.Context, rootMux *http.ServeMux) []string {
-	var result []string
-
-	if httpServer.EnableAll || httpServer.EnableSwaggerUI {
-		swaggerUIMux := httpServer.getSwaggerUIMux(ctx)
-		rootMux.Handle(
-			fmt.Sprintf("/%s/", httpServer.SwaggerURLRoutePrefix),
-			http.StripPrefix("/swagger", swaggerUIMux),
-		)
-
-		result = append(result, fmt.Sprintf(
-			"Serving SwaggerUI at        http://localhost:%d/%s",
-			httpServer.ServerPort,
-			httpServer.SwaggerURLRoutePrefix))
 	}
 
 	return result
@@ -353,37 +284,6 @@ func (httpServer *BasicHTTPServer) getStatic() fs.FS {
 	return static
 }
 
-func (httpServer *BasicHTTPServer) openAPIFunc(ctx context.Context, openAPISpecification []byte) http.HandlerFunc {
-	_ = ctx
-	_ = openAPISpecification
-
-	return func(writer http.ResponseWriter, request *http.Request) {
-		var bytesBuffer bytes.Buffer
-
-		bufioWriter := bufio.NewWriter(&bytesBuffer)
-
-		openAPISpecificationTemplate, err := template.New("OpenApiTemplate").
-			Parse(string(httpServer.OpenAPISpecificationRest))
-		if err != nil {
-			panic(err)
-		}
-
-		templateVariables := TemplateVariables{
-			RequestHost: request.Host,
-		}
-
-		err = openAPISpecificationTemplate.Execute(bufioWriter, templateVariables)
-		if err != nil {
-			panic(err)
-		}
-
-		_, err = writer.Write(bytesBuffer.Bytes())
-		if err != nil {
-			panic(err)
-		}
-	}
-}
-
 func (httpServer *BasicHTTPServer) populateStaticTemplate(
 	responseWriter http.ResponseWriter,
 	request *http.Request,
@@ -417,77 +317,12 @@ func (httpServer *BasicHTTPServer) populateStaticTemplate(
 	}
 }
 
-// ----------------------------------------------------------------------------
-// Methods for Go-based API server - in development
-// ----------------------------------------------------------------------------
-
-// func (httpServer *HttpServerImpl) getSenzingRestApiGenericMux(
-// 	ctx context.Context,
-// 	urlRoutePrefix string,
-// ) *senzingrestapi.Server {
-// 	service := &senzingrestservice.SenzingRestServiceImpl{
-// 		GrpcDialOptions:                httpServer.GrpcDialOptions,
-// 		GrpcTarget:                     httpServer.GrpcTarget,
-// 		LogLevelName:                   httpServer.LogLevelName,
-// 		ObserverOrigin:                 httpServer.ObserverOrigin,
-// 		Observers:                      httpServer.Observers,
-// 		SenzingEngineConfigurationJson: httpServer.SenzingEngineConfigurationJson,
-// 		SenzingModuleName:              httpServer.SenzingModuleName,
-// 		SenzingVerboseLogging:          httpServer.SenzingVerboseLogging,
-// 		UrlRoutePrefix:                 urlRoutePrefix,
-// 		OpenApiSpecificationSpec:       httpServer.OpenApiSpecificationRest,
-// 	}
-// 	srv, err := senzingrestapi.NewServer(service, httpServer.ServerOptions...)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	return srv
-// }
-
-// func (httpServer *HttpServerImpl) getSenzingRestApiMux(ctx context.Context) *senzingrestapi.Server {
-// 	return httpServer.getSenzingRestApiGenericMux(ctx, "/api")
-// }
-
-// func (httpServer *HttpServerImpl) getSenzingApiProxyMux(ctx context.Context) *senzingrestapi.Server {
-// 	return httpServer.getSenzingApiGenericMux(ctx, "/entity-search/api")
-// }
-
 // --- http.ServeMux ----------------------------------------------------------
 
 func (httpServer *BasicHTTPServer) getEntitySearchMux(ctx context.Context) *http.ServeMux {
 	service := &entitysearchservice.BasicHTTPService{}
 
 	return service.Handler(ctx)
-}
-
-func (httpServer *BasicHTTPServer) getSenzingRestAPIMux(ctx context.Context) *http.ServeMux {
-	service := &restapiservicelegacy.RestApiServiceLegacyImpl{
-		JarFile:         "/app/senzing-poc-server.jar",
-		ProxyTemplate:   "http://localhost:8250%s",
-		CustomTransport: http.DefaultTransport,
-	}
-
-	return service.Handler(ctx)
-}
-
-func (httpServer *BasicHTTPServer) getSenzingRestAPIProxyMux(ctx context.Context) *http.ServeMux {
-	service := &restapiservicelegacy.RestApiServiceLegacyImpl{
-		JarFile:         "/app/senzing-poc-server.jar",
-		ProxyTemplate:   "http://localhost:8250%s",
-		CustomTransport: http.DefaultTransport,
-	}
-
-	return service.Handler(ctx)
-}
-
-func (httpServer *BasicHTTPServer) getSwaggerUIMux(ctx context.Context) *http.ServeMux {
-	swaggerMux := swaggerui.Handler([]byte{}) // OpenAPI specification handled by openApiFunc()
-	swaggerFunc := swaggerMux.ServeHTTP
-	submux := http.NewServeMux()
-	submux.HandleFunc("/", swaggerFunc)
-	submux.HandleFunc("/swagger_spec", httpServer.openAPIFunc(ctx, httpServer.OpenAPISpecificationRest))
-
-	return submux
 }
 
 func (httpServer *BasicHTTPServer) getXtermMux(ctx context.Context) *http.ServeMux {
@@ -508,11 +343,6 @@ func (httpServer *BasicHTTPServer) getXtermMux(ctx context.Context) *http.ServeM
 
 func (httpServer *BasicHTTPServer) handleFuncForSite(writer http.ResponseWriter, request *http.Request) {
 	templateVariables := TemplateVariables{
-		APIServerStatus: httpServer.getServerStatus(httpServer.EnableSenzingRestAPI),
-		APIServerURL: httpServer.getServerURL(
-			httpServer.EnableSenzingRestAPI,
-			fmt.Sprintf("http://%s/api", request.Host),
-		),
 		BasicHTTPServer:    *httpServer,
 		EntitySearchStatus: httpServer.getServerStatus(httpServer.EnableEntitySearch),
 		EntitySearchURL: httpServer.getServerURL(
@@ -524,11 +354,6 @@ func (httpServer *BasicHTTPServer) handleFuncForSite(writer http.ResponseWriter,
 		JupyterLabURL: httpServer.getServerURL(
 			httpServer.EnableJupyterLab,
 			fmt.Sprintf("http://%s/jupyter", request.Host),
-		),
-		SwaggerStatus: httpServer.getServerStatus(httpServer.EnableSwaggerUI),
-		SwaggerURL: httpServer.getServerURL(
-			httpServer.EnableSwaggerUI,
-			fmt.Sprintf("http://%s/swagger", request.Host),
 		),
 		XtermStatus: httpServer.getServerStatus(httpServer.EnableXterm),
 		XtermURL:    httpServer.getServerURL(httpServer.EnableXterm, fmt.Sprintf("http://%s/xterm", request.Host)),
