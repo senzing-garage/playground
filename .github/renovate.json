@@ -5,14 +5,36 @@
     ":disableDependencyDashboard",
     "docker:pinDigests"
   ],
-  "enabledManagers": ["dockerfile", "docker-compose"],
-  "schedule": ["on sunday"],
+  "enabledManagers": ["dockerfile", "docker-compose", "custom.regex"],
+  "schedule": ["* * * * 0"],
+  "description": [
+    "schedule: all day Sunday. Renovate schedules are WINDOWS, not triggers -- a schedule never causes Renovate to run, it only says when a run is allowed to open branches, so this is not a per-minute job. The minute field MUST be * : Renovate rejects a numeric minute ('has cron syntax, but doesn't have * as minutes'), and an invalid schedule is a hard config-validation error. Equivalent to the deprecated 'on sunday' this replaced, and the same shape as the built-in schedule:weekends preset (* * * * 0,6)."
+  ],
   "prCreation": "not-pending",
   "packageRules": [
     {
-      "matchUpdateTypes": ["major", "minor", "patch"],
-      "matchPackagePrefixes": ["!senzing/"],
-      "minimumReleaseAge": "21 days"
+      "description": "No cool-off for our own Senzing images. The documented opt-out for minimumReleaseAge is a later rule setting it to null, not a negated matcher -- matchPackagePrefixes was removed in Renovate 38.0.0 and survives only through automatic migration, which silently appends '{/,}**' to make the '!' work. Written straight into matchPackageNames, '!senzing/' matches nothing and applies the cooldown to everything. The second pattern covers registry-qualified names (public.ecr.aws/senzing/..., docker.io/senzing/...), whose packageName keeps the registry prefix and would not match 'senzing/**'.",
+      "matchPackageNames": ["senzing/**", "**/senzing/**"],
+      "minimumReleaseAge": null
+    },
+    {
+      "description": "Digest refreshes are the base-image SECURITY stream, not a version bump -- golang:*-bookworm's digest moves when Debian/Go rebuild it. The cooldown below is top-level and Renovate applies minimumReleaseAge to digest updates (isMinimumReleaseAgeApplicable excludes rollback/pin/replacement/lockFileMaintenance/bump/lockfileUpdate, NOT digest), so without this rule a patched base image waits 21 days. The previous config scoped its cooldown with matchUpdateTypes and so never delayed digests; this restores that.",
+      "matchUpdateTypes": ["digest", "pinDigest"],
+      "minimumReleaseAge": null
     }
-  ]
+  ],
+  "customManagers": [
+    {
+      "description": "Version strings that no first-party manager can see: golangci-lint is installed by a curl|sh in makefiles/*.mk and passed as an input to golangci-lint-action in the workflow. dependabot covers github-actions and gomod, renovate covers docker; a raw version inside a shell command is invisible to all of them, so a pin here rots silently. The three pins MUST move together or `make lint` and CI diverge.",
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^makefiles/.+\\.mk$/",
+        "/^\\.github/workflows/.+\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\s+[^\\n]*?(?<currentValue>v\\d+\\.\\d+\\.\\d+)"
+      ]
+    }
+  ],
+  "minimumReleaseAge": "21 days"
 }

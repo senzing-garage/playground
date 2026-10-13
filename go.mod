@@ -1,22 +1,19 @@
 module github.com/senzing-garage/playground
 
-go 1.26.4
+go 1.27.1
 
 require (
 	github.com/docktermj/cloudshell v0.2.0
-	github.com/flowchartsman/swaggerui v0.0.0-20221017034628-909ed4f3701b
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
-	github.com/senzing-garage/demo-entity-search v0.2.12
-	github.com/senzing-garage/go-cmdhelping v0.3.8
-	github.com/senzing-garage/go-helpers v0.6.17
-	github.com/senzing-garage/go-observing v0.3.7
-	github.com/senzing-garage/go-rest-api-service v0.10.12
-	github.com/senzing-garage/go-rest-api-service-legacy v0.1.2
-	github.com/senzing-garage/serve-grpc v0.9.26
+	github.com/senzing-garage/demo-entity-search v0.3.0
+	github.com/senzing-garage/go-cmdhelping v0.4.0
+	github.com/senzing-garage/go-helpers v0.7.0
+	github.com/senzing-garage/go-observing v0.4.0
+	github.com/senzing-garage/serve-grpc v0.10.0
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.12.1
-	google.golang.org/grpc v1.83.2
+	google.golang.org/grpc v1.84.0
 )
 
 require (
@@ -26,19 +23,11 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.7 // indirect
 	github.com/creack/pty v1.1.24 // indirect
-	github.com/dlclark/regexp2 v1.12.0 // indirect
-	github.com/fatih/color v1.19.0 // indirect
 	github.com/fsnotify/fsnotify v1.10.1 // indirect
-	github.com/ghodss/yaml v1.0.0 // indirect
-	github.com/go-faster/errors v0.7.1 // indirect
-	github.com/go-faster/jx v1.2.0 // indirect
-	github.com/go-faster/yaml v0.4.6 // indirect
 	github.com/go-logfmt/logfmt v0.6.1 // indirect
-	github.com/go-logr/logr v1.4.3 // indirect
-	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/go-sql-driver/mysql v1.10.0 // indirect
+	github.com/go-sql-driver/mysql v1.10.1 // indirect
 	github.com/go-viper/mapstructure/v2 v2.5.0 // indirect
-	github.com/godror/godror v0.51.0 // indirect
+	github.com/godror/godror v0.51.5 // indirect
 	github.com/godror/knownpb v0.3.0 // indirect
 	github.com/golang-sql/civil v0.0.0-20220223132316-b832511892a9 // indirect
 	github.com/golang-sql/sqlexp v0.1.0 // indirect
@@ -46,51 +35,38 @@ require (
 	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/lib/pq v1.12.3 // indirect
-	github.com/mattn/go-colorable v0.1.15 // indirect
-	github.com/mattn/go-isatty v0.0.22 // indirect
-	github.com/mattn/go-sqlite3 v1.14.48 // indirect
-	github.com/microsoft/go-mssqldb v1.10.0 // indirect
+	github.com/mattn/go-sqlite3 v1.14.52 // indirect
+	github.com/microsoft/go-mssqldb v1.11.2 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
-	github.com/ogen-go/ogen v1.23.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.4.3 // indirect
-	github.com/prometheus/client_golang v1.23.2 // indirect
-	github.com/prometheus/client_model v0.6.2 // indirect
-	github.com/prometheus/common v0.70.0 // indirect
-	github.com/prometheus/procfs v0.21.1 // indirect
+	github.com/prometheus/client_golang v1.25.0 // indirect
+	github.com/prometheus/client_model v0.6.3 // indirect
+	github.com/prometheus/common v0.72.1 // indirect
+	github.com/prometheus/procfs v0.22.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sagikazarmark/locafero v0.12.0 // indirect
-	github.com/segmentio/asm v1.2.1 // indirect
-	github.com/senzing-garage/go-databasing v0.5.9 // indirect
-	github.com/senzing-garage/go-logging v1.5.4 // indirect
-	github.com/senzing-garage/go-messaging v1.5.3 // indirect
-	github.com/senzing-garage/go-sdk-abstract-factory v0.9.17 // indirect
-	github.com/senzing-garage/init-database v0.8.4 // indirect
-	github.com/senzing-garage/sz-sdk-go v0.15.14 // indirect
-	github.com/senzing-garage/sz-sdk-go-core v0.9.14 // indirect
-	github.com/senzing-garage/sz-sdk-go-grpc v0.9.12 // indirect
-	github.com/senzing-garage/sz-sdk-go-mock v0.8.14 // indirect
-	github.com/senzing-garage/sz-sdk-json-type-definition v0.2.18 // indirect
-	github.com/senzing-garage/sz-sdk-proto v0.8.8 // indirect
-	github.com/shopspring/decimal v1.4.0 // indirect
-	github.com/sirupsen/logrus v1.9.4 // indirect
+	github.com/senzing-garage/go-databasing v0.6.0 // indirect
+	github.com/senzing-garage/go-logging v1.6.0 // indirect
+	github.com/senzing-garage/go-messaging v1.6.0 // indirect
+	github.com/senzing-garage/go-sdk-abstract-factory v0.10.0 // indirect
+	github.com/senzing-garage/init-database v0.9.0 // indirect
+	github.com/senzing-garage/sz-sdk-go v0.16.0 // indirect
+	github.com/senzing-garage/sz-sdk-go-core v0.10.0 // indirect
+	github.com/senzing-garage/sz-sdk-go-grpc v0.10.0 // indirect
+	github.com/senzing-garage/sz-sdk-go-mock v0.9.0 // indirect
+	github.com/senzing-garage/sz-sdk-proto v0.10.0 // indirect
+	github.com/shopspring/decimal v1.5.0 // indirect
+	github.com/sirupsen/logrus v1.10.2 // indirect
 	github.com/spf13/afero v1.15.0 // indirect
 	github.com/spf13/cast v1.10.0 // indirect
 	github.com/spf13/pflag v1.0.10 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
-	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
-	go.opentelemetry.io/otel v1.44.0 // indirect
-	go.opentelemetry.io/otel/metric v1.44.0 // indirect
-	go.opentelemetry.io/otel/trace v1.44.0 // indirect
-	go.uber.org/multierr v1.11.0 // indirect
-	go.uber.org/zap v1.28.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
-	golang.org/x/crypto v0.55.0 // indirect
-	golang.org/x/exp v0.0.0-20260709172345-9ea1abe57597 // indirect
-	golang.org/x/net v0.58.0 // indirect
-	golang.org/x/sync v0.22.0 // indirect
-	golang.org/x/sys v0.47.0 // indirect
-	golang.org/x/text v0.41.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20260706201446-f0a921348800 // indirect
-	google.golang.org/protobuf v1.36.11 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
+	golang.org/x/crypto v0.58.0 // indirect
+	golang.org/x/exp v0.0.0-20261011100332-faecfb24eb49 // indirect
+	golang.org/x/net v0.61.0 // indirect
+	golang.org/x/sys v0.49.0 // indirect
+	golang.org/x/text v0.43.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20261012220534-4341edf3f941 // indirect
+	google.golang.org/protobuf v1.36.12 // indirect
 )

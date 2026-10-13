@@ -15,7 +15,7 @@ dependencies = [
   "jupyter==1.1.1",
   "jupyterlab-code-formatter==3.1.0",
   "nbconvert==7.17.1",
-  "notebook==7.6.2",
+  "notebook==7.6.3",
   "protobuf==7.36.0",
   "pyspark==4.2.0",
   "senzing-grpc==0.5.13",
@@ -96,7 +96,7 @@ test = [
   "pytest==8.4.2; python_version <= '3.11'",
   "pytest==9.1.1; python_version > '3.11'",
   "coverage==7.10.7; python_version <= '3.11'",
-  "coverage==7.15.4; python_version > '3.11'",
+  "coverage==7.16.1; python_version > '3.11'",
 ]
 
 [tool.setuptools.packages.find]

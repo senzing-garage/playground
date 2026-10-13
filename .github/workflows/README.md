@@ -40,6 +40,14 @@ this action runs the [Black] code formatter.
 
 - [black.yaml]
 
+## check-claude-attribution.yaml
+
+When a Pull Request (PR) is opened, updated, or its description is edited,
+this action fails the PR if any of its commits or its description carry a Claude attribution trailer.
+
+- [Check Claude Attribution GitHub Action]
+  - Uses: [senzing-factory/build-resources/.../check-claude-attribution.yaml]
+
 ## dependabot-approve-and-merge.yaml
 
 When a Dependabot Pull Request (PR) is made against the `main` branch,
@@ -105,7 +113,7 @@ After a [Semantic Version] release is created,
 this action expedites the Go publishing process.
 
 - [Go Proxy Pull GitHub Action]
-  - Uses: [andrewslotin/go-proxy-pull-action]
+  - Uses: [senzing-factory/github-action-go-proxy-pull]
 
 ## go-test-darwin.yaml
 
@@ -202,7 +210,7 @@ this action moves the PR on the "Garage" project board to "Done".
 [Add Labels Standardized GitHub Action]: add-labels-standardized.yaml
 [Add to Project Garage Dependabot GitHub Action]: add-to-project-garage-dependabot.yaml
 [Add to Project Garage GitHub Action]: add-to-project-garage.yaml
-[andrewslotin/go-proxy-pull-action]: https://github.com/andrewslotin/go-proxy-pull-action
+[Check Claude Attribution GitHub Action]: check-claude-attribution.yaml
 [Dependabot Approve and Merge GitHub Action]: dependabot-approve-and-merge.yaml
 [Docker Build Container GitHub Action]: docker-build-container.yaml
 [Docker Push Containers to DockerHub GitHub Action]: docker-push-containers-to-dockerhub.yaml
@@ -226,12 +234,14 @@ this action moves the PR on the "Garage" project board to "Done".
 [senzing-factory/build-resources/.../add-labels-to-issue.yaml]: https://github.com/senzing-factory/build-resources/blob/main/.github/workflows/add-labels-to-issue.yaml
 [senzing-factory/build-resources/.../add-to-project-dependabot.yaml]: https://github.com/senzing-factory/build-resources/blob/main/.github/workflows/add-to-project-dependabot.yaml
 [senzing-factory/build-resources/.../add-to-project.yaml]: https://github.com/senzing-factory/build-resources/blob/main/.github/workflows/add-to-project.yaml
+[senzing-factory/build-resources/.../check-claude-attribution.yaml]: https://github.com/senzing-factory/build-resources/blob/main/.github/workflows/check-claude-attribution.yaml
 [senzing-factory/build-resources/.../dependabot-approve-and-merge.yaml]: https://github.com/senzing-factory/build-resources/blob/main/.github/workflows/dependabot-approve-and-merge.yaml
 [senzing-factory/build-resources/.../go-coverage.yaml]: https://github.com/senzing-factory/build-resources/blob/main/.github/workflows/go-coverage.yaml
 [senzing-factory/build-resources/.../lint-workflows.yaml]: https://github.com/senzing-factory/build-resources/blob/main/.github/workflows/lint-workflows.yaml
 [senzing-factory/build-resources/.../make-go-github-file.yaml]: https://github.com/senzing-factory/build-resources/blob/main/.github/workflows/make-go-github-file.yaml
 [senzing-factory/build-resources/.../move-pr-to-done-dependabot.yaml]: https://github.com/senzing-factory/build-resources/blob/main/.github/workflows/move-pr-to-done-dependabot.yaml
 [senzing-factory/github-action-docker-buildx-build]: https://github.com/senzing-factory/github-action-docker-buildx-build
+[senzing-factory/github-action-go-proxy-pull]: https://github.com/senzing-factory/github-action-go-proxy-pull
 [senzing-factory/github-action-install-senzing-sdk]: https://github.com/senzing-factory/github-action-install-senzing-sdk
 [senzing-factory/github-action-make-go-tag]: https://github.com/senzing-factory/github-action-make-go-tag
 [super-linter]: https://github.com/super-linter/super-linter
