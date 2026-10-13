@@ -20,6 +20,8 @@ This project adheres to [Semantic Versioning].
   - github.com/senzing-garage/go-observing v0.4.0
   - github.com/senzing-garage/serve-grpc v0.10.0
   - google.golang.org/grpc v1.84.0
+  - notebook 7.6.3
+- Update Go examples to Go 1.27.1 and github.com/senzing-garage/sz-sdk-go v0.16.0 (`SzConfig.RegisterDataSource`)
 
 ### Removed in 0.5.0
 
