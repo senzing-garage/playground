@@ -1,7 +1,26 @@
 rules:
   secrets-outside-env:
-    disable: true
+    # Scoped ignores, never `disable: true`. Blanket rule-disabling turns the
+    # check off for files nobody reasoned about, including ones added later;
+    # naming the files keeps the rule live everywhere else and puts each
+    # exception in the diff of whoever next touches it. Matches the shape used
+    # by senzing-factory/build-resources and template-python.
+    ignore:
+      - docker-build-container.yaml
+      - go-proxy-pull.yaml
+      - go-test-darwin.yaml
+      - go-test-linux.yaml
+      - go-test-windows.yaml
+      - make-go-github-file.yaml
+      - make-go-tag.yaml
   unpinned-uses:
     config:
       policies:
-        "*": ref-pin
+        # Third-party actions MUST be pinned to a full commit SHA (immutable).
+        # A tag can be moved by whoever owns the action; a SHA cannot. This
+        # matches senzing-factory/build-resources, where the same policy has
+        # been in force -- template-go previously allowed ref-pin for
+        # everything, which is why unpinned refs passed CI unnoticed.
+        "*": hash-pin
+        # First-party reusables are consumed at the moving major tag by design.
+        "senzing-factory/*": ref-pin

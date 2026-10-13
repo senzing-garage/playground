@@ -81,7 +81,7 @@ func addDatasourcesToSenzingConfig(szAbstractFactory senzing.SzAbstractFactory, 
 	}
 
 	for _, value := range dataSourceNames {
-		_, err := szConfig.AddDataSource(ctx, value)
+		_, err := szConfig.RegisterDataSource(ctx, value)
 		if err != nil {
 			fmt.Println(err)
 		}

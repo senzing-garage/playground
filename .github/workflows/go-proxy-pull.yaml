@@ -10,15 +10,32 @@ permissions: {}
 jobs:
   go-proxy-pull:
     permissions:
-      contents: write
+      # READ, not write. This job has no checkout and its only action performs
+      # an HTTPS GET against proxy.golang.org to warm the module cache -- it
+      # writes nothing to this repository. `contents: write` handed a
+      # third-party action push access to the default branch on every release
+      # tag, in every repo generated from this template: one account takeover
+      # plus a retag was fleet-wide write access.
+      contents: read
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
     steps:
+      # First-party, so consumed at the moving major tag rather than a commit
+      # SHA -- see the `senzing-factory/*: ref-pin` policy in
+      # .github/linters/zizmor.yaml. This replaces
+      # andrewslotin/go-proxy-pull-action@v1.5.0, an individual's account that
+      # had to be SHA-pinned because a retag there was fleet-wide exposure.
+      #
+      # It lives in its own github-action-* repo rather than build-resources by
+      # the version-blast-radius rule: a Go-only breaking change must not force
+      # a version bump on every consumer of the shared repo.
+      #
+      # No inputs. `import-path` defaults to github.com/<owner>/<repo> and `ref`
+      # defaults to github.ref, which is what the old explicit `import_path`
+      # passed anyway.
       - name: Pull new module version
-        uses: andrewslotin/go-proxy-pull-action@v1.5.0
-        with:
-          import_path: github.com/${{ github.repository }}
+        uses: senzing-factory/github-action-go-proxy-pull@v1
 
       - name: Notify Slack on failure
         if: failure() || cancelled()

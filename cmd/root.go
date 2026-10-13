@@ -16,7 +16,6 @@ import (
 	"github.com/senzing-garage/go-cmdhelping/settings"
 	"github.com/senzing-garage/go-helpers/wraperror"
 	"github.com/senzing-garage/go-observing/observer"
-	"github.com/senzing-garage/go-rest-api-service/senzingrestservice"
 	"github.com/senzing-garage/playground/httpserver"
 	"github.com/senzing-garage/serve-grpc/grpcserver"
 	"github.com/spf13/cobra"
@@ -26,8 +25,8 @@ import (
 const (
 	Long string = `
 A server supporting the following services:
-    - HTTP: Senzing API server
-    - HTTP: Swagger UI
+    - HTTP: Entity Search
+    - HTTP: JupyterLab
     - HTTP: Xterm
     - gRPC:
     `
@@ -209,7 +208,6 @@ func getGrpcServer(senzingSettings string) *grpcserver.BasicGrpcServer {
 
 func getHTTPServer(senzingSettings string, observers []observer.Observer) *httpserver.BasicHTTPServer {
 	return &httpserver.BasicHTTPServer{
-		APIUrlRoutePrefix:         "api",
 		AvoidServing:              viper.GetBool(option.AvoidServe.Arg),
 		EnableAll:                 true,
 		EntitySearchRoutePrefix:   "entity-search",
@@ -218,14 +216,12 @@ func getHTTPServer(senzingSettings string, observers []observer.Observer) *https
 		LogLevelName:              viper.GetString(option.LogLevel.Arg),
 		ObserverOrigin:            viper.GetString(option.ObserverOrigin.Arg),
 		Observers:                 observers,
-		OpenAPISpecificationRest:  senzingrestservice.OpenAPISpecificationJSON,
 		ReadHeaderTimeout:         ReadHeaderTimeoutInSeconds * time.Second,
 		SenzingInstanceName:       viper.GetString(option.CoreInstanceName.Arg),
 		SenzingSettings:           senzingSettings,
 		SenzingVerboseLogging:     viper.GetInt64(option.CoreLogLevel.Arg),
 		ServerAddress:             viper.GetString(option.ServerAddress.Arg),
 		ServerPort:                viper.GetInt(option.HTTPPort.Arg),
-		SwaggerURLRoutePrefix:     "swagger",
 		TtyOnly:                   viper.GetBool(option.TtyOnly.Arg),
 		XtermAllowedHostnames:     viper.GetStringSlice(option.XtermAllowedHostnames.Arg),
 		XtermArguments:            viper.GetStringSlice(option.XtermArguments.Arg),
