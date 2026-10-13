@@ -40,9 +40,12 @@ coverage-osarch-specific:
 	@open file://$(MAKEFILE_DIRECTORY)/coverage.html
 
 
+# GOLANGCI_LINT_VERSION comes from makefiles/versions.mk. The installer is
+# fetched at the SAME tag it installs -- it used to come from `main`, a moving
+# branch piped into `sh`.
 .PHONY: dependencies-for-development-osarch-specific
 dependencies-for-development-osarch-specific:
-	@curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/main/install.sh | sh -s -- -b $(shell go env GOPATH)/bin latest
+	@curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/$(GOLANGCI_LINT_VERSION)/install.sh | sh -s -- -b $(shell go env GOPATH)/bin $(GOLANGCI_LINT_VERSION)
 
 
 .PHONY: documentation-osarch-specific
@@ -77,6 +80,11 @@ setup-osarch-specific:
 .PHONY: test-osarch-specific
 test-osarch-specific:
 	@go test -exec $(MAKEFILE_DIRECTORY)/bin/macos_exec_dyld.sh -json -v -p 1 ./... 2>&1 | tee /tmp/gotest.log | gotestfmt
+
+
+.PHONY: test-verbose-osarch-specific
+test-verbose-osarch-specific:
+	@go test -exec $(MAKEFILE_DIRECTORY)/bin/macos_exec_dyld.sh -v -p 1 ./...
 
 
 .PHONY: venv-osarch-specific

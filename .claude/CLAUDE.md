@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-`playground` is a Go CLI application that creates an environment for exploring Senzing entity resolution. It starts concurrent gRPC and HTTP servers providing web interfaces, REST APIs, Swagger UI, and web terminal (xterm) capabilities.
+`playground` is a Go CLI application that creates an environment for exploring Senzing entity resolution. It starts concurrent gRPC and HTTP servers providing web interfaces, Entity Search, JupyterLab, and web terminal (xterm) capabilities.
 
 ## Build Commands
 
@@ -71,7 +71,7 @@ make fix
 
 The application runs two servers concurrently in [cmd/root.go](cmd/root.go):
 
-- **HTTP Server** (port 8260): REST API, Swagger UI, Entity Search, JupyterLab, Xterm web terminal
+- **HTTP Server** (port 8260): Entity Search, JupyterLab, Xterm web terminal
 - **gRPC Server** (port 8261): Senzing SDK services via `serve-grpc`
 
 ### Key Packages
@@ -84,7 +84,6 @@ The application runs two servers concurrently in [cmd/root.go](cmd/root.go):
 
 Uses Senzing SDK components:
 
-- `go-rest-api-service` - REST API implementation
 - `serve-grpc` - gRPC server for Senzing SDK
 - `demo-entity-search` - Entity search web interface
 - `go-cmdhelping` - CLI helpers with standardized options

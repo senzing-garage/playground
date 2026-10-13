@@ -7,6 +7,29 @@ This project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-10-12
+
+### Changed in 0.5.0
+
+- Update to Go 1.27.1
+- Sync repository setup files with [template-go `v0.5.0`](https://github.com/senzing-garage/template-go/tree/v0.5.0)
+- Update dependencies
+  - github.com/senzing-garage/demo-entity-search v0.3.0
+  - github.com/senzing-garage/go-cmdhelping v0.4.0
+  - github.com/senzing-garage/go-helpers v0.7.0
+  - github.com/senzing-garage/go-observing v0.4.0
+  - github.com/senzing-garage/serve-grpc v0.10.0
+  - google.golang.org/grpc v1.84.0
+  - notebook 7.6.3
+- Update Go examples to Go 1.27.1 and github.com/senzing-garage/sz-sdk-go v0.16.0 (`SzConfig.RegisterDataSource`)
+
+### Removed in 0.5.0
+
+- Senzing REST API (`/api`) and its Entity Search proxy (`/entity-search/api`), because `github.com/senzing-garage/go-rest-api-service` and `github.com/senzing-garage/go-rest-api-service-legacy` are deprecated and archived
+- Swagger UI (`/swagger`), which only served the Senzing REST API specification
+- `httpserver.BasicHTTPServer` fields `APIUrlRoutePrefix`, `EnableSenzingRestAPI`, `EnableSwaggerUI`, `OpenAPISpecificationRest`, `ServerOptions` and `SwaggerURLRoutePrefix`
+- `senzing-poc-server.jar` and the `SENZING_API_SERVER_*` environment variables from the Docker image
+
 ## [0.4.17] - 2025-10-27
 
 ### Changed in 0.4.17
