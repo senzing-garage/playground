@@ -36,7 +36,7 @@ source = "https://github.com/senzing-garage/playground"
 template_python = "template_python.main_entry:main"
 
 [build-system]
-requires = ["setuptools>=84.0.0", "wheel"]
+requires = ["setuptools>=84.2.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [dependency-groups]
