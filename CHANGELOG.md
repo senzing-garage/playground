@@ -7,6 +7,23 @@ This project adheres to [Semantic Versioning].
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-11-10
+
+### Changed in 0.5.1
+
+- Update to Go 1.27.3 (Docker builder image `golang:1.27.4-bookworm`)
+- Update dependencies
+  - github.com/senzing-garage/go-helpers v0.8.0
+  - github.com/senzing-garage/serve-grpc v0.10.1
+  - golang.org/x/net v0.62.0
+  - google.golang.org/grpc v1.85.0
+  - nbconvert, cryptography and Python development tools
+- Update Go examples to github.com/senzing-garage/go-helpers v0.8.0 and google.golang.org/grpc v1.85.0
+
+### Fixed in 0.5.1
+
+- Startup no longer fails with `CONFIGPATH: Could not find .../cfgVariant.json` on Senzing builds that no longer install `cfgVariant.json` (via github.com/senzing-garage/go-helpers v0.8.0)
+
 ## [0.5.0] - 2026-10-12
 
 ### Changed in 0.5.0
