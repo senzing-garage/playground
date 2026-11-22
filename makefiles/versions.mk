@@ -9,4 +9,4 @@
 # the first vX.Y.Z that follows it.
 
 # renovate: datasource=github-releases depName=golangci/golangci-lint
-GOLANGCI_LINT_VERSION := v2.14.0
+GOLANGCI_LINT_VERSION := v2.15.0
